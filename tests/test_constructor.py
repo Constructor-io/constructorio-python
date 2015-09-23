@@ -6,8 +6,8 @@ class TestConstructorIO:
     def test_encodes_parameters(self):
         constructor = ConstructorIO()
         serialized_params = constructor\
-            ._serializeParams({foo: [1, 2], bar: {baz: ['a', 'b']}})
-        assert serialized_params == 'foo%5B%5D=1&foo%5B%5D=2&bar%5Bbaz%5D%5B%5D=a&bar%5Bbaz%5D%5B%5D=b'
+            ._serializeParams({'foo': [1, 2], 'bar': {'baz': ['a', 'b']}})
+        assert serialized_params == "foo=%5B1%2C+2%5D&bar=%7B%27baz%27%3A+%5B%27a%27%2C+%27b%27%5D%7D"
 
     def test_creates_urls_correctly(self):
         constructor = ConstructorIO(autocompleteKey="a-test-autocomplete-key")

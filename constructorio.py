@@ -1,4 +1,5 @@
 import requests
+import urllib
 
 class ConstructorIO(object):
     VERSION = "1.0.0"
@@ -12,14 +13,15 @@ class ConstructorIO(object):
     def __version__(self):
         return VERSION
 
-    def _serializeParams(self, **params):
-        pass
+    def _serializeParams(self, params):
+        return urllib.urlencode(params)
 
     def _makeUrl(self, endpoint):
-        pass
+        return "".format(self._protocol, self._host, endpoint, self._autocompleteKey)
 
     def query(self, query):
-        requests.get(self.url, something, something)
+        url = self._makeUrl()
+        requests.get(url, something, something)
         pass
 
     def add(self, item_name, autocomplete_section):
