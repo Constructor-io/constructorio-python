@@ -11,7 +11,7 @@ class TestConstructorIO:
 
     def test_creates_urls_correctly(self):
         constructor = ConstructorIO(autocompleteKey="a-test-autocomplete-key")
-        generated_url = constructor._makeUrl('test')
+        generated_url = constructor._makeUrl('v1/test')
         assert generated_url == 'https://ac.cnstrc.com/v1/test?autocomplete_key=a-test-autocomplete-key'
 
     def test_set_api_token(self):
@@ -32,7 +32,7 @@ class TestConstructorIO:
             host = "ac.cnstrc.com"
         )
         resp = constructor.query(
-            query = "a"
+            queryStr = "a"
         )
         assert resp.status_code == 200
         assert resp.text != ""
