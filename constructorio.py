@@ -29,16 +29,20 @@ class ConstructorIO(object):
         return resp
 
     def add(self, item_name, autocomplete_section):
-############## just this one, and then poke it about
-        url = self._makeUrl("v1/add/") and stuff
-        resp = requests.get(url, auth=(self._apiToken, ""))
-        pass
+        params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
+        url = self._makeUrl("v1/item/")
+        print url
+        return requests.post(url, auth=(self._apiToken, ""))
 
-    def remove(self):
-        pass
+    def remove(self, item_name, autocomplete_section):
+        params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
+        url = self._makeUrl("v1/add/", params)
+        return requests.get(url, auth=(self._apiToken, ""))
 
-    def modify(self):
-        pass
+    def modify(self, item_name, autocomplete_section):
+        params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
+        url = self._makeUrl("v1/add/", params)
+        return requests.get(url, auth=(self._apiToken, ""))
 
     def track_conversion(self, term, autocomplete_section):
         pass

@@ -1,0 +1,18 @@
+version: 1
+interactions:
+- request:
+    body: {string: !!python/unicode "{\"item_name\":\"power drill\",\"autocomplete_section\":\"standard\"}"}
+    headers:
+      accept: application/json
+      content-type: application/json
+      authorization: Basic YXBpVG9rZW46
+    method: POST
+    uri: http://ac.cnstrc.com/v1/item?autocomplete_key=autocompleteKey
+  response:
+    body: null
+    headers:
+      server: [nginx/1.4.6 (Ubuntu)]
+      content-length: ['0']
+      connection: [keep-alive]
+      date: ['Mon, 22 Jun 2015 22:24:55 GMT']
+    status: {code: 204}
