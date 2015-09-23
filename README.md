@@ -23,6 +23,7 @@ search
     constructor.track_search(
       term="xyz",
       num_results=302,
+      autocomplete_section="products_autocomplete"
     )
 
 click_through
