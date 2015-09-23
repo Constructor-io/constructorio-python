@@ -30,7 +30,8 @@ class ConstructorIO(object):
         resp = requests.get(url)
         if resp.status_code != 200:
             raise IOError(resp.text)
-        return resp
+        else:
+            return resp.json()
 
     def add(self, item_name, autocomplete_section, **kwargs):
         params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
@@ -48,7 +49,8 @@ class ConstructorIO(object):
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
-        return resp
+        else:
+            return True
 
     def remove(self, item_name, autocomplete_section, **kwargs):
         params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
@@ -66,7 +68,8 @@ class ConstructorIO(object):
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
-        return resp
+        else:
+            return True
 
     def modify(self, item_name, autocomplete_section, **kwargs):
         params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
@@ -84,7 +87,8 @@ class ConstructorIO(object):
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
-        return resp
+        else:
+            return True
 
     def track_conversion(self, term, autocomplete_section, **kwargs):
         params = {
@@ -101,7 +105,8 @@ class ConstructorIO(object):
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
-        return resp
+        else:
+            return True
 
     def track_click_through(self, term, autocomplete_section, **kwargs):
         params = {
@@ -120,7 +125,8 @@ class ConstructorIO(object):
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
-        return resp
+        else:
+            return True
 
     def track_search(self, term, autocomplete_section, **kwargs):
         params = {
@@ -137,4 +143,5 @@ class ConstructorIO(object):
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
-        return resp
+        else:
+            return True

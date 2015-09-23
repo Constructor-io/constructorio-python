@@ -33,11 +33,11 @@ class TestConstructorIO:
                 protocol = "http",
                 host = "ac.cnstrc.com"
             )
-            resp = constructor.query(
+            autocompletes = constructor.query(
                 queryStr = "a"
             )
-            assert resp.status_code == 200
-            assert resp.text != ""
+            assert autocompletes != None
+            assert type(autocompletes) == dict
 
     def test_add(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/add-success.yaml"):
@@ -51,8 +51,7 @@ class TestConstructorIO:
                 item_name = "boinkamoinka",
                 autocomplete_section = "Search Suggestions"
             )
-            assert resp.status_code == 204
-            assert resp.text == ""
+            assert resp == True
 
     def test_remove(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/remove-success.yaml"):
@@ -66,8 +65,7 @@ class TestConstructorIO:
                 item_name = "racer",
                 autocomplete_section = "Search Suggestions"
             )
-            assert resp.status_code == 204
-            assert resp.text == ""
+            assert resp == True
 
     def test_modify(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/modify-success.yaml"):
@@ -82,8 +80,7 @@ class TestConstructorIO:
                 suggested_score = 100,
                 autocomplete_section = "Search Suggestions"
             )
-            assert resp.status_code == 204
-            assert resp.text == ""
+            assert resp == True
 
     def test_conversion(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/conversion-success.yaml"):
@@ -97,8 +94,7 @@ class TestConstructorIO:
                 term = "Stanley_Steamer",
                 autocomplete_section = "Search Suggestions"
             )
-            assert resp.status_code == 204
-            assert resp.text == ""
+            assert resp == True
 
     def test_search_no_num_res(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/search-noname-success.yaml"):
@@ -113,8 +109,7 @@ class TestConstructorIO:
                 num_results = 10,
                 autocomplete_section = "Search Suggestions"
             )
-            assert resp.status_code == 204
-            assert resp.text == ""
+            assert resp == True
 
     def test_search_num_res(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/search-success.yaml"):
@@ -129,8 +124,7 @@ class TestConstructorIO:
                 num_results = 10,
                 autocomplete_section = "Search Suggestions"
             )
-            assert resp.status_code == 204
-            assert resp.text == ""
+            assert resp == True
 
     def test_click_through(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/click-through-success.yaml"):
@@ -144,5 +138,4 @@ class TestConstructorIO:
                 term = "Stanley_Steamer",
                 autocomplete_section = "Search Suggestions"
             )
-            assert resp.status_code == 204
-            assert resp.text == ""
+            assert resp == True
