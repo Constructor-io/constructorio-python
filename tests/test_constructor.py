@@ -23,6 +23,19 @@ class something:
         constructor = ConstructorIO(autocompleteKey=autocompleteKey)
         assert constructor._autocompleteKey == autocompleteKey
 
+    def test_ac_query():
+        constructor = ConstructorIO(
+            apiToken = "apiToken",
+            autocompleteKey = "autocompleteKey",
+            protocol = "http",
+            host = "ac.cnstrc.com"
+        )
+        resp = constructor.query(
+            query = "a"
+        )
+        assert resp.status_code == 200
+        assert resp.text != ""
+
     def test_add():
         constructor = ConstructorIO(
             apiToken = "apiToken",
@@ -34,8 +47,8 @@ class something:
             item_name = "power drill",
             autocomplete_section = "standard"
         )
-        # assert resp doesn't have error
-        # assert response itself is blank
+        assert resp.status_code == 204
+        assert resp.text == ""
 
     def test_remove():
         constructor = ConstructorIO(
@@ -48,8 +61,8 @@ class something:
             item_name = "power drill",
             autocomplete_section = "standard"
         )
-        # assert resp doesn't have error
-        # assert response itself is blank
+        assert resp.status_code == 204
+        assert resp.text == ""
 
     def test_modify():
         constructor = ConstructorIO(
@@ -63,8 +76,8 @@ class something:
             suggested_score = 100,
             autocomplete_section = "standard"
         )
-        # assert resp doesn't have error
-        # assert response itself is blank
+        assert resp.status_code == 204
+        assert resp.text == ""
 
     def test_conversion():
         constructor = ConstructorIO(
@@ -77,8 +90,8 @@ class something:
             item_name = "power drill",
             autocomplete_section = "standard"
         )
-        # assert resp doesn't have error
-        # assert response itself is blank
+        assert resp.status_code == 204
+        assert resp.text == ""
 
     def test_search_no_num_res():
         constructor = ConstructorIO(
@@ -91,8 +104,8 @@ class something:
             item_name = "power drill",
             autocomplete_section = "standard"
         )
-        # assert resp doesn't have error
-        # assert response itself is blank
+        assert resp.status_code == 204
+        assert resp.text == ""
 
     def test_search_num_res():
         constructor = ConstructorIO(
@@ -106,8 +119,8 @@ class something:
             num_results = 10,
             autocomplete_section = "standard"
         )
-        # assert resp doesn't have error
-        # assert response itself is blank
+        assert resp.status_code == 204
+        assert resp.text == ""
 
     def test_click_through():
         constructor = ConstructorIO(
@@ -120,5 +133,5 @@ class something:
             item_name = "power drill",
             autocomplete_section = "standard"
         )
-        # assert resp doesn't have error
-        # assert response itself is blank
+        assert resp.status_code == 204
+        assert resp.text == ""
