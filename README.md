@@ -33,6 +33,7 @@ Querying
 ---
 
 To query the autocomplete from your backend:
+
 (If you are making a website, use our Javascript front-end client, it will be much faster for your users. Like, seriously.)
 
     >>> resp = constructor.query("a")
