@@ -83,58 +83,63 @@ class TestConstructorIO:
         assert resp.text == ""
 
     def test_conversion(self):
-        constructor = ConstructorIO(
-            apiToken = "apiToken",
-            autocompleteKey = "autocompleteKey",
-            protocol = "http",
-            host = "ac.cnstrc.com"
-        )
-        resp = constructor.track_conversion(
-            term = "power drill",
-            autocomplete_section = "standard"
-        )
-        assert resp.status_code == 204
-        assert resp.text == ""
+        with vcr.use_cassette("fixtures/ac.cnstrc.com/conversion-success.yaml"):
+            constructor = ConstructorIO(
+                apiToken = "apiToken",
+                autocompleteKey = "autocompleteKey",
+                protocol = "http",
+                host = "ac.cnstrc.com"
+            )
+            resp = constructor.track_conversion(
+                term = "Stanley_Steamer",
+                autocomplete_section = "Search Suggestions"
+            )
+            assert resp.status_code == 204
+            assert resp.text == ""
 
     def test_search_no_num_res(self):
-        constructor = ConstructorIO(
-            apiToken = "apiToken",
-            autocompleteKey = "autocompleteKey",
-            protocol = "http",
-            host = "ac.cnstrc.com"
-        )
-        resp = constructor.track_search(
-            term = "power drill",
-            autocomplete_section = "standard"
-        )
-        assert resp.status_code == 204
-        assert resp.text == ""
+        with vcr.use_cassette("fixtures/ac.cnstrc.com/search-noname-success.yaml"):
+            constructor = ConstructorIO(
+                apiToken = "apiToken",
+                autocompleteKey = "autocompleteKey",
+                protocol = "http",
+                host = "ac.cnstrc.com"
+            )
+            resp = constructor.track_search(
+                term = "Stanley_Steamer",
+                num_results = 10,
+                autocomplete_section = "Search Suggestions"
+            )
+            assert resp.status_code == 204
+            assert resp.text == ""
 
     def test_search_num_res(self):
-        constructor = ConstructorIO(
-            apiToken = "apiToken",
-            autocompleteKey = "autocompleteKey",
-            protocol = "http",
-            host = "ac.cnstrc.com"
-        )
-        resp = constructor.track_search(
-            term = "power drill",
-            num_results = 10,
-            autocomplete_section = "standard"
-        )
-        assert resp.status_code == 204
-        assert resp.text == ""
+        with vcr.use_cassette("fixtures/ac.cnstrc.com/search-success.yaml"):
+            constructor = ConstructorIO(
+                apiToken = "apiToken",
+                autocompleteKey = "autocompleteKey",
+                protocol = "http",
+                host = "ac.cnstrc.com"
+            )
+            resp = constructor.track_search(
+                term = "Stanley_Steamer",
+                num_results = 10,
+                autocomplete_section = "Search Suggestions"
+            )
+            assert resp.status_code == 204
+            assert resp.text == ""
 
     def test_click_through(self):
-        constructor = ConstructorIO(
-            apiToken = "apiToken",
-            autocompleteKey = "autocompleteKey",
-            protocol = "http",
-            host = "ac.cnstrc.com"
-        )
-        resp = constructor.track_click_through(
-            term = "power drill",
-            autocomplete_section = "standard"
-        )
-        assert resp.status_code == 204
-        assert resp.text == ""
+        with vcr.use_cassette("fixtures/ac.cnstrc.com/click-through-success.yaml"):
+            constructor = ConstructorIO(
+                apiToken = "apiToken",
+                autocompleteKey = "autocompleteKey",
+                protocol = "http",
+                host = "ac.cnstrc.com"
+            )
+            resp = constructor.track_click_through(
+                term = "Stanley_Steamer",
+                autocomplete_section = "Search Suggestions"
+            )
+            assert resp.status_code == 204
+            assert resp.text == ""

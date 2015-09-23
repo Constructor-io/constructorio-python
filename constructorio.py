@@ -1,6 +1,8 @@
 import requests
 import urllib
 import simplejson
+import sys
+import logging
 
 class ConstructorIO(object):
     VERSION = "1.0.0"
@@ -30,9 +32,9 @@ class ConstructorIO(object):
 
     def add(self, item_name, autocomplete_section):
         params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
-        url = self._makeUrl("v1/item/")
+        url = self._makeUrl("v1/item")
         print url
-        return requests.post(url, auth=(self._apiToken, ""))
+        return requests.post(url, data=params, auth=(self._apiToken, ""))
 
     def remove(self, item_name, autocomplete_section):
         params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
@@ -45,10 +47,41 @@ class ConstructorIO(object):
         return requests.get(url, auth=(self._apiToken, ""))
 
     def track_conversion(self, term, autocomplete_section):
-        pass
+        params = {
+            "term": term,
+            "autocomplete_section": autocomplete_section,
+        }
+        url = self._makeUrl("v1/conversion")
+        resp = requests.post(
+            url,
+            json=params,
+            auth=(self._apiToken, "")
+        )
+        return resp
 
     def track_click_through(self, term, autocomplete_section):
-        pass
+        params = {
+            "term": term,
+            "autocomplete_section": autocomplete_section,
+        }
+        url = self._makeUrl("v1/click_through")
+        resp = requests.post(
+            url,
+            json=params,
+            auth=(self._apiToken, "")
+        )
+        return resp
 
-    def track_search(self, term, autocomplete_section):
-        pass
+    def track_search(self, term, autocomplete_section, num_results=1):
+        params = {
+            "term": term,
+            "autocomplete_section": autocomplete_section,
+            "num_results": num_results
+        }
+        url = self._makeUrl("v1/search")
+        resp = requests.post(
+            url,
+            json=params,
+            auth=(self._apiToken, "")
+        )
+        return resp

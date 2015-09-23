@@ -15,4 +15,4 @@ interactions:
       content-length: ['0']
       connection: [keep-alive]
       date: ['Mon, 22 Jun 2015 22:24:55 GMT']
-    status: {code: 204}
+    status: {code: 204, message: ''}
