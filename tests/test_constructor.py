@@ -86,7 +86,7 @@ class something:
             protocol = "http",
             host = "ac.cnstrc.com"
         )
-        resp = constructor.conversion(
+        resp = constructor.track_conversion(
             item_name = "power drill",
             autocomplete_section = "standard"
         )
@@ -100,7 +100,7 @@ class something:
             protocol = "http",
             host = "ac.cnstrc.com"
         )
-        resp = constructor.search(
+        resp = constructor.track_search(
             item_name = "power drill",
             autocomplete_section = "standard"
         )
@@ -114,7 +114,7 @@ class something:
             protocol = "http",
             host = "ac.cnstrc.com"
         )
-        resp = constructor.search(
+        resp = constructor.track_search(
             item_name = "power drill",
             num_results = 10,
             autocomplete_section = "standard"
@@ -129,7 +129,7 @@ class something:
             protocol = "http",
             host = "ac.cnstrc.com"
         )
-        resp = constructor.click_through(
+        resp = constructor.track_click_through(
             item_name = "power drill",
             autocomplete_section = "standard"
         )
