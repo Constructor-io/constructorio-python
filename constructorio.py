@@ -3,15 +3,19 @@ import requests
 class ConstructorIO(object):
     VERSION = "1.0.0"
 
-    def __init__(self, api_key, autocomplete_key, url="ac.cnstrc.com"):
-        self._api_key = api_key
-        self._autocomplete_key = ac_key
-        self._url = url
+    def __init__(self, apiToken="", autocompleteKey="", protocol="http", host="ac.cnstrc.com"):
+        self._apiToken = apiToken
+        self._autocompleteKey = autocompleteKey
+        self._protocol = protocol
+        self._host = host
 
     def __version__(self):
         return VERSION
 
-    def _make_url(self):
+    def _serializeParams(self, **params):
+        pass
+
+    def _makeUrl(self, endpoint):
         pass
 
     def query(self, query):
