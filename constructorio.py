@@ -7,7 +7,7 @@ import logging
 class ConstructorIO(object):
     VERSION = "1.0.0"
 
-    def __init__(self, apiToken="", autocompleteKey="", protocol="https", host="ac.cnstrc.com"):
+    def __init__(self, apiToken, autocompleteKey, protocol="https", host="ac.cnstrc.com"):
         self._apiToken = apiToken
         self._autocompleteKey = autocompleteKey
         self._protocol = protocol
@@ -28,6 +28,8 @@ class ConstructorIO(object):
     def query(self, queryStr):
         url = self._makeUrl("autocomplete/" + queryStr)
         resp = requests.get(url)
+        if resp.status_code != 200:
+            raise IOError(resp.text)
         return resp
 
     def add(self, item_name, autocomplete_section, **kwargs):
@@ -44,6 +46,8 @@ class ConstructorIO(object):
             json=params,
             auth=(self._apiToken, "")
         )
+        if resp.status_code != 204:
+            raise IOError(resp.text)
         return resp
 
     def remove(self, item_name, autocomplete_section, **kwargs):
@@ -60,6 +64,8 @@ class ConstructorIO(object):
             json=params,
             auth=(self._apiToken, "")
         )
+        if resp.status_code != 204:
+            raise IOError(resp.text)
         return resp
 
     def modify(self, item_name, autocomplete_section, **kwargs):
@@ -76,6 +82,8 @@ class ConstructorIO(object):
             json=params,
             auth=(self._apiToken, "")
         )
+        if resp.status_code != 204:
+            raise IOError(resp.text)
         return resp
 
     def track_conversion(self, term, autocomplete_section, **kwargs):
@@ -91,6 +99,8 @@ class ConstructorIO(object):
             json=params,
             auth=(self._apiToken, "")
         )
+        if resp.status_code != 204:
+            raise IOError(resp.text)
         return resp
 
     def track_click_through(self, term, autocomplete_section, **kwargs):
@@ -108,6 +118,8 @@ class ConstructorIO(object):
             json=params,
             auth=(self._apiToken, "")
         )
+        if resp.status_code != 204:
+            raise IOError(resp.text)
         return resp
 
     def track_search(self, term, autocomplete_section, **kwargs):
@@ -123,4 +135,6 @@ class ConstructorIO(object):
             json=params,
             auth=(self._apiToken, "")
         )
+        if resp.status_code != 204:
+            raise IOError(resp.text)
         return resp

@@ -5,24 +5,24 @@ from constructorio import ConstructorIO
 class TestConstructorIO:
 
     def test_encodes_parameters(self):
-        constructor = ConstructorIO()
+        constructor = ConstructorIO(apiToken="boinka", autocompleteKey="doinka")
         serialized_params = constructor\
             ._serializeParams({'foo': [1, 2], 'bar': {'baz': ['a', 'b']}})
         assert serialized_params == "foo=%5B1%2C+2%5D&bar=%7B%27baz%27%3A+%5B%27a%27%2C+%27b%27%5D%7D"
 
     def test_creates_urls_correctly(self):
-        constructor = ConstructorIO(autocompleteKey="a-test-autocomplete-key")
+        constructor = ConstructorIO(apiToken="boinka", autocompleteKey="a-test-autocomplete-key")
         generated_url = constructor._makeUrl('v1/test')
         assert generated_url == 'https://ac.cnstrc.com/v1/test?autocomplete_key=a-test-autocomplete-key'
 
     def test_set_api_token(self):
         apiToken = 'a-test-api-key',
-        constructor = ConstructorIO(apiToken=apiToken)
+        constructor = ConstructorIO(apiToken=apiToken, autocompleteKey="boinka")
         assert constructor._apiToken == apiToken
 
     def test_set_ac_key(self):
         autocompleteKey = 'a-test-autocomplete-key'
-        constructor = ConstructorIO(autocompleteKey=autocompleteKey)
+        constructor = ConstructorIO(autocompleteKey=autocompleteKey, apiToken="boinka")
         assert constructor._autocompleteKey == autocompleteKey
 
     def test_ac_query(self):
