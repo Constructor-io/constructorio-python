@@ -78,11 +78,13 @@ class ConstructorIO(object):
         )
         return resp
 
-    def track_conversion(self, term, autocomplete_section):
+    def track_conversion(self, term, autocomplete_section, **kwargs):
         params = {
             "term": term,
             "autocomplete_section": autocomplete_section,
         }
+        if "item" in kwargs:
+            params["item"] = kwargs["item"]
         url = self._makeUrl("v1/conversion")
         resp = requests.post(
             url,
@@ -91,11 +93,15 @@ class ConstructorIO(object):
         )
         return resp
 
-    def track_click_through(self, term, autocomplete_section):
+    def track_click_through(self, term, autocomplete_section, **kwargs):
         params = {
             "term": term,
             "autocomplete_section": autocomplete_section,
         }
+        if "item" in kwargs:
+            params["item"] = kwargs["item"]
+        if "revenue" in kwargs:
+            params["revenue"] = kwargs["revenue"]
         url = self._makeUrl("v1/click_through")
         resp = requests.post(
             url,
@@ -104,12 +110,13 @@ class ConstructorIO(object):
         )
         return resp
 
-    def track_search(self, term, autocomplete_section, num_results=1):
+    def track_search(self, term, autocomplete_section, **kwargs):
         params = {
             "term": term,
             "autocomplete_section": autocomplete_section,
-            "num_results": num_results
         }
+        if "num_results" in kwargs:
+            params["num_results"] = kwargs["num_results"]
         url = self._makeUrl("v1/search")
         resp = requests.post(
             url,
