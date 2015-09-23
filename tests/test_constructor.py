@@ -20,23 +20,105 @@ class something:
 
     def test_set_ac_key():
         autocompleteKey = 'a-test-autocomplete-key'
-        constructor = CosntructorIO(autocompleteKey=autocompleteKey)
+        constructor = ConstructorIO(autocompleteKey=autocompleteKey)
         assert constructor._autocompleteKey == autocompleteKey
 
     def test_add():
-        pass
+        constructor = ConstructorIO(
+            apiToken = "apiToken",
+            autocompleteKey = "autocompleteKey",
+            protocol = "http",
+            host = "ac.cnstrc.com"
+        )
+        resp = constructor.add(
+            item_name = "power drill",
+            autocomplete_section = "standard"
+        )
+        # assert resp doesn't have error
+        # assert response itself is blank
 
     def test_remove():
-        pass
+        constructor = ConstructorIO(
+            apiToken = "apiToken",
+            autocompleteKey = "autocompleteKey",
+            protocol = "http",
+            host = "ac.cnstrc.com"
+        )
+        resp = constructor.remove(
+            item_name = "power drill",
+            autocomplete_section = "standard"
+        )
+        # assert resp doesn't have error
+        # assert response itself is blank
 
     def test_modify():
-        pass
+        constructor = ConstructorIO(
+            apiToken = "apiToken",
+            autocompleteKey = "autocompleteKey",
+            protocol = "http",
+            host = "ac.cnstrc.com"
+        )
+        resp = constructor.modify(
+            item_name = "power drill",
+            suggested_score = 100,
+            autocomplete_section = "standard"
+        )
+        # assert resp doesn't have error
+        # assert response itself is blank
 
     def test_conversion():
-        pass
+        constructor = ConstructorIO(
+            apiToken = "apiToken",
+            autocompleteKey = "autocompleteKey",
+            protocol = "http",
+            host = "ac.cnstrc.com"
+        )
+        resp = constructor.conversion(
+            item_name = "power drill",
+            autocomplete_section = "standard"
+        )
+        # assert resp doesn't have error
+        # assert response itself is blank
 
-    def test_search():
-        pass
+    def test_search_no_num_res():
+        constructor = ConstructorIO(
+            apiToken = "apiToken",
+            autocompleteKey = "autocompleteKey",
+            protocol = "http",
+            host = "ac.cnstrc.com"
+        )
+        resp = constructor.search(
+            item_name = "power drill",
+            autocomplete_section = "standard"
+        )
+        # assert resp doesn't have error
+        # assert response itself is blank
+
+    def test_search_num_res():
+        constructor = ConstructorIO(
+            apiToken = "apiToken",
+            autocompleteKey = "autocompleteKey",
+            protocol = "http",
+            host = "ac.cnstrc.com"
+        )
+        resp = constructor.search(
+            item_name = "power drill",
+            num_results = 10,
+            autocomplete_section = "standard"
+        )
+        # assert resp doesn't have error
+        # assert response itself is blank
 
     def test_click_through():
-        pass
+        constructor = ConstructorIO(
+            apiToken = "apiToken",
+            autocompleteKey = "autocompleteKey",
+            protocol = "http",
+            host = "ac.cnstrc.com"
+        )
+        resp = constructor.click_through(
+            item_name = "power drill",
+            autocomplete_section = "standard"
+        )
+        # assert resp doesn't have error
+        # assert response itself is blank
