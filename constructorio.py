@@ -30,21 +30,53 @@ class ConstructorIO(object):
         resp = requests.get(url)
         return resp
 
-    def add(self, item_name, autocomplete_section):
+    def add(self, item_name, autocomplete_section, **kwargs):
         params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
+        if "suggested_score" in kwargs:
+            params["suggested_score"] = kwargs["suggested_score"]
+        if "keywords" in kwargs:
+            params["keywords"] = kwargs["keywords"]
+        if "url" in kwargs:
+            params["url"] = kwargs["url"]
         url = self._makeUrl("v1/item")
-        print url
-        return requests.post(url, data=params, auth=(self._apiToken, ""))
+        resp = requests.post(
+            url,
+            json=params,
+            auth=(self._apiToken, "")
+        )
+        return resp
 
-    def remove(self, item_name, autocomplete_section):
+    def remove(self, item_name, autocomplete_section, **kwargs):
         params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
-        url = self._makeUrl("v1/add/", params)
-        return requests.get(url, auth=(self._apiToken, ""))
+        if "suggested_score" in kwargs:
+            params["suggested_score"] = kwargs["suggested_score"]
+        if "keywords" in kwargs:
+            params["keywords"] = kwargs["keywords"]
+        if "url" in kwargs:
+            params["url"] = kwargs["url"]
+        url = self._makeUrl("v1/item")
+        resp = requests.delete(
+            url,
+            json=params,
+            auth=(self._apiToken, "")
+        )
+        return resp
 
-    def modify(self, item_name, autocomplete_section):
+    def modify(self, item_name, autocomplete_section, **kwargs):
         params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
-        url = self._makeUrl("v1/add/", params)
-        return requests.get(url, auth=(self._apiToken, ""))
+        if "suggested_score" in kwargs:
+            params["suggested_score"] = kwargs["suggested_score"]
+        if "keywords" in kwargs:
+            params["keywords"] = kwargs["keywords"]
+        if "url" in kwargs:
+            params["url"] = kwargs["url"]
+        url = self._makeUrl("v1/item")
+        resp = requests.put(
+            url,
+            json=params,
+            auth=(self._apiToken, "")
+        )
+        return resp
 
     def track_conversion(self, term, autocomplete_section):
         params = {

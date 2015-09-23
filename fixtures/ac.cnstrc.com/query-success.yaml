@@ -1,0 +1,25 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.5.1 CPython/2.7.9 Linux/3.13.0-35-generic]
+    method: GET
+    uri: http://ac.cnstrc.com/autocomplete/a?autocomplete_key=autocompleteKey
+  response:
+    body: {string: !!python/unicode "{\n  \"suggestions\": [\n    {\n      \"value\":
+        \"ambulance\"\n    }\n  ]\n}"}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      connection: [keep-alive]
+      content-length: ['65']
+      content-type: [application/json]
+      date: ['Wed, 23 Sep 2015 22:22:31 GMT']
+      server: [nginx/1.4.6 (Ubuntu)]
+      via: [1.1 varnish]
+      x-varnish: ['1890330649']
+    status: {code: 200, message: OK}
+version: 1

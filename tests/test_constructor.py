@@ -26,17 +26,18 @@ class TestConstructorIO:
         assert constructor._autocompleteKey == autocompleteKey
 
     def test_ac_query(self):
-        constructor = ConstructorIO(
-            apiToken = "apiToken",
-            autocompleteKey = "autocompleteKey",
-            protocol = "http",
-            host = "ac.cnstrc.com"
-        )
-        resp = constructor.query(
-            queryStr = "a"
-        )
-        assert resp.status_code == 200
-        assert resp.text != ""
+        with vcr.use_cassette("fixtures/ac.cnstrc.com/query-success.yaml"):
+            constructor = ConstructorIO(
+                apiToken = "apiToken",
+                autocompleteKey = "autocompleteKey",
+                protocol = "http",
+                host = "ac.cnstrc.com"
+            )
+            resp = constructor.query(
+                queryStr = "a"
+            )
+            assert resp.status_code == 200
+            assert resp.text != ""
 
     def test_add(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/add-success.yaml"):
@@ -47,40 +48,42 @@ class TestConstructorIO:
                 host = "ac.cnstrc.com"
             )
             resp = constructor.add(
-                item_name = "power drill",
-                autocomplete_section = "standard"
+                item_name = "boinkamoinka",
+                autocomplete_section = "Search Suggestions"
             )
             assert resp.status_code == 204
             assert resp.text == ""
 
     def test_remove(self):
-        constructor = ConstructorIO(
-            apiToken = "apiToken",
-            autocompleteKey = "autocompleteKey",
-            protocol = "http",
-            host = "ac.cnstrc.com"
-        )
-        resp = constructor.remove(
-            item_name = "power drill",
-            autocomplete_section = "standard"
-        )
-        assert resp.status_code == 204
-        assert resp.text == ""
+        with vcr.use_cassette("fixtures/ac.cnstrc.com/remove-success.yaml"):
+            constructor = ConstructorIO(
+                apiToken = "apiToken",
+                autocompleteKey = "autocompleteKey",
+                protocol = "http",
+                host = "ac.cnstrc.com"
+            )
+            resp = constructor.remove(
+                item_name = "racer",
+                autocomplete_section = "Search Suggestions"
+            )
+            assert resp.status_code == 204
+            assert resp.text == ""
 
     def test_modify(self):
-        constructor = ConstructorIO(
-            apiToken = "apiToken",
-            autocompleteKey = "autocompleteKey",
-            protocol = "http",
-            host = "ac.cnstrc.com"
-        )
-        resp = constructor.modify(
-            item_name = "power drill",
-            suggested_score = 100,
-            autocomplete_section = "standard"
-        )
-        assert resp.status_code == 204
-        assert resp.text == ""
+        with vcr.use_cassette("fixtures/ac.cnstrc.com/modify-success.yaml"):
+            constructor = ConstructorIO(
+                apiToken = "apiToken",
+                autocompleteKey = "autocompleteKey",
+                protocol = "http",
+                host = "ac.cnstrc.com"
+            )
+            resp = constructor.modify(
+                item_name = "Stanley_Steamer",
+                suggested_score = 100,
+                autocomplete_section = "Search Suggestions"
+            )
+            assert resp.status_code == 204
+            assert resp.text == ""
 
     def test_conversion(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/conversion-success.yaml"):

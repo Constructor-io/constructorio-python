@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: '{"item_name": "Stanley_Steamer", "autocomplete_section": "Search Suggestions",
+      "suggested_score": 100}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Basic YXBpS2V5Og==]
+      Connection: [keep-alive]
+      Content-Length: ['102']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.5.1 CPython/2.7.9 Linux/3.13.0-35-generic]
+    method: PUT
+    uri: http://ac.cnstrc.com/v1/item?autocomplete_key=autocompleteKey
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      connection: [keep-alive]
+      content-length: ['0']
+      content-type: [text/html; charset=utf-8]
+      date: ['Wed, 23 Sep 2015 22:25:37 GMT']
+      server: [nginx/1.4.6 (Ubuntu)]
+      set-cookie: [session=eyJwd19oYXNoIjp7IiBiIjoiSkRKaEpEQTRKQzVQYjNvMmEwSTRhREl4WkhSUVMxTmtTRTFzZFdWeVEyZ3VPRkpNUVVzNGIzSnFlVGxpYWpGMWRrc3dTVFZ6U1dSTWVHRkwifX0.COS4YQ.kmx3ZPacwDG6qy9SpRUjO5S9Ya0;
+          HttpOnly; Path=/]
+      via: [1.1 varnish]
+      x-varnish: ['2126925392']
+    status: {code: 204, message: NO CONTENT}
+version: 1
