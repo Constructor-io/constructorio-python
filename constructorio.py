@@ -5,16 +5,14 @@ import sys
 import logging
 
 class ConstructorIO(object):
-    VERSION = "1.0.0"
-
-    def __init__(self, apiToken, autocompleteKey, protocol="https", host="ac.cnstrc.com"):
+    def __init__(self, apiToken, autocompleteKey, protocol="http", host="ac.cnstrc.com"):
+        """
+        If you use HTTPS, you need a different version of requests
+        """
         self._apiToken = apiToken
         self._autocompleteKey = autocompleteKey
         self._protocol = protocol
         self._host = host
-
-    def __version__(self):
-        return VERSION
 
     def _serializeParams(self, params):
         return urllib.urlencode(params)
