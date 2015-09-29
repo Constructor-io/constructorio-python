@@ -5,6 +5,7 @@ sys.path.insert(0, myPath + '/../')
 # hack for easy import of the library
 
 import csv
+import webbrowser
 from constructorio import ConstructorIO
 
 if __name__ == "__main__":
@@ -29,3 +30,10 @@ if __name__ == "__main__":
             constructor.add(row["term"],
                             autocomplete_section,
                             score=row["score"])
+    print "let's go see the terms you added!"
+    webbrowser_resp = raw_input("Go to constructor.io right now? (y/n) (n)")
+    if webbrowser_resp == "y":
+        print "ok! let's go!"
+        webbrowser.open("http://constructor.io/dashboard")
+    else:
+        print "ok, then just go to constructor.io/dashboard some other time"
