@@ -20,10 +20,10 @@ class Completer(object):
 
 if __name__ == "__main__":
     # Standard English Autocomplete
-    comp = Completer("P03bVBcmyYjSG1ZQyD4V")
-    readline.parse_and_bind("tab: complete")
-    readline.set_completer(comp.complete)
+    constructor = ConstructorIO("---", "P03bVBcmyYjSG1ZQyD4V")
     while True:
-        var = raw_input("Type mispelled things and press tab! (q to quit) > ")
-        if var == "q":
+        misspelled = raw_input("Type mispelled things and press enter! (q to quit) > ")
+        if misspelled == "q":
             break
+        else:
+            print constructor.query(misspelled)

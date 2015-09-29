@@ -37,8 +37,12 @@ class ConstructorIO(object):
             params["suggested_score"] = kwargs["suggested_score"]
         if "keywords" in kwargs:
             params["keywords"] = kwargs["keywords"]
+        if "description" in kwargs:
+            params["description"] = kwargs["description"]
         if "url" in kwargs:
             params["url"] = kwargs["url"]
+        if "image_url" in kwargs:
+            params["image_url"] = kwargs["image_url"]
         url = self._makeUrl("v1/item")
         resp = requests.post(
             url,
