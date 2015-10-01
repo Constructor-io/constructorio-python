@@ -8,7 +8,7 @@ Installation
 
 With pip:
 
-    pip install constructorio
+    pip install Constructor.IO
 
 API
 ===
