@@ -1,6 +1,5 @@
 import requests
 import urllib
-import simplejson
 import sys
 import logging
 
