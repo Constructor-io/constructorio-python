@@ -1,14 +1,14 @@
 from distutils.core import setup
 
 setup(
-        name="Constructor.IO",
+        name="constructor_io",
         version="0.0.1",
         description="Constructor.IO Python Client",
         author="Howon Lee",
         author_email="howon@constructor.io",
-        url="http://constructor.io",
+        url="https://www.constructor.io",
         install_requires=[
             "requests"
         ],
-        packages=["constructorio"]
+        packages=["constructor_io"]
     )
