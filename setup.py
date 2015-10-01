@@ -9,5 +9,3 @@ setup(
         url="constructor.io",
         packages=["constructorio"]
     )
-
-pokey pokey this shit should be noticeable
