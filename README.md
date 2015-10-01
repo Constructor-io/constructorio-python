@@ -10,6 +10,8 @@ With pip:
 
     pip install constructor-io
 
+Note that you are writing `constructor-io` with a hyphen, as opposed to actually in your code, where you will be writing `constructor_io` with an underscore!
+
 API
 ===
 
