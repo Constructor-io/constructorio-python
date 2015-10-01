@@ -2,26 +2,26 @@ import requests
 import urllib
 
 class ConstructorIO(object):
-    def __init__(self, apiToken, autocompleteKey, protocol="http", host="ac.cnstrc.com"):
+    def __init__(self, api_token, autocomplete_key, protocol="https", host="ac.cnstrc.com"):
         """
         If you use HTTPS, you need a different version of requests
         """
-        self._apiToken = apiToken
-        self._autocompleteKey = autocompleteKey
+        self._api_token = api_token
+        self._autocomplete_key = autocomplete_key
         self._protocol = protocol
         self._host = host
 
-    def _serializeParams(self, params):
+    def _serialize_params(self, params):
         return urllib.urlencode(params)
 
-    def _makeUrl(self, endpoint, params=None):
+    def _make_url(self, endpoint, params=None):
         if not params:
             params = {}
-        params["autocomplete_key"] = self._autocompleteKey
-        return "{0}://{1}/{2}?{3}".format(self._protocol, self._host, endpoint, self._serializeParams(params))
+        params["autocomplete_key"] = self._autocomplete_key
+        return "{0}://{1}/{2}?{3}".format(self._protocol, self._host, endpoint, self._serialize_params(params))
 
-    def query(self, queryStr):
-        url = self._makeUrl("autocomplete/" + queryStr)
+    def query(self, query_str):
+        url = self._make_url("autocomplete/" + query_str)
         resp = requests.get(url)
         if resp.status_code != 200:
             raise IOError(resp.text)
@@ -40,11 +40,11 @@ class ConstructorIO(object):
             params["url"] = kwargs["url"]
         if "image_url" in kwargs:
             params["image_url"] = kwargs["image_url"]
-        url = self._makeUrl("v1/item")
+        url = self._make_url("v1/item")
         resp = requests.post(
             url,
             json=params,
-            auth=(self._apiToken, "")
+            auth=(self._api_token, "")
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
@@ -59,11 +59,11 @@ class ConstructorIO(object):
             params["keywords"] = kwargs["keywords"]
         if "url" in kwargs:
             params["url"] = kwargs["url"]
-        url = self._makeUrl("v1/item")
+        url = self._make_url("v1/item")
         resp = requests.delete(
             url,
             json=params,
-            auth=(self._apiToken, "")
+            auth=(self._api_token, "")
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
@@ -78,11 +78,11 @@ class ConstructorIO(object):
             params["keywords"] = kwargs["keywords"]
         if "url" in kwargs:
             params["url"] = kwargs["url"]
-        url = self._makeUrl("v1/item")
+        url = self._make_url("v1/item")
         resp = requests.put(
             url,
             json=params,
-            auth=(self._apiToken, "")
+            auth=(self._api_token, "")
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
@@ -96,11 +96,11 @@ class ConstructorIO(object):
         }
         if "item" in kwargs:
             params["item"] = kwargs["item"]
-        url = self._makeUrl("v1/conversion")
+        url = self._make_url("v1/conversion")
         resp = requests.post(
             url,
             json=params,
-            auth=(self._apiToken, "")
+            auth=(self._api_token, "")
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
@@ -116,11 +116,11 @@ class ConstructorIO(object):
             params["item"] = kwargs["item"]
         if "revenue" in kwargs:
             params["revenue"] = kwargs["revenue"]
-        url = self._makeUrl("v1/click_through")
+        url = self._make_url("v1/click_through")
         resp = requests.post(
             url,
             json=params,
-            auth=(self._apiToken, "")
+            auth=(self._api_token, "")
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
@@ -134,11 +134,11 @@ class ConstructorIO(object):
         }
         if "num_results" in kwargs:
             params["num_results"] = kwargs["num_results"]
-        url = self._makeUrl("v1/search")
+        url = self._make_url("v1/search")
         resp = requests.post(
             url,
             json=params,
-            auth=(self._apiToken, "")
+            auth=(self._api_token, "")
         )
         if resp.status_code != 204:
             raise IOError(resp.text)
