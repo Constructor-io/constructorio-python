@@ -7,5 +7,8 @@ setup(
         author="Howon Lee",
         author_email="howon@constructor.io",
         url="http://constructor.io",
+        install_requires=[
+            "requests"
+        ],
         packages=["constructorio"]
     )

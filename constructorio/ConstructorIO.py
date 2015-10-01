@@ -1,7 +1,5 @@
 import requests
 import urllib
-import sys
-import logging
 
 class ConstructorIO(object):
     def __init__(self, apiToken, autocompleteKey, protocol="http", host="ac.cnstrc.com"):
