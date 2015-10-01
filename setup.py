@@ -6,6 +6,6 @@ setup(
         description="Constructor.IO Python Client",
         author="Howon Lee",
         author_email="howon@constructor.io",
-        url="constructor.io",
+        url="http://constructor.io",
         packages=["constructorio"]
     )
