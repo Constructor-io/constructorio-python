@@ -42,6 +42,8 @@ class ConstructorIO(object):
         if "image_url" in kwargs:
             params["image_url"] = kwargs["image_url"]
         url = self._make_url("v1/item")
+        if not self._api_token:
+            raise IOError("You must have an API token to use the Add method!")
         resp = requests.post(
             url,
             json=params,
@@ -61,6 +63,8 @@ class ConstructorIO(object):
         if "url" in kwargs:
             params["url"] = kwargs["url"]
         url = self._make_url("v1/item")
+        if not self._api_token:
+            raise IOError("You must have an API token to use the Remove method!")
         resp = requests.delete(
             url,
             json=params,
@@ -80,6 +84,8 @@ class ConstructorIO(object):
         if "url" in kwargs:
             params["url"] = kwargs["url"]
         url = self._make_url("v1/item")
+        if not self._api_token:
+            raise IOError("You must have an API token to use the Modify method!")
         resp = requests.put(
             url,
             json=params,
@@ -98,6 +104,8 @@ class ConstructorIO(object):
         if "item" in kwargs:
             params["item"] = kwargs["item"]
         url = self._make_url("v1/conversion")
+        if not self._api_token:
+            raise IOError("You must have an API token to track conversions!")
         resp = requests.post(
             url,
             json=params,
@@ -118,6 +126,8 @@ class ConstructorIO(object):
         if "revenue" in kwargs:
             params["revenue"] = kwargs["revenue"]
         url = self._make_url("v1/click_through")
+        if not self._api_token:
+            raise IOError("You must have an API token to track click throughs!")
         resp = requests.post(
             url,
             json=params,
@@ -136,6 +146,8 @@ class ConstructorIO(object):
         if "num_results" in kwargs:
             params["num_results"] = kwargs["num_results"]
         url = self._make_url("v1/search")
+        if not self._api_token:
+            raise IOError("You must have an API token to track searches!")
         resp = requests.post(
             url,
             json=params,
