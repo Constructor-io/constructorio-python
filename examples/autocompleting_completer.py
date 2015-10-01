@@ -4,7 +4,7 @@ myPath = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, myPath + '/../')
 # hack for easy import of the library
 
-from constructorio import ConstructorIO
+from constructorio.ConstructorIO import ConstructorIO
 
 if __name__ == "__main__":
     # Standard English Autocomplete

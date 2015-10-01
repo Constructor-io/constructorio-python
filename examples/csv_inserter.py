@@ -6,7 +6,7 @@ sys.path.insert(0, myPath + '/../')
 
 import csv
 import webbrowser
-from constructorio import ConstructorIO
+from constructorio.ConstructorIO import ConstructorIO
 
 if __name__ == "__main__":
     api_token = raw_input("enter api token (enter q to quit) : ")

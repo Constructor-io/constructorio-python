@@ -1,6 +1,6 @@
 import pytest
 import vcr
-from constructorio import ConstructorIO
+from constructorio.ConstructorIO import ConstructorIO
 
 class TestConstructorIO:
 
