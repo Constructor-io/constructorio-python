@@ -8,7 +8,7 @@ Installation
 
 With pip:
 
-    pip install constructor_io
+    pip install constructor-io
 
 API
 ===
