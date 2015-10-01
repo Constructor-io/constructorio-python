@@ -1,40 +1,40 @@
 import pytest
 import vcr
-from constructorio.ConstructorIO import ConstructorIO
+from constructor_io import ConstructorIO
 
 class TestConstructorIO:
 
     def test_encodes_parameters(self):
-        constructor = ConstructorIO(apiToken="boinka", autocompleteKey="doinka")
+        constructor = ConstructorIO(api_token="boinka", autocomplete_key="doinka")
         serialized_params = constructor\
-            ._serializeParams({'foo': [1, 2], 'bar': {'baz': ['a', 'b']}})
+            ._serialize_params({'foo': [1, 2], 'bar': {'baz': ['a', 'b']}})
         assert serialized_params == "foo=%5B1%2C+2%5D&bar=%7B%27baz%27%3A+%5B%27a%27%2C+%27b%27%5D%7D"
 
     def test_creates_urls_correctly(self):
-        constructor = ConstructorIO(apiToken="boinka", autocompleteKey="a-test-autocomplete-key")
-        generated_url = constructor._makeUrl('v1/test')
+        constructor = ConstructorIO(api_token="boinka", autocomplete_key="a-test-autocomplete-key")
+        generated_url = constructor._make_url('v1/test')
         assert generated_url == 'https://ac.cnstrc.com/v1/test?autocomplete_key=a-test-autocomplete-key'
 
     def test_set_api_token(self):
-        apiToken = 'a-test-api-key',
-        constructor = ConstructorIO(apiToken=apiToken, autocompleteKey="boinka")
-        assert constructor._apiToken == apiToken
+        api_token = 'a-test-api-key',
+        constructor = ConstructorIO(api_token=api_token, autocomplete_key="boinka")
+        assert constructor._api_token == api_token
 
     def test_set_ac_key(self):
-        autocompleteKey = 'a-test-autocomplete-key'
-        constructor = ConstructorIO(autocompleteKey=autocompleteKey, apiToken="boinka")
-        assert constructor._autocompleteKey == autocompleteKey
+        autocomplete_key = 'a-test-autocomplete-key'
+        constructor = ConstructorIO(autocomplete_key=autocomplete_key, api_token="boinka")
+        assert constructor._autocomplete_key == autocomplete_key
 
     def test_ac_query(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/query-success.yaml"):
             constructor = ConstructorIO(
-                apiToken = "apiToken",
-                autocompleteKey = "autocompleteKey",
+                api_token = "apiToken",
+                autocomplete_key = "autocompleteKey",
                 protocol = "http",
                 host = "ac.cnstrc.com"
             )
             autocompletes = constructor.query(
-                queryStr = "a"
+                query_str = "a"
             )
             assert autocompletes != None
             assert type(autocompletes) == dict
@@ -42,8 +42,8 @@ class TestConstructorIO:
     def test_add(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/add-success.yaml"):
             constructor = ConstructorIO(
-                apiToken = "apiToken",
-                autocompleteKey = "autocompleteKey",
+                api_token = "apiToken",
+                autocomplete_key = "autocompleteKey",
                 protocol = "http",
                 host = "ac.cnstrc.com"
             )
@@ -56,8 +56,8 @@ class TestConstructorIO:
     def test_remove(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/remove-success.yaml"):
             constructor = ConstructorIO(
-                apiToken = "apiToken",
-                autocompleteKey = "autocompleteKey",
+                api_token = "apiToken",
+                autocomplete_key = "autocompleteKey",
                 protocol = "http",
                 host = "ac.cnstrc.com"
             )
@@ -70,8 +70,8 @@ class TestConstructorIO:
     def test_modify(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/modify-success.yaml"):
             constructor = ConstructorIO(
-                apiToken = "apiToken",
-                autocompleteKey = "autocompleteKey",
+                api_token = "apiToken",
+                autocomplete_key = "autocompleteKey",
                 protocol = "http",
                 host = "ac.cnstrc.com"
             )
@@ -85,8 +85,8 @@ class TestConstructorIO:
     def test_conversion(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/conversion-success.yaml"):
             constructor = ConstructorIO(
-                apiToken = "apiToken",
-                autocompleteKey = "autocompleteKey",
+                api_token = "apiToken",
+                autocomplete_key = "autocompleteKey",
                 protocol = "http",
                 host = "ac.cnstrc.com"
             )
@@ -99,8 +99,8 @@ class TestConstructorIO:
     def test_search_no_num_res(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/search-noname-success.yaml"):
             constructor = ConstructorIO(
-                apiToken = "apiToken",
-                autocompleteKey = "autocompleteKey",
+                api_token = "apiToken",
+                autocomplete_key = "autocompleteKey",
                 protocol = "http",
                 host = "ac.cnstrc.com"
             )
@@ -114,8 +114,8 @@ class TestConstructorIO:
     def test_search_num_res(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/search-success.yaml"):
             constructor = ConstructorIO(
-                apiToken = "apiToken",
-                autocompleteKey = "autocompleteKey",
+                api_token = "apiToken",
+                autocomplete_key = "autocompleteKey",
                 protocol = "http",
                 host = "ac.cnstrc.com"
             )
@@ -129,8 +129,8 @@ class TestConstructorIO:
     def test_click_through(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/click-through-success.yaml"):
             constructor = ConstructorIO(
-                apiToken = "apiToken",
-                autocompleteKey = "autocompleteKey",
+                api_token = "apiToken",
+                autocomplete_key = "autocompleteKey",
                 protocol = "http",
                 host = "ac.cnstrc.com"
             )

@@ -15,8 +15,6 @@ API
 
 All of these are basically one step away from the RESTFUL interface and the implementation is dead simple.
 
-*Everything just returns a response object from the requests library.*
-
 Usage
 ---
 
@@ -28,6 +26,8 @@ Create a new instance with your API token and autocomplete key:
       autocompleteKey="your autocomplete key"
     )
     # both of these are available at https://constructor.io/dashboard
+
+If you ONLY want to query, then you can put in `None` for `apiToken`.
 
 Querying
 ---

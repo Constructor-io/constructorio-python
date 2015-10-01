@@ -8,7 +8,8 @@ setup(
         author_email="howon@constructor.io",
         url="https://www.constructor.io",
         install_requires=[
-            "requests"
+            "requests",
+            "vcrpy"
         ],
         packages=["constructor_io"]
     )

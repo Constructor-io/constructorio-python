@@ -1,6 +1,7 @@
 import requests
 import urllib
 
+
 class ConstructorIO(object):
     def __init__(self, api_token, autocomplete_key, protocol="https", host="ac.cnstrc.com"):
         """
