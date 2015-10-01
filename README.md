@@ -22,7 +22,7 @@ Usage
 
 Create a new instance with your API token and autocomplete key:
 
-    from constructorio import ConstructorIO
+    from constructorio.ConstructorIO import ConstructorIO
     constructor = ConstructorIO(
       apiToken="your API token",
       autocompleteKey="your autocomplete key"
