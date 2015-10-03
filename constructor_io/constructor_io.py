@@ -1,6 +1,8 @@
 import requests
 import urllib
 
+class ConstructorError(Exception):
+    pass
 
 class ConstructorIO(object):
     def __init__(self, api_token, autocomplete_key, protocol="https", host="ac.cnstrc.com"):
@@ -25,7 +27,18 @@ class ConstructorIO(object):
         url = self._make_url("autocomplete/" + query_str)
         resp = requests.get(url)
         if resp.status_code != 200:
-            raise IOError(resp.text)
+            raise ConstructorError(resp.text)
+        else:
+            return resp.json()
+
+    def verify(self):
+        url = self._make_url("v1/verify")
+        resp = requests.get(
+            url,
+            auth=(self._api_token, "")
+        )
+        if resp.status_code != 200:
+            raise ConstructorError(resp.text)
         else:
             return resp.json()
 
@@ -48,7 +61,7 @@ class ConstructorIO(object):
             auth=(self._api_token, "")
         )
         if resp.status_code != 204:
-            raise IOError(resp.text)
+            raise ConstructorError(resp.text)
         else:
             return True
 
@@ -67,7 +80,7 @@ class ConstructorIO(object):
             auth=(self._api_token, "")
         )
         if resp.status_code != 204:
-            raise IOError(resp.text)
+            raise ConstructorError(resp.text)
         else:
             return True
 
@@ -86,7 +99,7 @@ class ConstructorIO(object):
             auth=(self._api_token, "")
         )
         if resp.status_code != 204:
-            raise IOError(resp.text)
+            raise ConstructorError(resp.text)
         else:
             return True
 
@@ -104,7 +117,7 @@ class ConstructorIO(object):
             auth=(self._api_token, "")
         )
         if resp.status_code != 204:
-            raise IOError(resp.text)
+            raise ConstructorError(resp.text)
         else:
             return True
 
@@ -124,14 +137,13 @@ class ConstructorIO(object):
             auth=(self._api_token, "")
         )
         if resp.status_code != 204:
-            raise IOError(resp.text)
+            raise ConstructorError(resp.text)
         else:
             return True
 
-    def track_search(self, term, autocomplete_section, **kwargs):
+    def track_search(self, term, **kwargs):
         params = {
-            "term": term,
-            "autocomplete_section": autocomplete_section,
+            "term": term
         }
         if "num_results" in kwargs:
             params["num_results"] = kwargs["num_results"]
@@ -142,6 +154,6 @@ class ConstructorIO(object):
             auth=(self._api_token, "")
         )
         if resp.status_code != 204:
-            raise IOError(resp.text)
+            raise ConstructorError(resp.text)
         else:
             return True
