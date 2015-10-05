@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
         name="constructor-io",
-        version="0.0.1",
+        version="0.0.2",
         license="MIT",
         description="Constructor.IO Python Client",
         author="Howon Lee",
