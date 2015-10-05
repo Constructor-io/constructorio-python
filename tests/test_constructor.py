@@ -77,6 +77,7 @@ class TestConstructorIO:
             )
             resp = constructor.modify(
                 item_name = "Stanley_Steamer",
+                new_item_name = "Newer_Stanley_Steamer",
                 suggested_score = 100,
                 autocomplete_section = "Search Suggestions"
             )
