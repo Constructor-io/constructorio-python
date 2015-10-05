@@ -92,6 +92,8 @@ class ConstructorIO(object):
             params["keywords"] = kwargs["keywords"]
         if "url" in kwargs:
             params["url"] = kwargs["url"]
+        if "new_item_name" in kwargs:
+            params["new_item_name"] = kwargs["new_item_name"]
         url = self._make_url("v1/item")
         resp = requests.put(
             url,
