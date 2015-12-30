@@ -98,6 +98,10 @@ class ConstructorIO(object):
             params["url"] = kwargs["url"]
         if "new_item_name" in kwargs:
             params["new_item_name"] = kwargs["new_item_name"]
+        if "description" in kwargs:
+            params["description"] = kwargs["description"]
+        if "image_url" in kwargs:
+            params["image_url"] = kwargs["image_url"]
         url = self._make_url("v1/item")
         if not self._api_token:
             raise IOError("You must have an API token to use the Modify method!")
