@@ -1,6 +1,6 @@
 import pytest
 import vcr
-from constructor_io import ConstructorIO
+from constructor_io import ConstructorIO, ConstructorError
 
 class TestConstructorIO:
 
@@ -52,6 +52,37 @@ class TestConstructorIO:
                 autocomplete_section = "Search Suggestions"
             )
             assert resp == True
+
+    def test_add_or_update(self):
+        with vcr.use_cassette("fixtures/ac.cnstrc.com/add-update-success.yaml"):
+            constructor = ConstructorIO(
+                api_token = 'apiToken',
+                autocomplete_key = 'autocompleteKey',
+                protocol = "https",
+                host = "ac.cnstrc.com"
+            )
+            resp = constructor.add_or_update(
+                item_name = "boinkamoinkar",
+                autocomplete_section = "Products",
+                url = "www.googles.com"
+            )
+        assert resp == True
+
+    def test_add_batch(self):
+        with vcr.use_cassette("fixtures/ac.cnstrc.com/add-batch-success.yaml"):
+            constructor = ConstructorIO(
+                api_token = 'apiToken',
+                autocomplete_key = 'autocompleteKey',
+                protocol = "https",
+                host = "ac.cnstrc.com"
+            )
+            items = [{"item_name": "new item"}, {"item_name": "new_item2"}]
+            resp = constructor.add_batch(
+                items = items,
+                autocomplete_section = "Search Suggestions",
+            )
+        assert resp == True
+
 
     def test_remove(self):
         with vcr.use_cassette("fixtures/ac.cnstrc.com/remove-success.yaml"):

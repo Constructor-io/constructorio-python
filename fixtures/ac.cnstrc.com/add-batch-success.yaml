@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: '{"items": [{"item_name": "new item"}, {"item_name": "new_item2"}], "autocomplete_section":
+      "Search Suggestions"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Basic N3RrdlRISkc1QmxkZFU4VkQ5NXg6]
+      Connection: [keep-alive]
+      Content-Length: ['112']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.9.1]
+    method: POST
+    uri: https://ac.cnstrc.com/v1/batch_items?autocomplete_key=autocompleteKey
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      connection: [keep-alive]
+      content-length: ['0']
+      content-type: [text/html; charset=utf-8]
+      date: ['Thu, 12 May 2016 06:07:33 GMT']
+      server: [nginx/1.4.6 (Ubuntu)]
+      set-cookie: [session=eyJwd19oYXNoIjp7IiBiIjoiSkRKaEpEQTRKRXQxVkRFdVMySnFkRE5XTW1WS1JWUnVPR2xYTW1VdVFUTnZaa3BMUWpadVlqUXdRamxUYmtKemNFMU5hakpPZURFemNXNWwifX0.ChWvJQ.LAQyjVcR_tfbLWP5AnkDAOx5XFI;
+          HttpOnly; Path=/]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 varnish]
+      x-varnish: ['1354265624']
+    status: {code: 204, message: NO CONTENT}
+version: 1
