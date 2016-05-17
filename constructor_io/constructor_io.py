@@ -42,19 +42,44 @@ class ConstructorIO(object):
         else:
             return resp.json()
 
+    def extract_params_from_kwargs(self, params, **kwargs):
+        keys = ["suggested_score", "keywords", "description", "url", "image_url"]
+        params.update({k: v for k, v in kwargs.iteritems() if k in keys})
+
     def add(self, item_name, autocomplete_section, **kwargs):
+        if not self._api_token:
+            raise IOError("You must have an API token to use the Add method!")
         params = {"item_name": item_name, "autocomplete_section": autocomplete_section}
-        if "suggested_score" in kwargs:
-            params["suggested_score"] = kwargs["suggested_score"]
-        if "keywords" in kwargs:
-            params["keywords"] = kwargs["keywords"]
-        if "description" in kwargs:
-            params["description"] = kwargs["description"]
-        if "url" in kwargs:
-            params["url"] = kwargs["url"]
-        if "image_url" in kwargs:
-            params["image_url"] = kwargs["image_url"]
-        url = self._make_url("v1/item")
+        url_params = {}
+        self.extract_params_from_kwargs(params, **kwargs)
+        request_method = getattr(requests, 'post')
+        if "force" in kwargs and kwargs["force"] == 1:
+            url_params["force"] = 1
+            request_method = getattr(requests, 'put')
+        url = self._make_url("v1/item", url_params)
+        resp = request_method(
+            url,
+            json=params,
+            auth=(self._api_token, "")
+        )
+        if resp.status_code != 204:
+            raise ConstructorError(resp.text)
+        else:
+            return True
+
+    def add_or_update(self, item_name, autocomplete_section, **kwargs):
+        if not self._api_token:
+            raise IOError("You must have an API token to use the Add or Update method!")
+        kwargs["force"] = 1
+        return self.add(item_name, autocomplete_section, **kwargs)
+
+    def add_batch(self, items, autocomplete_section, **kwargs):
+        if not self._api_token:
+            raise IOError("You must have an API token to use the Add Batch method!")
+        for item in items:
+            self.extract_params_from_kwargs(item, **kwargs)
+        params = {"items": items, "autocomplete_section": autocomplete_section}
+        url = self._make_url("v1/batch_items")
         if not self._api_token:
             raise IOError("You must have an API token to use the Add method!")
         resp = requests.post(
