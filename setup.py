@@ -1,8 +1,8 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
         name="constructor-io",
-        version="0.0.3",
+        version="0.0.4",
         license="MIT",
         description="Constructor.IO Python Client",
         author="Constructor.io",

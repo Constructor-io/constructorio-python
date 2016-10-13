@@ -1,17 +1,16 @@
 interactions:
 - request:
-    body: '{"num_results": 10, "term": "Stanley_Steamer", "autocomplete_section":
-      "Search Suggestions"}'
+    body: '{"term": "Stanley_Steamer", "num_results": 10}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
-      Authorization: [Basic YXBpS2V5Og==]
+      Authorization: [Basic bXlfYXBpX3Rva2VuOg==]
       Connection: [keep-alive]
-      Content-Length: ['92']
+      Content-Length: ['46']
       Content-Type: [application/json]
-      User-Agent: [python-requests/2.5.1 CPython/2.7.9 Linux/3.13.0-35-generic]
+      User-Agent: [python-requests/2.7.0 CPython/2.7.9 Darwin/15.6.0]
     method: POST
-    uri: http://ac.cnstrc.com/v1/search?autocomplete_key=autocompleteKey
+    uri: https://ac.cnstrc.com/v1/search?autocomplete_key=my_api_key
   response:
     body: {string: !!python/unicode ''}
     headers:
@@ -20,11 +19,10 @@ interactions:
       connection: [keep-alive]
       content-length: ['0']
       content-type: [text/html; charset=utf-8]
-      date: ['Wed, 23 Sep 2015 22:02:02 GMT']
+      date: ['Thu, 13 Oct 2016 08:30:48 GMT']
       server: [nginx/1.4.6 (Ubuntu)]
-      set-cookie: [session=eyJwd19oYXNoIjp7IiBiIjoiSkRKaEpEQTRKQzVQYjNvMmEwSTRhREl4WkhSUVMxTmtTRTFzZFdWeVEyZ3VPRkpNUVVzNGIzSnFlVGxpYWpGMWRrc3dTVFZ6U1dSTWVHRkwifX0.COSy2g.m48-99Ed9qu57SxGIq6ANlCmXXk;
-          HttpOnly; Path=/]
+      strict-transport-security: [max-age=31536000]
       via: [1.1 varnish]
-      x-varnish: ['2126921516']
+      x-varnish: ['1124804867']
     status: {code: 204, message: NO CONTENT}
 version: 1
