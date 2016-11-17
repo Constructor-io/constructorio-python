@@ -55,7 +55,6 @@ class ConstructorIO(object):
         :param kwargs: A dict with keys that needs to be merged into params
         :return: None
         """
-        print kwargs.items()
         keys = ["suggested_score", "keywords", "description", "url",
                 "image_url"]
         params.update({k: v for k, v in kwargs.iteritems() if k in keys})
