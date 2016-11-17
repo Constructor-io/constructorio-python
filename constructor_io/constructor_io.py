@@ -44,18 +44,55 @@ class ConstructorIO(object):
         else:
             return resp.json()
 
-    def extract_params_from_kwargs(self, params, **kwargs):
+    def update_params_with_kwargs(self, params, kwargs):
+        """
+        Adds all the key-value pairs from **kwargs into params, if and only
+        if the keys in **kwargs belong to a set of pre-defined keys.
+
+        Dictionaries are passed by reference, so the params dict is modified.
+
+        :param params: A dict that contains the keys "item_name" and "autocomplete_section"
+        :param kwargs: A dict with keys that needs to be merged into params
+        :return: None
+        """
+        print kwargs.items()
         keys = ["suggested_score", "keywords", "description", "url",
                 "image_url"]
         params.update({k: v for k, v in kwargs.iteritems() if k in keys})
 
-    def add(self, item_name, autocomplete_section, **kwargs):
+    def check_for_non_default_keys(self, kwargs):
+        permitted_keys = ["item_name", "autocomplete_section",
+                          "suggested_score", "keywords", "url", "image_url",
+                          "description", "id"]
+        for k in kwargs.iterkeys():
+            if k not in permitted_keys:
+                raise IOError(
+                    "You have submitted an invalid key in the keyword arguments.")
+
+    def add_metadata_to_params(self, params, metadata):
+        if metadata:
+            params.update(metadata)
+
+    def add(self, item_name, autocomplete_section, metadata=None, **kwargs):
+        """
+        Adds an autocomplete item. Accepts a metadata dictionary. The keyword
+        arguments can only be parameters that exist in the API.
+
+        :param item_name: Name of the item to be added
+        :param autocomplete_section: The section that the item is to be added to
+        :param kwargs: A dictionary of keys and values
+        :param metadata: A dictionary of keys and values to be associated with
+        the item, but where the keys are user-defined
+        :return: ConstructorError if adding fails, True if adding succeeds
+        """
         if not self._api_token:
             raise IOError("You must have an API token to use the Add method!")
+        self.check_for_non_default_keys(kwargs)
         params = {"item_name": item_name,
                   "autocomplete_section": autocomplete_section}
         url_params = {}
-        self.extract_params_from_kwargs(params, **kwargs)
+        self.update_params_with_kwargs(params, kwargs)
+        self.add_metadata_to_params(params, metadata)
         request_method = getattr(requests, 'post')
         # force is used to do an add_or_update
         if kwargs.get("_force", 0) == 1:
@@ -79,12 +116,15 @@ class ConstructorIO(object):
         kwargs["_force"] = 1
         return self.add(item_name, autocomplete_section, **kwargs)
 
-    def add_batch(self, items, autocomplete_section, **kwargs):
+    def add_batch(self, items, autocomplete_section, metadata=None, **kwargs):
         if not self._api_token:
             raise IOError(
                 "You must have an API token to use the Add Batch method!")
+        self.check_for_non_default_keys(kwargs)
         for item in items:
-            self.extract_params_from_kwargs(item, **kwargs)
+            self.check_for_non_default_keys(item)
+            self.add_metadata_to_params(item, metadata)
+            self.update_params_with_kwargs(item, kwargs)
         request_method = getattr(requests, 'post')
         url_params = {}
         # force is used to denote an add_or_update
