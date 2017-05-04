@@ -21,7 +21,7 @@ if __name__ == "__main__":
     if autocomplete_section == "q":
         print "toodles!"
         sys.exit(0)
-    constructor = ConstructorIO(api_token, autocomplete_key) # is that right?
+    constructor = ConstructorIO(api_token=api_token, autocomplete_key=autocomplete_key)
     with open("example.csv") as csv_file:
         example_csv = csv.DictReader(csv_file)
         for row in example_csv:
