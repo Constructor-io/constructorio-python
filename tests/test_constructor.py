@@ -1,6 +1,7 @@
 import pytest
 import vcr
 import copy
+import os
 from constructor_io import ConstructorIO, ConstructorError
 
 HTTPS_ARGS = {
@@ -157,6 +158,8 @@ class TestConstructorIO:
                 autocomplete_section="Search Suggestions"
             )
             assert resp is True
+            # clean things up so that when we re-run the test we don't
+            # get an error when we add it
             resp = constructor.remove(
                 item_name="Newer_Stanley_Steamer",
                 autocomplete_section="Search Suggestions"
