@@ -45,9 +45,7 @@ class ConstructorIO(object):
             return resp.json()
 
     def extract_params_from_kwargs(self, params, **kwargs):
-        keys = ["suggested_score", "keywords", "description", "url",
-                "image_url"]
-        params.update({k: v for k, v in kwargs.iteritems() if k in keys})
+        params.update({k: v for k, v in kwargs.iteritems()})
 
     def add(self, item_name, autocomplete_section, **kwargs):
         if not self._api_token:

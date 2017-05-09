@@ -1,17 +1,17 @@
 import pytest
 import vcr
 import copy
+import os
 from constructor_io import ConstructorIO, ConstructorError
 
-HTTP_ARGS = {
-    "api_token": "my_api_token",
-    "autocomplete_key": "my_api_key",
-    "protocol": "http",
+HTTPS_ARGS = {
+    "api_token": "my-api-token",
+    "autocomplete_key": "my-ac-key",
+    "protocol": "https",
     "host": "ac.cnstrc.com"
 }
-HTTPS_ARGS = copy.deepcopy(HTTP_ARGS)
-HTTPS_ARGS["protocol"] = "https"
 
+my_vcr = vcr.VCR(record_mode=os.environ.get('VCR_RECORD_MODE'))
 
 class TestConstructorIO:
     def test_encodes_parameters(self):
@@ -42,8 +42,8 @@ class TestConstructorIO:
         assert constructor._autocomplete_key == autocomplete_key
 
     def test_ac_query(self):
-        with vcr.use_cassette("fixtures/ac.cnstrc.com/query-success.yaml"):
-            constructor = ConstructorIO(**HTTP_ARGS)
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/query-success.yaml"):
+            constructor = ConstructorIO(**HTTPS_ARGS)
             autocompletes = constructor.query(
                 query_str="a"
             )
@@ -51,7 +51,7 @@ class TestConstructorIO:
             assert type(autocompletes) == dict
 
     def test_add(self):
-        with vcr.use_cassette("fixtures/ac.cnstrc.com/add-success.yaml"):
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/add-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             resp = constructor.add(
                 item_name="boinkamoinka",
@@ -59,8 +59,24 @@ class TestConstructorIO:
             )
             assert resp is True
 
+    def test_add_remove_metadata(self):
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/add-metadata-success.yaml"):
+            constructor = ConstructorIO(**HTTPS_ARGS)
+            resp = constructor.add(
+                item_name="Metadata Example",
+                autocomplete_section="Products",
+                url="https://metadata.example",
+                metadata={ "this_key": "this_value" }
+            )
+            assert resp is True
+            resp = constructor.remove(
+                item_name="Metadata Example",
+                autocomplete_section="Products"
+            )
+            assert resp is True
+
     def test_add_or_update(self):
-        with vcr.use_cassette(
+        with my_vcr.use_cassette(
                 "fixtures/ac.cnstrc.com/add-update-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             resp = constructor.add_or_update(
@@ -77,7 +93,7 @@ class TestConstructorIO:
             assert resp2 is True
 
     def test_add_batch(self):
-        with vcr.use_cassette("fixtures/ac.cnstrc.com/add-batch-success.yaml"):
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/add-batch-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             items = [{"item_name": "new item1"}, {"item_name": "new_item2"}]
             resp = constructor.add_batch(
@@ -87,7 +103,7 @@ class TestConstructorIO:
         assert resp is True
 
     def test_add_or_update_batch(self):
-        with vcr.use_cassette(
+        with my_vcr.use_cassette(
                 "fixtures/ac.cnstrc.com/add-or-update-batch-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             items = [{"item_name": "new item", "url": "http://my_url.com"},
@@ -107,16 +123,16 @@ class TestConstructorIO:
             assert resp2 is True
 
     def test_remove(self):
-        with vcr.use_cassette("fixtures/ac.cnstrc.com/remove-success.yaml"):
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/remove-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             resp = constructor.remove(
-                item_name="racer",
+                item_name="boinkamoinka",
                 autocomplete_section="Search Suggestions"
             )
             assert resp is True
-            
+
     def test_remove_batch(self):
-        with vcr.use_cassette(
+        with my_vcr.use_cassette(
                 "fixtures/ac.cnstrc.com/remove-batch-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             items = [{"item_name": "new item1"}, {"item_name": "new_item2"}]
@@ -127,8 +143,14 @@ class TestConstructorIO:
         assert resp is True
 
     def test_modify(self):
-        with vcr.use_cassette("fixtures/ac.cnstrc.com/modify-success.yaml"):
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/modify-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
+            resp = constructor.add(
+                item_name="Stanley_Steamer",
+                autocomplete_section="Search Suggestions"
+            )
+            assert resp is True
+
             resp = constructor.modify(
                 item_name="Stanley_Steamer",
                 new_item_name="Newer_Stanley_Steamer",
@@ -136,9 +158,16 @@ class TestConstructorIO:
                 autocomplete_section="Search Suggestions"
             )
             assert resp is True
+            # clean things up so that when we re-run the test we don't
+            # get an error when we add it
+            resp = constructor.remove(
+                item_name="Newer_Stanley_Steamer",
+                autocomplete_section="Search Suggestions"
+            )
+            assert resp is True
 
     def test_conversion(self):
-        with vcr.use_cassette(
+        with my_vcr.use_cassette(
                 "fixtures/ac.cnstrc.com/conversion-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             resp = constructor.track_conversion(
@@ -148,7 +177,7 @@ class TestConstructorIO:
             assert resp is True
 
     def test_search_no_num_res(self):
-        with vcr.use_cassette(
+        with my_vcr.use_cassette(
                 "fixtures/ac.cnstrc.com/search-noname-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             resp = constructor.track_search(
@@ -159,7 +188,7 @@ class TestConstructorIO:
             assert resp is True
 
     def test_search_num_res(self):
-        with vcr.use_cassette("fixtures/ac.cnstrc.com/search-success.yaml"):
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/search-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             resp = constructor.track_search(
                 term="Stanley_Steamer",
@@ -169,7 +198,7 @@ class TestConstructorIO:
             assert resp is True
 
     def test_click_through(self):
-        with vcr.use_cassette(
+        with my_vcr.use_cassette(
                 "fixtures/ac.cnstrc.com/click-through-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             resp = constructor.track_click_through(
