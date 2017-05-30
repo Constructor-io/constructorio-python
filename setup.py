@@ -2,7 +2,9 @@ from setuptools import setup
 
 setup(
         name="constructor-io",
-        version="0.0.4",
+        version="0.0.5",
+        download_url='https://github.com/Constructor-io/constructorio-python'
+                     '/tarball/0.0.5',
         license="MIT",
         description="Constructor.IO Python Client",
         author="Constructor.io",
