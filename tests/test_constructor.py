@@ -2,7 +2,7 @@ import pytest
 import vcr
 import copy
 import os
-from constructor_io import ConstructorIO, ConstructorError
+from constructor_io.constructor_io import ConstructorIO, ConstructorError
 
 HTTPS_ARGS = {
     "api_token": "my-api-token",

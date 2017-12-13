@@ -16,7 +16,7 @@ class ConstructorIO(object):
         self._host = host
 
     def _serialize_params(self, params):
-        return urllib.urlencode(params)
+        return urllib.parse.urlencode(params)
 
     def _make_url(self, endpoint, params=None):
         if not params:
@@ -45,7 +45,7 @@ class ConstructorIO(object):
             return resp.json()
 
     def extract_params_from_kwargs(self, params, **kwargs):
-        params.update({k: v for k, v in kwargs.iteritems()})
+        params.update({k: v for k, v in kwargs.items()})
 
     def add(self, item_name, autocomplete_section, **kwargs):
         if not self._api_token:
