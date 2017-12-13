@@ -1,17 +1,15 @@
 import pytest
 import vcr
-import copy
-import os
 from constructor_io.constructor_io import ConstructorIO, ConstructorError
 
 HTTPS_ARGS = {
     "api_token": "my-api-token",
-    "autocomplete_key": "my-ac-key",
+    "autocomplete_key": "my_api_key",
     "protocol": "https",
     "host": "ac.cnstrc.com"
 }
 
-my_vcr = vcr.VCR(record_mode=os.environ.get('VCR_RECORD_MODE'))
+my_vcr = vcr.VCR(record_mode="none")
 
 class TestConstructorIO:
     def test_encodes_parameters(self):
