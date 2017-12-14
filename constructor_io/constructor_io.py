@@ -1,5 +1,10 @@
 import requests
-import urllib
+
+try:
+    from urllib.parse import urlencode  # Python 3
+except ImportError:
+    from urllib import urlencode  # Python 2
+
 
 class ConstructorError(Exception):
     pass
@@ -16,7 +21,7 @@ class ConstructorIO(object):
         self._host = host
 
     def _serialize_params(self, params):
-        return urllib.parse.urlencode(params)
+        return urlencode(params)
 
     def _make_url(self, endpoint, params=None):
         if not params:
