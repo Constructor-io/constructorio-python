@@ -1,19 +1,76 @@
 interactions:
 - request:
+    body: '{"items": [{"item_name": "new item", "url": "http://my_url.com", "_force":
+      1}, {"item_name": "new_item2", "url": "http://other_url.com", "_force": 1}],
+      "autocomplete_section": "Products"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Basic bXktYXBpLXRva2VuOg==]
+      Connection: [keep-alive]
+      Content-Length: ['187']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.7.0 CPython/3.6.1 Darwin/17.2.0]
+    method: PUT
+    uri: https://ac.cnstrc.com/v1/batch_items?force=1&autocomplete_key=my_api_key
+  response:
+    body: {string: ''}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      connection: [keep-alive]
+      content-length: ['0']
+      content-type: [text/html; charset=utf-8]
+      date: ['Thu, 13 Oct 2016 08:30:45 GMT']
+      server: [nginx/1.4.6 (Ubuntu)]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 varnish]
+      x-varnish: ['1124804853']
+    status: {code: 204, message: NO CONTENT}
+- request:
+    body: '{"items": [{"item_name": "new item", "url": "http://my_url1.com", "_force":
+      1}, {"item_name": "new_item2", "url": "http://other_url.com", "_force": 1},
+      {"item_name": "new_item3", "url": "http://third_url.com", "_force": 1}], "autocomplete_section":
+      "Products"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Basic bXktYXBpLXRva2VuOg==]
+      Connection: [keep-alive]
+      Content-Length: ['260']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.7.0 CPython/3.6.1 Darwin/17.2.0]
+    method: PUT
+    uri: https://ac.cnstrc.com/v1/batch_items?force=1&autocomplete_key=my_api_key
+  response:
+    body: {string: ''}
+    headers:
+      accept-ranges: [bytes]
+      age: ['0']
+      connection: [keep-alive]
+      content-length: ['0']
+      content-type: [text/html; charset=utf-8]
+      date: ['Thu, 13 Oct 2016 08:30:45 GMT']
+      server: [nginx/1.4.6 (Ubuntu)]
+      strict-transport-security: [max-age=31536000]
+      via: [1.1 varnish]
+      x-varnish: ['1124804853']
+    status: {code: 204, message: NO CONTENT}
+- request:
     body: '{"items": [{"item_name": "new item1"}, {"item_name": "new_item2"}], "autocomplete_section":
       "Search Suggestions"}'
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
-      Authorization: [Basic bXlfYXBpX3Rva2VuOg==]
+      Authorization: [Basic bXktYXBpLXRva2VuOg==]
       Connection: [keep-alive]
       Content-Length: ['113']
       Content-Type: [application/json]
-      User-Agent: [python-requests/2.7.0 CPython/2.7.9 Darwin/15.6.0]
+      User-Agent: [python-requests/2.7.0 CPython/3.6.1 Darwin/17.2.0]
     method: POST
     uri: https://ac.cnstrc.com/v1/batch_items?autocomplete_key=my_api_key
   response:
-    body: {string: !!python/unicode ''}
+    body: {string: ''}
     headers:
       accept-ranges: [bytes]
       age: ['0']
