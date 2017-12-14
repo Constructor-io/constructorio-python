@@ -1,17 +1,15 @@
-import pytest
 import vcr
-import copy
-import os
-from constructor_io import ConstructorIO, ConstructorError
+from constructor_io.constructor_io import ConstructorIO
 
 HTTPS_ARGS = {
     "api_token": "my-api-token",
-    "autocomplete_key": "my-ac-key",
+    "autocomplete_key": "my_api_key",
     "protocol": "https",
     "host": "ac.cnstrc.com"
 }
 
-my_vcr = vcr.VCR(record_mode=os.environ.get('VCR_RECORD_MODE'))
+my_vcr = vcr.VCR(record_mode="none", decode_compressed_response=True)
+
 
 class TestConstructorIO:
     def test_encodes_parameters(self):
@@ -60,15 +58,16 @@ class TestConstructorIO:
             assert resp is True
 
     def test_add_remove_metadata(self):
-        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/add-metadata-success.yaml"):
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/add-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             resp = constructor.add(
                 item_name="Metadata Example",
                 autocomplete_section="Products",
                 url="https://metadata.example",
-                metadata={ "this_key": "this_value" }
+                metadata={"this_key": "this_value"}
             )
             assert resp is True
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/remove-success.yaml"):
             resp = constructor.remove(
                 item_name="Metadata Example",
                 autocomplete_section="Products"
@@ -104,7 +103,7 @@ class TestConstructorIO:
 
     def test_add_or_update_batch(self):
         with my_vcr.use_cassette(
-                "fixtures/ac.cnstrc.com/add-or-update-batch-success.yaml"):
+                "fixtures/ac.cnstrc.com/add-batch-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             items = [{"item_name": "new item", "url": "http://my_url.com"},
                      {"item_name": "new_item2", "url": "http://other_url.com"}]
