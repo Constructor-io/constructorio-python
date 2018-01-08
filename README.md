@@ -6,17 +6,13 @@ A Python package for the [Constructor.io API](http://constructor.io/docs).  Cons
 Installation
 ===
 
-With pip:
 
     pip install constructor-io
 
-Note that you are writing `constructor-io` with a hyphen, as opposed to actually in your code, where you will be writing `constructor_io` with an underscore!
 
-API
+Usage
 ===
 
-All of these are basically one step away from the RESTFUL interface and the implementation is dead simple.
 
-## Usage
 
-For our most up-to-date API documentation, please visit [our website](https://constructor.io/docs/?python#).
+More you can find in our most up-to-date API documentation, please visit [our website](https://constructor.io/docs/?python#).

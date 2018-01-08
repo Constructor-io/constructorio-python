@@ -31,7 +31,7 @@ if __name__ == "__main__":
     print("Let's go see the terms you added!")
 
     if raw_input("Go to constructor.io right now? (y/n) (n)") == "y":
-        print "Ok! let's go!"
+        print("Ok! let's go!")
         webbrowser.open("http://constructor.io/dashboard")
     else:
-        print "Ok, then just go to constructor.io/dashboard some other time"
+        print("Ok, then just go to constructor.io/dashboard some other time")
