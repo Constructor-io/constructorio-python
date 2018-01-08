@@ -1,0 +1,25 @@
+language: python
+
+addons:
+  apt_packages:
+    - pandoc
+
+python:
+  - "2.7"
+  - "3.5"
+  - "3.5-dev"
+  - "3.6"
+  - "3.6-dev"
+  - "3.7-dev"
+  - "nightly"
+
+install:
+  - pip install codecov
+
+script:
+  - pandoc --from=markdown --to=rst --output=README.rst README.md
+  - pip install -e .
+  - coverage run tests/*
+
+after_success:
+  - codecov
