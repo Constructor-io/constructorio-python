@@ -14,12 +14,10 @@ python:
   - "nightly"
 
 install:
-  - pip install codecov
+  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install -r requirements-py2.txt; fi
+  - pip install -r requirements.txt
 
 script:
   - pandoc --from=markdown --to=rst --output=README.rst README.md
   - pip install -e .
-  - coverage run tests/*
-
-after_success:
-  - codecov
+  - pytest
