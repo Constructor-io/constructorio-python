@@ -12,6 +12,4 @@ Installation
 Usage
 ===
 
-
-
 More you can find in our most up-to-date API documentation, please visit [our website](https://constructor.io/docs/?python#).
