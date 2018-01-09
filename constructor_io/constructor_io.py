@@ -21,7 +21,9 @@ class ConstructorIO(object):
         self._protocol = protocol
         self._host = host
 
-    def _serialize_params(self, params):
+    def _serialize_params(self, params, sort=False):
+        if sort:
+            params = sorted(params.items(), key=lambda val: val[0])
         return urlencode(params)
 
     def _make_url(self, endpoint, params=None):

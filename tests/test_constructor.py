@@ -15,10 +15,10 @@ class TestConstructorIO:
     def test_encodes_parameters(self):
         constructor = ConstructorIO(api_token="boinka",
                                     autocomplete_key="doinka")
-        serialized_params = constructor\
-            ._serialize_params({'foo': [1, 2], 'bar': {'baz': ['a', 'b']}})
-        assert serialized_params == "foo=%5B1%2C+2%5D&bar=%7B%27baz%27%3" \
-                                    "A+%5B%27a%27%2C+%27b%27%5D%7D"
+        serialized_params = constructor._serialize_params(
+            {'foo': [1, 2], 'bar': {'baz': ['a', 'b']}}, sort=True)
+        assert serialized_params == "bar=%7B%27baz%27%3A+%5B%27a%27%2C+" \
+                                    "%27b%27%5D%7D&foo=%5B1%2C+2%5D"
 
     def test_creates_urls_correctly(self):
         constructor = ConstructorIO(api_token="boinka",
