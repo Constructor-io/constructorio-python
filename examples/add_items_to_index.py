@@ -5,19 +5,24 @@ Items used: /examples/items_for_indexation.csv
 More: https://constructor.io/docs/#autocomplete-items
 """
 
+import os
 import csv
 import webbrowser
+from six.moves import input
 
 from constructor_io import ConstructorIO
 
 if __name__ == "__main__":
-    api_token = raw_input("Enter api token: ")
-    autocomplete_key = raw_input("Enter autocomplete key: ")
-    autocomplete_section = raw_input("Enter autocomplete section: ")
+    api_token = input("Enter api token: ")
+    autocomplete_key = input("Enter autocomplete key: ")
+    autocomplete_section = input("Enter autocomplete section: ")
 
     constructor_instance = ConstructorIO(api_token, autocomplete_key)
 
-    with open("example.csv") as csv_file:
+    items_file_path = os.path.dirname(os.path.realpath(__file__)) + \
+        "/items_for_indexation.csv"
+
+    with open(items_file_path) as csv_file:
         example_csv = csv.DictReader(csv_file)
         for row in example_csv:
             print("Row: " + str(row))
@@ -30,7 +35,7 @@ if __name__ == "__main__":
 
     print("Let's go see the terms you added!")
 
-    if raw_input("Go to constructor.io right now? (y/n) (n)") == "y":
+    if input("Go to constructor.io right now? (y/n)") == "y":
         print("Ok! let's go!")
         webbrowser.open("http://constructor.io/dashboard")
     else:
