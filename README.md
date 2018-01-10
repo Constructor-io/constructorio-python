@@ -33,9 +33,12 @@ if __name__ == "__main__":
 
 Try it:
 ```
+# If you didn't install constructor-io with pip, uncomment next line:
+# export PYTHONPATH=$PYTHONPATH:$(pwd)
+
 python examples/autocomplete.py
 ```
 
 ![Run example](https://github.com/Constructor-io/constructorio-python/raw/master/run_example.gif)
 
-Check [examples folder](examples). More you can find in our most up-to-date API [documentation](https://constructor.io/docs/?python#).
+Check [examples folder](examples). You can read more in our most up-to-date API [documentation](https://constructor.io/docs/?python#).

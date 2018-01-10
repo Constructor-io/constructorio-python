@@ -10,7 +10,7 @@ interactions:
       Content-Type: [application/json]
       User-Agent: [python-requests/2.7.0 CPython/2.7.9 Darwin/15.6.0]
     method: POST
-    uri: https://ac.cnstrc.com/v1/click_through?autocomplete_key=my_api_key
+    uri: https://ac.cnstrc.com/v1/click_through?key=my_api_key
   response:
     body: {string: !!python/unicode ''}
     headers:

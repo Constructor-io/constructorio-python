@@ -11,13 +11,19 @@ class ConstructorError(Exception):
 
 
 class ConstructorIO(object):
-    def __init__(self, api_token, autocomplete_key, protocol="https",
-                 host="ac.cnstrc.com"):
+    def __init__(self, api_token, key=None, protocol="https",
+                 host="ac.cnstrc.com", autocomplete_key=None):
         """
         If you use HTTPS, you need a different version of requests
         """
+        # Support backward capability after renaming `autocomplete_key` to `key`
+        if key is None:
+            key = autocomplete_key
+        if key is None and autocomplete_key is None:
+            raise TypeError("__init__() missing argument 'key'")
+
         self._api_token = api_token
-        self._autocomplete_key = autocomplete_key
+        self._key = key
         self._protocol = protocol
         self._host = host
 
@@ -29,7 +35,7 @@ class ConstructorIO(object):
     def _make_url(self, endpoint, params=None):
         if not params:
             params = {}
-        params["autocomplete_key"] = self._autocomplete_key
+        params["key"] = self._key
         return "{0}://{1}/{2}?{3}".format(self._protocol, self._host, endpoint,
                                           self._serialize_params(params))
 

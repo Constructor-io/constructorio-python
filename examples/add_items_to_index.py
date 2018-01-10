@@ -1,5 +1,5 @@
 """
-This example shows how to add your items in autocomplete index
+This example shows how to add items to your index.
 Items used: /examples/items_for_indexation.csv
 
 More: https://constructor.io/docs/#autocomplete-items
@@ -14,10 +14,10 @@ from constructor_io import ConstructorIO
 
 if __name__ == "__main__":
     api_token = input("Enter api token: ")
-    autocomplete_key = input("Enter autocomplete key: ")
+    key = input("Enter key: ")
     autocomplete_section = input("Enter autocomplete section: ")
 
-    constructor_instance = ConstructorIO(api_token, autocomplete_key)
+    constructor_instance = ConstructorIO(api_token, key)
 
     items_file_path = os.path.dirname(os.path.realpath(__file__)) + \
         "/items_for_indexation.csv"

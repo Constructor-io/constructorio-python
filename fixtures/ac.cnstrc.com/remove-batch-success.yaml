@@ -11,7 +11,7 @@ interactions:
       Content-Type: [application/json]
       User-Agent: [python-requests/2.7.0 CPython/3.6.1 Darwin/17.2.0]
     method: DELETE
-    uri: https://ac.cnstrc.com/v1/batch_items?autocomplete_key=my_api_key
+    uri: https://ac.cnstrc.com/v1/batch_items?key=my_api_key
   response:
     body: {string: ''}
     headers:
