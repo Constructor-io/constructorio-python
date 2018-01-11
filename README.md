@@ -18,9 +18,9 @@ from constructor_io import ConstructorIO
 
 # Listed token and key will work for a small demo :)
 API_TOKEN = None
-AUTOCOMPLETE_KEY = "P03bVBcmyYjSG1ZQyD4V"
+KEY = "P03bVBcmyYjSG1ZQyD4V"
 
-constructor_instance = ConstructorIO(API_TOKEN, AUTOCOMPLETE_KEY)
+constructor_instance = ConstructorIO(API_TOKEN, KEY)
 
 if __name__ == "__main__":
     while True:
