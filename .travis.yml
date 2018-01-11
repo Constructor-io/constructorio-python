@@ -1,22 +1,28 @@
 language: python
-
 addons:
   apt_packages:
-    - pandoc
-
+  - pandoc
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
-  - "3.7-dev"
-  - "nightly"
-
+- '2.7'
+- '3.4'
+- '3.5'
+- '3.6'
+- 3.7-dev
+- nightly
 install:
-  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install -r requirements-py2.txt; fi
-  - pip install -r requirements.txt
-
+- if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install -r requirements-py2.txt; fi
+- pip install -r requirements.txt
 script:
-  - pandoc --from=markdown --to=rst --output=README.rst README.md
-  - pip install -e .
-  - pytest
+- pandoc --from=markdown --to=rst --output=README.rst README.md
+- pip install -e .
+- pytest
+deploy:
+  - provider: pypi
+    skip_cleanup: true
+    distributions: sdist
+    user: "Matvey-Kuk"
+    password:
+      secure: FvgbLcXnBiqo6QJ/R/VM/YVoNQAfgP8NfBKDY1N/xC0Ytw5/Hul8tKoXbSPcE5tImtE3+sXw5ogaMsKzsBbzOVBiQLeFTzAphN9f8WxJH/1g59Az4vyWN7BkA4zp+Y12CydupjKpFJIxyQiWWEGCu2siazaSnNqoWAiYrS3q2dRau5nfsoftlJy1TWpxET+UpRIUc6iwmsvovy3fxTcAPSqZhaC3X+SJMK+fojqxOS3edaxVV7sZqlwVHI2NXjxRYd/62l2YEUNwpCvZxsLSTHeSSzDuGnjSrMUXHVYEiPhe5uajAQ7zuxFUam+hFXNOWipD2sVsMsNOEC1dUZG80rPik6CWi9+y8MemZDm+KVJVn8fTKU18OnRI6vZsICVzTKCQ2f83pc1nOYXwdMZw0JS5Xkta3piVcjJoNY8npi8LYFhK1cjO8jbj2oV0GjYGjDsaPKGnku/Ka36uufsR7iz2u2Db8r53bIwkugDnhl9rvuNEUwtKZrWuq3fiKUiFRsAbIN47xd6H24S9I70TbO7tkjgYANiyRCYKiiK+ayFryD+lQVBdr1QsRW2bFZAJwS5wFHSBw/PFImCPpsIV8rHuOjP88vSpfAn4iN9OtmIdsMwTYWlStSk9HQvej3yRdWIjMspuPiIuh8ByBILte/j7kbFzxM0NuadZef4hOso=
+    on:
+      branch: master
+      condition: $TRAVIS_PYTHON_VERSION = "3.6"
