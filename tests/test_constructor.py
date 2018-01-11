@@ -1,9 +1,11 @@
 import vcr
+from unittest import TestCase
+
 from constructor_io.constructor_io import ConstructorIO
 
 HTTPS_ARGS = {
     "api_token": "my-api-token",
-    "autocomplete_key": "my_api_key",
+    "key": "my_api_key",
     "protocol": "https",
     "host": "ac.cnstrc.com"
 }
@@ -11,33 +13,47 @@ HTTPS_ARGS = {
 my_vcr = vcr.VCR(record_mode="none", decode_compressed_response=True)
 
 
-class TestConstructorIO:
+class TestConstructorIO(TestCase):
     def test_encodes_parameters(self):
         constructor = ConstructorIO(api_token="boinka",
-                                    autocomplete_key="doinka")
-        serialized_params = constructor\
-            ._serialize_params({'foo': [1, 2], 'bar': {'baz': ['a', 'b']}})
-        assert serialized_params == "foo=%5B1%2C+2%5D&bar=%7B%27baz%27%3" \
-                                    "A+%5B%27a%27%2C+%27b%27%5D%7D"
+                                    key="doinka")
+        serialized_params = constructor._serialize_params(
+            {'foo': [1, 2], 'bar': {'baz': ['a', 'b']}}, sort=True)
+        assert serialized_params == "bar=%7B%27baz%27%3A+%5B%27a%27%2C+" \
+                                    "%27b%27%5D%7D&foo=%5B1%2C+2%5D"
+
+    def test_key_argument(self):
+        # Usual:
+        constructor = ConstructorIO(api_token="boinka", key="a")
+        self.assertEquals(constructor._key, "a")
+        # Backward compatibility:
+        constructor = ConstructorIO(api_token="boinka", autocomplete_key="b")
+        self.assertEquals(constructor._key, "b")
+        # Positional:
+        constructor = ConstructorIO("boinka", "c")
+        self.assertEquals(constructor._key, "c")
+        # Missing:
+        with self.assertRaises(TypeError):
+            ConstructorIO("boinka")
 
     def test_creates_urls_correctly(self):
         constructor = ConstructorIO(api_token="boinka",
-                                    autocomplete_key="a-test-autocomplete-key")
+                                    key="a-test-autocomplete-key")
         generated_url = constructor._make_url('v1/test')
         assert generated_url == 'https://ac.cnstrc.com/v1/test?' \
-                                'autocomplete_key=a-test-autocomplete-key'
+                                'key=a-test-autocomplete-key'
 
     def test_set_api_token(self):
         api_token = 'a-test-api-key',
         constructor = ConstructorIO(api_token=api_token,
-                                    autocomplete_key="boinka")
+                                    key="boinka")
         assert constructor._api_token == api_token
 
     def test_set_ac_key(self):
-        autocomplete_key = 'a-test-autocomplete-key'
-        constructor = ConstructorIO(autocomplete_key=autocomplete_key,
+        key = 'a-test-autocomplete-key'
+        constructor = ConstructorIO(key=key,
                                     api_token="boinka")
-        assert constructor._autocomplete_key == autocomplete_key
+        assert constructor._key == key
 
     def test_ac_query(self):
         with my_vcr.use_cassette("fixtures/ac.cnstrc.com/query-success.yaml"):

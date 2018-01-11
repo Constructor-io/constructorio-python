@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [python-requests/2.7.0 CPython/2.7.9 Darwin/15.6.0]
     method: GET
-    uri: https://ac.cnstrc.com/autocomplete/a?autocomplete_key=my_api_key
+    uri: https://ac.cnstrc.com/autocomplete/a?key=my_api_key
   response:
     body: {string: !!python/unicode "{\n  \"sections\": {\n    \"Products\": [], \n\
         \    \"Search Suggestions\": []\n  }\n}"}
