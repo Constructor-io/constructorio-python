@@ -59,7 +59,10 @@ class ConstructorIO(object):
             return resp.json()
 
     def extract_params_from_kwargs(self, params, **kwargs):
-        params.update({k: v for k, v in kwargs.items()})
+        # The '_force' kwarg just indicates that `force` should be added
+        # to the query string, but it shouldn't be in the JSON body of the
+        # request
+        params.update({k: v for k, v in kwargs.items() if k != '_force'})
 
     def add(self, item_name, autocomplete_section, **kwargs):
         if not self._api_token:
@@ -121,7 +124,7 @@ class ConstructorIO(object):
                           "Batch method!")
         kwargs["_force"] = 1
         return self.add_batch(items, autocomplete_section, **kwargs)
-        
+
     def remove(self, item_name, autocomplete_section):
         params = {"item_name": item_name,
                   "autocomplete_section": autocomplete_section}
