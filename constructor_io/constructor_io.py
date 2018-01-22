@@ -28,6 +28,12 @@ class ConstructorIO(object):
         self._host = host
 
     def _serialize_params(self, params, sort=False):
+        """
+        Serialize dictionary in URL's GET format
+        :param params: Dictionary for serialization
+        :param sort: If reproducible order is required (For tests etc)
+        :return: String
+        """
         if sort:
             params = sorted(params.items(), key=lambda val: val[0])
         return urlencode(params)
