@@ -242,11 +242,11 @@ class TestConstructorIO(TestCase):
                 constructor.query(query_str="a")
 
         # Assert exception payload inclusion
-        self.assertEquals(ConstructorServerError("payload").message,
+        self.assertEquals(str(ConstructorServerError("payload")),
                           "Server error: payload")
-        self.assertEquals(ConstructorInputError("payload").message,
+        self.assertEquals(str(ConstructorInputError("payload")),
                           "Bad request: payload")
-        self.assertEquals(ConstructorError("payload").message,
+        self.assertEquals(str(ConstructorError("payload")),
                           "Undefined error with Constructor.io: payload")
 
         # Make sure ConstructorError handling will handle other exceptions
