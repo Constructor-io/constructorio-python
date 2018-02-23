@@ -87,8 +87,8 @@ class ConstructorIO(object):
                 timeout = RETRY_TIMEOUT_IN_CASE_OF_SERVER_ERROR * (
                     self._server_error_retries - retries_left + 1)
                 logger.warning(
-                    str(error.message) + " Retrying in " + str(timeout) +
-                    " seconds. Retries left: " + str(retries_left)
+                    '%s Retrying in %d seconds. Retries left: %d' %
+                    (error, timeout, retries_left)
                 )
                 retries_left -= 1
                 time.sleep(timeout)
