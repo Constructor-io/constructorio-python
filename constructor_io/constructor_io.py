@@ -1,22 +1,42 @@
+import time
 import requests
+import logging
 
 try:
     from urllib.parse import urlencode  # Python 3
 except ImportError:
     from urllib import urlencode  # Python 2
 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
+
+# In seconds. Will increase each iteration
+RETRY_TIMEOUT_IN_CASE_OF_SERVER_ERROR = 10
+
 
 class ConstructorError(Exception):
-    pass
+    def __init__(self, message=""):
+        super(ConstructorError, self).__init__(
+            "Undefined error with Constructor.io: " + str(message))
+
+
+class ConstructorInputError(ConstructorError):
+    def __init__(self, message=""):
+        super(Exception, self).__init__("Bad request: " + str(message))
+
+
+class ConstructorServerError(ConstructorError):
+    def __init__(self, message=""):
+        super(Exception, self).__init__("Server error: " + str(message))
 
 
 class ConstructorIO(object):
     def __init__(self, api_token, key=None, protocol="https",
-                 host="ac.cnstrc.com", autocomplete_key=None):
-        """
-        If you use HTTPS, you need a different version of requests
-        """
-        # Support backward capability after renaming `autocomplete_key` to `key`
+                 host="ac.cnstrc.com", autocomplete_key=None,
+                 server_error_retries=10):
+
+        # Support backward capability after
+        # renaming `autocomplete_key` to `key`
         if key is None:
             key = autocomplete_key
         if key is None and autocomplete_key is None:
@@ -26,6 +46,7 @@ class ConstructorIO(object):
         self._key = key
         self._protocol = protocol
         self._host = host
+        self._server_error_retries = server_error_retries
 
     def _serialize_params(self, params, sort=False):
         """
@@ -45,24 +66,42 @@ class ConstructorIO(object):
         return "{0}://{1}/{2}?{3}".format(self._protocol, self._host, endpoint,
                                           self._serialize_params(params))
 
-    def query(self, query_str):
+    def __make_server_request(self, request_method, *args, **kwargs):
+        retries_left = self._server_error_retries
+        timeout = RETRY_TIMEOUT_IN_CASE_OF_SERVER_ERROR
+
+        while True:
+            try:
+                # Wrap server error codes as exceptions
+                response = request_method(*args, **kwargs)
+                if response.status_code // 100 == 5:
+                    raise ConstructorServerError(response.text)
+                elif response.status_code // 100 == 4:
+                    raise ConstructorInputError(response.text)
+                elif not response.status_code // 100 == 2:
+                    raise ConstructorError(response.text)
+                return response
+            except ConstructorServerError as error:
+                # Retry in case of server error
+                if retries_left <= 0:
+                    raise error
+                timeout += RETRY_TIMEOUT_IN_CASE_OF_SERVER_ERROR
+                logger.warning('%s Retrying in %d seconds. Retries left: %d',
+                               error, timeout, retries_left)
+                retries_left -= 1
+                time.sleep(timeout)
+
+    def query(self, query_str, *args, **kwargs):
         url = self._make_url("autocomplete/" + query_str)
-        resp = requests.get(url)
-        if resp.status_code != 200:
-            raise ConstructorError(resp.text)
-        else:
-            return resp.json()
+        resp = self.__make_server_request(requests.get, url, *args, **kwargs)
+        return resp.json()
 
     def verify(self):
         url = self._make_url("v1/verify")
-        resp = requests.get(
-            url,
-            auth=(self._api_token, "")
-        )
-        if resp.status_code != 200:
-            raise ConstructorError(resp.text)
-        else:
-            return resp.json()
+        resp = self.__make_server_request(requests.get,
+                                          url,
+                                          auth=(self._api_token, ""))
+        return resp.json()
 
     def extract_params_from_kwargs(self, params, **kwargs):
         # The '_force' kwarg just indicates that `force` should be added
@@ -83,15 +122,11 @@ class ConstructorIO(object):
             url_params["force"] = 1
             request_method = getattr(requests, 'put')
         url = self._make_url("v1/item", url_params)
-        resp = request_method(
-            url,
-            json=params,
-            auth=(self._api_token, "")
-        )
-        if resp.status_code != 204:
-            raise ConstructorError(resp.text)
-        else:
-            return True
+        self.__make_server_request(request_method,
+                                   url,
+                                   json=params,
+                                   auth=(self._api_token, ""))
+        return True
 
     def add_or_update(self, item_name, autocomplete_section, **kwargs):
         if not self._api_token:
@@ -114,15 +149,11 @@ class ConstructorIO(object):
             request_method = getattr(requests, 'put')
         params = {"items": items, "autocomplete_section": autocomplete_section}
         url = self._make_url("v1/batch_items", url_params)
-        resp = request_method(
-            url,
-            json=params,
-            auth=(self._api_token, "")
-        )
-        if resp.status_code != 204:
-            raise ConstructorError(resp.text)
-        else:
-            return True
+        self.__make_server_request(request_method,
+                                   url,
+                                   json=params,
+                                   auth=(self._api_token, ""))
+        return True
 
     def add_or_update_batch(self, items, autocomplete_section, **kwargs):
         if not self._api_token:
@@ -138,15 +169,11 @@ class ConstructorIO(object):
         if not self._api_token:
             raise IOError(
                 "You must have an API token to use the Remove method!")
-        resp = requests.delete(
-            url,
-            json=params,
-            auth=(self._api_token, "")
-        )
-        if resp.status_code != 204:
-            raise ConstructorError(resp.text)
-        else:
-            return True
+        self.__make_server_request(requests.delete,
+                                   url,
+                                   json=params,
+                                   auth=(self._api_token, ""))
+        return True
 
     def remove_batch(self, items, autocomplete_section):
         if not self._api_token:
@@ -155,15 +182,11 @@ class ConstructorIO(object):
         url_params = {}
         params = {"items": items, "autocomplete_section": autocomplete_section}
         url = self._make_url("v1/batch_items", url_params)
-        resp = requests.delete(
-            url,
-            json=params,
-            auth=(self._api_token, "")
-        )
-        if resp.status_code != 204:
-            raise ConstructorError(resp.text)
-        else:
-            return True
+        self.__make_server_request(requests.delete,
+                                   url,
+                                   json=params,
+                                   auth=(self._api_token, ""))
+        return True
 
     def modify(self, item_name, autocomplete_section, **kwargs):
         params = {"item_name": item_name,
@@ -184,15 +207,11 @@ class ConstructorIO(object):
         if not self._api_token:
             raise IOError(
                 "You must have an API token to use the Modify method!")
-        resp = requests.put(
-            url,
-            json=params,
-            auth=(self._api_token, "")
-        )
-        if resp.status_code != 204:
-            raise ConstructorError(resp.text)
-        else:
-            return True
+        self.__make_server_request(requests.put,
+                                   url,
+                                   json=params,
+                                   auth=(self._api_token, ""))
+        return True
 
     def track_conversion(self, term, autocomplete_section, **kwargs):
         params = {
@@ -204,15 +223,11 @@ class ConstructorIO(object):
         url = self._make_url("v1/conversion")
         if not self._api_token:
             raise IOError("You must have an API token to track conversions!")
-        resp = requests.post(
-            url,
-            json=params,
-            auth=(self._api_token, "")
-        )
-        if resp.status_code != 204:
-            raise ConstructorError(resp.text)
-        else:
-            return True
+        self.__make_server_request(requests.post,
+                                   url,
+                                   json=params,
+                                   auth=(self._api_token, ""))
+        return True
 
     def track_click_through(self, term, autocomplete_section, **kwargs):
         params = {
@@ -227,15 +242,11 @@ class ConstructorIO(object):
         if not self._api_token:
             raise IOError(
                 "You must have an API token to track click throughs!")
-        resp = requests.post(
-            url,
-            json=params,
-            auth=(self._api_token, "")
-        )
-        if resp.status_code != 204:
-            raise ConstructorError(resp.text)
-        else:
-            return True
+        self.__make_server_request(requests.post,
+                                   url,
+                                   json=params,
+                                   auth=(self._api_token, ""))
+        return True
 
     def track_search(self, term, **kwargs):
         params = {
@@ -246,12 +257,8 @@ class ConstructorIO(object):
         url = self._make_url("v1/search")
         if not self._api_token:
             raise IOError("You must have an API token to track searches!")
-        resp = requests.post(
-            url,
-            json=params,
-            auth=(self._api_token, "")
-        )
-        if resp.status_code != 204:
-            raise ConstructorError(resp.text)
-        else:
-            return True
+        self.__make_server_request(requests.post,
+                                   url,
+                                   json=params,
+                                   auth=(self._api_token, ""))
+        return True

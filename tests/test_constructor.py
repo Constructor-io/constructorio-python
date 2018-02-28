@@ -1,7 +1,9 @@
 import vcr
+import requests_mock
 from unittest import TestCase
 
-from constructor_io.constructor_io import ConstructorIO
+from constructor_io.constructor_io import ConstructorIO, ConstructorError,\
+    ConstructorServerError, ConstructorInputError
 
 HTTPS_ARGS = {
     "api_token": "my-api-token",
@@ -108,7 +110,8 @@ class TestConstructorIO(TestCase):
             assert resp2 is True
 
     def test_add_batch(self):
-        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/add-batch-success.yaml"):
+        with my_vcr.use_cassette(
+                "fixtures/ac.cnstrc.com/add-batch-success.yaml"):
             constructor = ConstructorIO(**HTTPS_ARGS)
             items = [{"item_name": "new item1"}, {"item_name": "new_item2"}]
             resp = constructor.add_batch(
@@ -221,3 +224,33 @@ class TestConstructorIO(TestCase):
                 autocomplete_section="Search Suggestions"
             )
             assert resp is True
+
+    def test_exceptions(self):
+        constructor = ConstructorIO(**HTTPS_ARGS)
+        with requests_mock.mock() as mock:
+            # Test for 400 errors:
+            mock.get("https://ac.cnstrc.com/autocomplete/a?key=my_api_key",
+                     status_code=403)
+            with self.assertRaises(ConstructorInputError):
+                constructor.query(query_str="a")
+
+            # Test for 500 errors
+            mock.get("https://ac.cnstrc.com/autocomplete/a?key=my_api_key",
+                     status_code=500)
+            constructor._server_error_retries = 0
+            with self.assertRaises(ConstructorServerError):
+                constructor.query(query_str="a")
+
+        # Assert exception payload inclusion
+        self.assertEquals(str(ConstructorServerError("payload")),
+                          "Server error: payload")
+        self.assertEquals(str(ConstructorInputError("payload")),
+                          "Bad request: payload")
+        self.assertEquals(str(ConstructorError("payload")),
+                          "Undefined error with Constructor.io: payload")
+
+        # Make sure ConstructorError handling will handle other exceptions
+        with self.assertRaises(ConstructorError):
+            raise ConstructorServerError()
+        with self.assertRaises(ConstructorError):
+            raise ConstructorInputError()
