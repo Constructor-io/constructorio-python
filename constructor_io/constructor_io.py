@@ -68,28 +68,26 @@ class ConstructorIO(object):
 
     def __make_server_request(self, request_method, *args, **kwargs):
         retries_left = self._server_error_retries
+        timeout = RETRY_TIMEOUT_IN_CASE_OF_SERVER_ERROR
 
         while True:
             try:
                 # Wrap server error codes as exceptions
                 response = request_method(*args, **kwargs)
-                if round(response.status_code / 100) == 5:
+                if response.status_code // 100 == 5:
                     raise ConstructorServerError(response.text)
-                elif round(response.status_code / 100) == 4:
+                elif response.status_code // 100 == 4:
                     raise ConstructorInputError(response.text)
-                elif not round(response.status_code / 100) == 2:
+                elif not response.status_code // 100 == 2:
                     raise ConstructorError(response.text)
                 return response
             except ConstructorServerError as error:
                 # Retry in case of server error
                 if retries_left <= 0:
                     raise error
-                timeout = RETRY_TIMEOUT_IN_CASE_OF_SERVER_ERROR * (
-                    self._server_error_retries - retries_left + 1)
-                logger.warning(
-                    '%s Retrying in %d seconds. Retries left: %d' %
-                    (error, timeout, retries_left)
-                )
+                timeout += RETRY_TIMEOUT_IN_CASE_OF_SERVER_ERROR
+                logger.warning('%s Retrying in %d seconds. Retries left: %d',
+                               error, timeout, retries_left)
                 retries_left -= 1
                 time.sleep(timeout)
 
