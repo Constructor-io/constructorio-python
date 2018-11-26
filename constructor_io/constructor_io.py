@@ -234,6 +234,7 @@ class ConstructorIO(object):
 
     def _non_retrieve_method(self, method_name, method_url, request_method, data,
                              url_params=None):
+        """Process POST, PUT, PATCH, DELETE methods"""
         if not self._api_token:
             raise IOError(
                 "You must have an API token to use the %s method!" % method_name)
