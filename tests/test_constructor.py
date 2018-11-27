@@ -14,6 +14,8 @@ HTTPS_ARGS = {
 
 my_vcr = vcr.VCR(record_mode="none", decode_compressed_response=True)
 
+vcr_matchers = ("uri", "method", "body")
+
 
 class TestConstructorIO(TestCase):
     def test_encodes_parameters(self):
@@ -181,6 +183,64 @@ class TestConstructorIO(TestCase):
             resp = constructor.remove(
                 item_name="Newer_Stanley_Steamer",
                 autocomplete_section="Search Suggestions"
+            )
+            assert resp is True
+
+    def test_patch(self):
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/patch-success.yaml",
+                                 match_on=vcr_matchers):
+            constructor = ConstructorIO(**HTTPS_ARGS)
+            resp = constructor.add(
+                item_name="Stanley_Steamer",
+                autocomplete_section="Products",
+                url="http://stanley.steamer.me",
+            )
+            assert resp is True
+
+            resp = constructor.patch(
+                item_name="Stanley_Steamer",
+                suggested_score=100,
+                autocomplete_section="Products",
+                url="http://stanley.steam.er"
+            )
+            assert resp is True
+            # clean things up so that when we re-run the test we don't
+            # get an error when we add it
+            resp = constructor.remove(
+                item_name="Stanley_Steamer",
+                autocomplete_section="Products"
+            )
+            assert resp is True
+
+    def test_patch_batch(self):
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/patch-batch-success.yaml",
+                                 match_on=vcr_matchers):
+            constructor = ConstructorIO(**HTTPS_ARGS)
+            resp = constructor.add_batch(
+                items=[
+                    {"item_name": "Stanley_Steamer", "url": "http://stanley.steamer.me"},
+                    {"item_name": "Everest", "group_ids": ["Mountains"]},
+                ],
+                autocomplete_section="Products",
+            )
+            assert resp is True
+
+            resp = constructor.patch_batch(
+                items=[
+                    {"item_name": "Stanley_Steamer", "url": "http://stanley.steam.er"},
+                    {"item_name": "Everest", "group_ids": ["Mountains", "High Mountains"]},
+                ],
+                autocomplete_section="Products",
+            )
+            assert resp is True
+            # clean things up so that when we re-run the test we don't
+            # get an error when we add it
+            resp = constructor.remove_batch(
+                items=[
+                    {"item_name": "Stanley_Steamer"},
+                    {"item_name": "Everest"},
+                ],
+                autocomplete_section="Products"
             )
             assert resp is True
 

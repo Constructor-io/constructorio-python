@@ -103,115 +103,67 @@ class ConstructorIO(object):
                                           auth=(self._api_token, ""))
         return resp.json()
 
-    def extract_params_from_kwargs(self, params, **kwargs):
+    def _add_params_from_kwargs(self, params, **kwargs):
         # The '_force' kwarg just indicates that `force` should be added
         # to the query string, but it shouldn't be in the JSON body of the
         # request
         params.update({k: v for k, v in kwargs.items() if k != '_force'})
 
     def add(self, item_name, autocomplete_section, **kwargs):
-        if not self._api_token:
-            raise IOError("You must have an API token to use the Add method!")
-        params = {"item_name": item_name,
-                  "autocomplete_section": autocomplete_section}
-        url_params = {}
-        self.extract_params_from_kwargs(params, **kwargs)
-        request_method = getattr(requests, 'post')
-        # force is used to do an add_or_update
-        if kwargs.get("_force", 0) == 1:
-            url_params["force"] = 1
-            request_method = getattr(requests, 'put')
-        url = self._make_url("v1/item", url_params)
-        self.__make_server_request(request_method,
-                                   url,
-                                   json=params,
-                                   auth=(self._api_token, ""))
-        return True
+        return self._item_method(
+            'Add', requests.post,
+            dict(kwargs, item_name=item_name, autocomplete_section=autocomplete_section),
+        )
 
     def add_or_update(self, item_name, autocomplete_section, **kwargs):
-        if not self._api_token:
-            raise IOError(
-                "You must have an API token to use the Add or Update method!")
-        kwargs["_force"] = 1
-        return self.add(item_name, autocomplete_section, **kwargs)
+        return self._item_method(
+            'Add or Update', requests.put,
+            dict(kwargs, item_name=item_name, autocomplete_section=autocomplete_section),
+            url_params={'force': 1}
+        )
 
     def add_batch(self, items, autocomplete_section, **kwargs):
-        if not self._api_token:
-            raise IOError(
-                "You must have an API token to use the Add Batch method!")
-        for item in items:
-            self.extract_params_from_kwargs(item, **kwargs)
-        request_method = getattr(requests, 'post')
-        url_params = {}
-        # force is used to denote an add_or_update
-        if kwargs.get("_force", 0) == 1:
-            url_params["force"] = 1
-            request_method = getattr(requests, 'put')
-        params = {"items": items, "autocomplete_section": autocomplete_section}
-        url = self._make_url("v1/batch_items", url_params)
-        self.__make_server_request(request_method,
-                                   url,
-                                   json=params,
-                                   auth=(self._api_token, ""))
-        return True
+        return self._item_batch_method(
+            'Add Batch', requests.post,
+            self._format_items_batch_data(items, autocomplete_section, **kwargs)
+        )
 
     def add_or_update_batch(self, items, autocomplete_section, **kwargs):
-        if not self._api_token:
-            raise IOError("You must have an API token to use the Add or Update"
-                          "Batch method!")
-        kwargs["_force"] = 1
-        return self.add_batch(items, autocomplete_section, **kwargs)
+        return self._item_batch_method(
+            'Add or Update Batch', requests.put,
+            self._format_items_batch_data(items, autocomplete_section, **kwargs),
+            url_params={"force": 1}
+        )
 
     def remove(self, item_name, autocomplete_section):
-        params = {"item_name": item_name,
-                  "autocomplete_section": autocomplete_section}
-        url = self._make_url("v1/item")
-        if not self._api_token:
-            raise IOError(
-                "You must have an API token to use the Remove method!")
-        self.__make_server_request(requests.delete,
-                                   url,
-                                   json=params,
-                                   auth=(self._api_token, ""))
-        return True
+        return self._item_method(
+            'Remove', requests.delete,
+            dict(item_name=item_name, autocomplete_section=autocomplete_section)
+        )
 
     def remove_batch(self, items, autocomplete_section):
-        if not self._api_token:
-            raise IOError(
-                "You must have an API token to use the Remove Batch method!")
-        url_params = {}
-        params = {"items": items, "autocomplete_section": autocomplete_section}
-        url = self._make_url("v1/batch_items", url_params)
-        self.__make_server_request(requests.delete,
-                                   url,
-                                   json=params,
-                                   auth=(self._api_token, ""))
-        return True
+        return self._item_batch_method(
+            'Remove Batch', requests.delete,
+            self._format_items_batch_data(items, autocomplete_section),
+        )
 
     def modify(self, item_name, autocomplete_section, **kwargs):
-        params = {"item_name": item_name,
-                  "autocomplete_section": autocomplete_section}
-        if "suggested_score" in kwargs:
-            params["suggested_score"] = kwargs["suggested_score"]
-        if "keywords" in kwargs:
-            params["keywords"] = kwargs["keywords"]
-        if "url" in kwargs:
-            params["url"] = kwargs["url"]
-        if "new_item_name" in kwargs:
-            params["new_item_name"] = kwargs["new_item_name"]
-        if "description" in kwargs:
-            params["description"] = kwargs["description"]
-        if "image_url" in kwargs:
-            params["image_url"] = kwargs["image_url"]
-        url = self._make_url("v1/item")
-        if not self._api_token:
-            raise IOError(
-                "You must have an API token to use the Modify method!")
-        self.__make_server_request(requests.put,
-                                   url,
-                                   json=params,
-                                   auth=(self._api_token, ""))
-        return True
+        return self._item_method(
+            'Modify', requests.put,
+            dict(kwargs, item_name=item_name, autocomplete_section=autocomplete_section)
+        )
+
+    def patch(self, item_name, autocomplete_section, **kwargs):
+        return self._item_method(
+            'Patch', requests.patch,
+            dict(kwargs, item_name=item_name, autocomplete_section=autocomplete_section)
+        )
+
+    def patch_batch(self, items, autocomplete_section, **kwargs):
+        return self._item_batch_method(
+            'Patch Batch', requests.patch,
+            self._format_items_batch_data(items, autocomplete_section, **kwargs),
+        )
 
     def track_conversion(self, term, autocomplete_section, **kwargs):
         params = {
@@ -260,5 +212,36 @@ class ConstructorIO(object):
         self.__make_server_request(requests.post,
                                    url,
                                    json=params,
+                                   auth=(self._api_token, ""))
+        return True
+
+    def _item_method(self, method_name, request_method, data, url_params=None):
+        return self._non_retrieve_method(
+            method_name=method_name, method_url="v1/item", request_method=request_method,
+            data=data, url_params=url_params
+        )
+
+    def _item_batch_method(self, method_name, request_method, data, url_params=None):
+        return self._non_retrieve_method(
+            method_name=method_name, method_url="v1/batch_items", request_method=request_method,
+            data=data, url_params=url_params
+        )
+
+    def _format_items_batch_data(self, items, autocomplete_section, **kwargs):
+        for item in items:
+            self._add_params_from_kwargs(item, **kwargs)
+        return {"items": items, "autocomplete_section": autocomplete_section}
+
+    def _non_retrieve_method(self, method_name, method_url, request_method, data,
+                             url_params=None):
+        """Process POST, PUT, PATCH, DELETE methods"""
+        if not self._api_token:
+            raise IOError(
+                "You must have an API token to use the %s method!" % method_name)
+
+        url = self._make_url(method_url, url_params or {})
+        self.__make_server_request(request_method,
+                                   url,
+                                   json=data,
                                    auth=(self._api_token, ""))
         return True
