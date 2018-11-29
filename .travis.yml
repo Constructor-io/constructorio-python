@@ -20,10 +20,10 @@ deploy:
   - provider: pypi
     skip_cleanup: true
     distributions: sdist
-    user: "Matvey-Kuk"
+    user: "Constructor"
     password:
-      secure: FvgbLcXnBiqo6QJ/R/VM/YVoNQAfgP8NfBKDY1N/xC0Ytw5/Hul8tKoXbSPcE5tImtE3+sXw5ogaMsKzsBbzOVBiQLeFTzAphN9f8WxJH/1g59Az4vyWN7BkA4zp+Y12CydupjKpFJIxyQiWWEGCu2siazaSnNqoWAiYrS3q2dRau5nfsoftlJy1TWpxET+UpRIUc6iwmsvovy3fxTcAPSqZhaC3X+SJMK+fojqxOS3edaxVV7sZqlwVHI2NXjxRYd/62l2YEUNwpCvZxsLSTHeSSzDuGnjSrMUXHVYEiPhe5uajAQ7zuxFUam+hFXNOWipD2sVsMsNOEC1dUZG80rPik6CWi9+y8MemZDm+KVJVn8fTKU18OnRI6vZsICVzTKCQ2f83pc1nOYXwdMZw0JS5Xkta3piVcjJoNY8npi8LYFhK1cjO8jbj2oV0GjYGjDsaPKGnku/Ka36uufsR7iz2u2Db8r53bIwkugDnhl9rvuNEUwtKZrWuq3fiKUiFRsAbIN47xd6H24S9I70TbO7tkjgYANiyRCYKiiK+ayFryD+lQVBdr1QsRW2bFZAJwS5wFHSBw/PFImCPpsIV8rHuOjP88vSpfAn4iN9OtmIdsMwTYWlStSk9HQvej3yRdWIjMspuPiIuh8ByBILte/j7kbFzxM0NuadZef4hOso=
+      secure: ULDlGLHMGbuWOPchVcbJx1lDHHKIm1X62TyMqlbu0TFVKK6n+cbmGxLR4k/oVzcGEc/tTftOmM0jThkE4+krbekMovGjvwmxzyXsGvlXsCpfOvE7anjsmA2+bKVAyjtoXxyz2uarJaiqK9t6kl3agJ4O8gi4LfwdS5uZnFmE8CjjsiTxhRPhQTl14jhI57L0pOsSTSemwjy0x0zJ83WwMLOViA9FOn9N8do5S2HPNFH4gqZV8WAU4A4L2XA+OmpWKHoMdEbxAhnM6ObaHUBy1xMBpD/Cq7HM45xh+iWvXQ3OdWywU8X2zGFnfi8KsOZO5mNX2nFKgGMsdZS/p/2vLY2lSo/qSokDDqdn9FP5sItSa7BHKcMPQGK9vfEMkeYfpoRRFTa/ZXOSvE/hdHIT/qqNP4d/fzAwC6p42nDREwqvBI1LcY+rMi4KCAvH3Z+d4vV6eWQ/AUo/fIgwT0jbbG+fXBqe3zn4qdwC3hqWUcNpXbarT39UduZADgbO3vGuJfLYS8k0jWU45609/CkSC5RV0LrHUGY2atTcNBhv0hAOUTCouVtaiCNTNAr79YrQwTv9aFDVB1VdZkjRFgoK3A2OgB0Jh4FkprDbycMTGu4UkYGspbK4a943TK/OpipAPeSji7orZzvFgy0tEMWhBtxFwWurt3PaUdXcc/ctDVo=
     on:
       branch: master
       condition: $TRAVIS_PYTHON_VERSION = "3.6"
-      tags: true 
+      tags: true
