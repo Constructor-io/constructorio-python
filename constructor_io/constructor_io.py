@@ -175,7 +175,7 @@ class ConstructorIO(object):
             {'autocomplete_section': autocomplete_section}
         )
 
-        resp = self._ConstructorIO__make_server_request(
+        resp = self.__make_server_request(
             requests.put,
             url,
             json={'refined_queries': refined_queries},
