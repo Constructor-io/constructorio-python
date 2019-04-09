@@ -244,6 +244,22 @@ class TestConstructorIO(TestCase):
             )
             assert resp is True
 
+    def test_get_refined_queries(self):
+        with my_vcr.use_cassette("fixtures/ac.cnstrc.com/get-refined-queries-success.yaml"):
+            constructor = ConstructorIO(**HTTPS_ARGS)
+            refined_queries = constructor.get_refined_queries(
+                query="query_1",
+                autocomplete_section="Products"
+            )
+            assert refined_queries == [
+                {
+                    "query": "query_1",
+                    "whitelist_rule": None,
+                    "blacklist_rules": [],
+                    "boost_rules": []
+                }
+            ]
+
     def test_conversion(self):
         with my_vcr.use_cassette(
                 "fixtures/ac.cnstrc.com/conversion-success.yaml"):

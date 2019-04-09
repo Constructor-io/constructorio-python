@@ -103,12 +103,6 @@ class ConstructorIO(object):
                                           auth=(self._api_token, ""))
         return resp.json()
 
-    def _add_params_from_kwargs(self, params, **kwargs):
-        # The '_force' kwarg just indicates that `force` should be added
-        # to the query string, but it shouldn't be in the JSON body of the
-        # request
-        params.update({k: v for k, v in kwargs.items() if k != '_force'})
-
     def add(self, item_name, autocomplete_section, **kwargs):
         return self._item_method(
             'Add', requests.post,
@@ -164,6 +158,14 @@ class ConstructorIO(object):
             'Patch Batch', requests.patch,
             self._format_items_batch_data(items, autocomplete_section, **kwargs),
         )
+
+    def get_refined_queries(self, autocomplete_section, query=None):
+        args = {'autocomplete_section': autocomplete_section}
+        if query:
+            args['query'] = query
+        url = self._make_url("v1/refined_queries", args)
+        resp = self.__make_server_request(requests.get, url)
+        return resp.json()['refined_queries']
 
     def track_conversion(self, term, autocomplete_section, **kwargs):
         params = {
@@ -228,9 +230,25 @@ class ConstructorIO(object):
         )
 
     def _format_items_batch_data(self, items, autocomplete_section, **kwargs):
+        """
+        Format given items, autocompelte section name and keyword arguments in a format suitable
+        for batch items ingestion endpoint
+        :param items: iterable of items dictionaries
+        :param autocomplete_section: autocomplete section name
+        :param kwargs: keyword arguments to add into items dictionaries
+        :return:
+        """
         for item in items:
             self._add_params_from_kwargs(item, **kwargs)
         return {"items": items, "autocomplete_section": autocomplete_section}
+
+    def _add_params_from_kwargs(self, params, **kwargs):
+        """
+        The '_force' kwarg just indicates that `force` should be added
+        to the query string, but it shouldn't be in the JSON body of the
+        request
+        """
+        params.update({k: v for k, v in kwargs.items() if k != '_force'})
 
     def _non_retrieve_method(self, method_name, method_url, request_method, data,
                              url_params=None):
