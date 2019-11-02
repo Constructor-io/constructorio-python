@@ -3,7 +3,7 @@ contextlib2==0.4.0
 funcsigs==0.4
 mock==1.3.0
 pbr==1.8.0
-requests==2.7.0
+requests==2.20.0
 six==1.10.0
 vcrpy==1.11.1
 wrapt==1.10.5
