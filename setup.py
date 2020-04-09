@@ -1,14 +1,16 @@
 from setuptools import setup
-from pip._internal.req import parse_requirements
+from pkg_resources import parse_requirements
 
 VERSION = "0.0.11"
 
-requirements_py3 = [str(r.req) for r in parse_requirements('requirements.txt', session=False)]
-requirements_py2 = [str(r.req) for r in parse_requirements('requirements-py2.txt', session=False)]
-install_requires = [
-    '%s; python_version>="3"' % req for req in requirements_py3
-] + [
-    '%s; python_version<"3"' % req for req in requirements_py2
+with open('requirements.txt', 'r') as f:
+    requirements = list(map(str, parse_requirements(f)))
+
+with open('requirements-py2.txt', 'r') as f:
+    extra_py2_requirements = list(map(str, parse_requirements(f)))
+
+install_requires = requirements + [
+    '%s; python_version<"3"' % req for req in extra_py2_requirements
 ]
 
 setup(
