@@ -1,5 +1,4 @@
 from setuptools import setup
-from pkg_resources import parse_requirements
 
 VERSION = "0.0.11"
 
