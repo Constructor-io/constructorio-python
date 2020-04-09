@@ -3,15 +3,6 @@ from pkg_resources import parse_requirements
 
 VERSION = "0.0.11"
 
-with open('requirements.txt', 'r') as f:
-    requirements = list(map(str, parse_requirements(f)))
-
-with open('requirements-py2.txt', 'r') as f:
-    extra_py2_requirements = list(map(str, parse_requirements(f)))
-
-install_requires = requirements + [
-    '%s; python_version<"3"' % req for req in extra_py2_requirements
-]
 
 setup(
     name="constructor-io",
@@ -23,7 +14,9 @@ setup(
     author="Constructor.io",
     author_email="info@constructor.io",
     url="https://www.constructor.io",
-    install_requires=install_requires,
+    install_requires=[
+        'requests~=2.7'
+    ],
     packages=["constructor_io"],
     classifiers=[
         "Topic :: Internet",
