@@ -1,6 +1,15 @@
 from setuptools import setup
+from pip._internal.req import parse_requirements
 
 VERSION = "0.0.11"
+
+requirements_py3 = [str(r.req) for r in parse_requirements('requirements.txt', session=False)]
+requirements_py2 = [str(r.req) for r in parse_requirements('requirements-py2.txt', session=False)]
+install_requires = [
+    '%s; python_version>="3"' % req for req in requirements_py3
+] + [
+    '%s; python_version<"3"' % req for req in requirements_py2
+]
 
 setup(
     name="constructor-io",
@@ -12,10 +21,7 @@ setup(
     author="Constructor.io",
     author_email="info@constructor.io",
     url="https://www.constructor.io",
-    install_requires=[
-        "requests==2.7.0",
-        "vcrpy==1.11.1",
-    ],
+    install_requires=install_requires,
     packages=["constructor_io"],
     classifiers=[
         "Topic :: Internet",
