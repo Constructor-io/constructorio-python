@@ -1,5 +1,18 @@
-__pycache__
-*.pyc
-MANIFEST
-dist
-.idea/
+ # Byte-compiled / optimized / DLL files
+ __pycache__/
+ *.py[cod]
+ *$py.class
+ 
+ # IDE
+ .idea/
+ 
+ # Distribution / packaging
+ dist
+ MANIFEST
+ 
+ # Unit test / coverage reports
+ .cache
+ 
+ # Environments
+ venv/
+
