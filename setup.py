@@ -2,6 +2,7 @@ from setuptools import setup
 
 VERSION = "0.0.11"
 
+
 setup(
     name="constructor-io",
     version=VERSION,
@@ -13,8 +14,7 @@ setup(
     author_email="info@constructor.io",
     url="https://www.constructor.io",
     install_requires=[
-        "requests==2.7.0",
-        "vcrpy==1.11.1",
+        'requests~=2.7'
     ],
     packages=["constructor_io"],
     classifiers=[
