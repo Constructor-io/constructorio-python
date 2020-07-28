@@ -22,9 +22,8 @@ class TestConstructorIO(TestCase):
         constructor = ConstructorIO(api_token="boinka",
                                     key="doinka")
         serialized_params = constructor._serialize_params(
-            {'foo': [1, 2], 'bar': {'baz': ['a', 'b']}}, sort=True)
-        assert serialized_params == "bar=%7B%27baz%27%3A+%5B%27a%27%2C+" \
-                                    "%27b%27%5D%7D&foo=%5B1%2C+2%5D"
+            {'foo': [1, 2], 'bar': ['a', 'b']}, sort=True)
+        assert serialized_params == 'bar=a&bar=b&foo=1&foo=2'
 
     def test_key_argument(self):
         # Usual:

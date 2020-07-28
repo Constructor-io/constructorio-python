@@ -57,7 +57,7 @@ class ConstructorIO(object):
         """
         if sort:
             params = sorted(params.items(), key=lambda val: val[0])
-        return urlencode(params)
+        return urlencode(params, doseq=True)
 
     def _make_url(self, endpoint, params=None):
         if not params:
