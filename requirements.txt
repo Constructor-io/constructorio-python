@@ -5,5 +5,5 @@ pbr==1.8.0
 requests==2.21.0
 six==1.10.0
 vcrpy==1.11.1
-PyYAML==5.2
+PyYAML==5.4
 wrapt==1.10.5
