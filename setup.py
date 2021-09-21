@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from setuptools import setup
 
 VERSION = "0.0.12"
@@ -14,19 +17,7 @@ setup(
     author_email="info@constructor.io",
     url="https://www.constructor.io",
     install_requires=[
-        'requests~=2.7'
+        'requests~=2.26'
     ],
     packages=["constructor_io"],
-    classifiers=[
-        "Topic :: Internet",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: Implementation :: CPython"
-    ]
 )
