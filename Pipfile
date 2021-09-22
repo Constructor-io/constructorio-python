@@ -11,6 +11,7 @@ pylint = "*"
 pytest = "*"
 pytest-cov = "*"
 pre-commit = "*"
+sphinx = "*"
 
 [requires]
 python_version = "3.9"
