@@ -4,12 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pylint = "*"
-isort = "*"
 
 [dev-packages]
+isort = "*"
+pylint = "*"
 pytest = "*"
 pytest-cov = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.9"

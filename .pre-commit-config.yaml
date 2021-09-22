@@ -1,0 +1,26 @@
+repos:
+- repo: local
+  hooks:
+  - id: isort
+    name: isort
+    stages: [commit]
+    language: system
+    entry: pipenv run isort
+    types: [python]
+
+  - id: pylint
+    name: pylint
+    stages: [push]
+    language: system
+    entry: pipenv run pylint
+    types: [python]
+    exclude: setup.py
+
+  - id: pytest
+    name: pytest
+    stages: [push]
+    language: system
+    entry: pipenv run pytest
+    types: [python]
+    pass_filenames: false
+
