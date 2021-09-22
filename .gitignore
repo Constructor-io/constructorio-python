@@ -13,6 +13,8 @@ MANIFEST
 
 # Unit test / coverage reports
 .cache
+coverage/
+.coverage
 
 # Environments
 venv/
