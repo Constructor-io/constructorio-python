@@ -23,7 +23,7 @@ Once imported, an instance of the client can be created as follows:
 from constructorio_python.constructorio import ConstructorIO
 
 constructorio = ConstructorIO({
-    "api_key": "APIKEY",
+    "api_key": "YOUR API KEY",
 })
 ```
 
