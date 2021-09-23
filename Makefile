@@ -16,6 +16,6 @@ docs: Makefile
 	rm -r $(BUILDDIR)
 
 install: Makefile
-	pipenv install
+	pipenv install --dev
 	pipenv run pre-commit install --hook-type pre-commit --hook-type pre-push
 
