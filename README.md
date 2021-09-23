@@ -25,8 +25,6 @@ from constructorio_python.constructorio import ConstructorIO
 constructorio = ConstructorIO({
     "api_key": "APIKEY",
 })
-
-
 ```
 
 ## 4. Retrieve Results
@@ -38,7 +36,7 @@ Full API documentation is available on [Github Pages](https://constructor-io.git
 ## Development
 
 ```bash
-pipenv install        # install dependencies
+make install        # install dependencies
 pipenv run pylint     # run lint
 pipenv run pytest     # run tests with coverage report
 make docs             # output documentation to `./docs` directory
