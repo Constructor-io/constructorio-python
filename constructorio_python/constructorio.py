@@ -8,6 +8,7 @@ from constructorio_python.modules.search import Search
 
 class ConstructorIO:
     """ConstructorIO Python Client"""
+
     def __init__(self) -> None:
         self.autocomplete = Autocomplete()
         self.search = Search()
