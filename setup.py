@@ -13,4 +13,7 @@ setup(
     author_email="info@constructor.io",
     url="https://www.constructor.io",
     packages=["constructorio_python"],
+    install_requires=[
+        'requests~=2.26'
+    ],
 )
