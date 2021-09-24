@@ -1,7 +1,7 @@
-"""Search Module"""
+'''Search Module'''
 
 class Search:
-    """Search Class"""
+    '''Search Class'''
 
     def __init__(self) -> None:
         print('Search')

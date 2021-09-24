@@ -1,4 +1,4 @@
-"""ConstructorIO Python Client"""
+'''ConstructorIO Python Client'''
 
 from constructorio_python.modules.autocomplete import Autocomplete
 from constructorio_python.modules.browse import Browse
@@ -7,7 +7,7 @@ from constructorio_python.modules.search import Search
 
 
 class ConstructorIO:
-    """ConstructorIO Python Client"""
+    '''ConstructorIO Python Client'''
 
     def __init__(self) -> None:
         self.autocomplete = Autocomplete()

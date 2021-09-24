@@ -1,7 +1,7 @@
-"""Browse Module"""
+'''Browse Module'''
 
 class Browse:
-    """Browse Class"""
+    '''Browse Class'''
 
     def __init__(self) -> None:
         print('Browse')

@@ -1,7 +1,7 @@
-"""Recommendations Module"""
+'''Recommendations Module'''
 
 class Recommendations:
-    """Recommendations Class"""
+    '''Recommendations Class'''
 
     def __init__(self) -> None:
         print('Recommendations')
