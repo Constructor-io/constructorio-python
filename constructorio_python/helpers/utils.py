@@ -33,7 +33,7 @@ def clean_params(params_obj):
             # Replace non-breaking spaces (or any other type of spaces caught by the regex)
             # - with a regular white space
             cleaned_params[key] = our_encode_uri_component(value)
-        else:
+        elif value is not None:
             cleaned_params[key] = value
 
     return cleaned_params
@@ -46,8 +46,6 @@ def our_encode_uri_component(string):
             "s": sub(r'\s', ' ', parsed_str_obj['s'][0])
         }
 
-        return urlencode(decoded).split('=')[1];
+        return urlencode(decoded).split('=')[1]
 
     return None
-
-

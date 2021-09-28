@@ -17,9 +17,10 @@ class ConstructorIO:
         security_token = options.get('security_token')
         version = options.get('version')
         service_url = options.get('service_url')
+        requests = options.get('requests')
 
         if not api_key or not isinstance(api_key, str):
-            raise Exception('API key is a required parameter of type string');
+            raise Exception('API key is a required parameter of type string')
 
         self.__options = {
             'api_key': api_key,
@@ -27,6 +28,7 @@ class ConstructorIO:
             'security_token': security_token or '',
             'version': version or __version__,
             'service_url': service_url or 'https://ac.cnstrc.com',
+            'requests': requests,
         }
 
         self.autocomplete = Autocomplete(self.__options)

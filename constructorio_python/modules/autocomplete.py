@@ -3,7 +3,7 @@
 from time import time
 from urllib.parse import quote, urlencode
 
-import requests
+import requests as r
 
 from constructorio_python.helpers.utils import (
     clean_params, create_auth_header, throw_http_exception_from_response)
@@ -41,14 +41,19 @@ def create_autocomplete_url(query, parameters, user_parameters, options):
                 query_params[f'num_results_{key}'] = value
 
         if parameters.get('filters'):
-            query_params['filters'] = parameters.get('filters')
+            filters = parameters.get('filters')
+            if isinstance(filters, dict):
+                for key, value in filters.items():
+                    query_params[f'filters[{key}]'] = value
+            else:
+                raise Exception('filters must be a dictionary')
 
         if parameters.get('hidden_fields'):
             query_params['hidden_fields'] = parameters.get('hidden_fields')
 
     query_params['_dt'] = int(time()*1000.0)
     query_params = clean_params(query_params)
-    query_string = urlencode(query_params)
+    query_string = urlencode(query_params, doseq=True)
 
     return f'{options.get("service_url")}/autocomplete/{quote(query)}?{query_string}'
 
@@ -58,12 +63,17 @@ class Autocomplete:
     def __init__(self, options):
         self.__options = options or {}
 
-    def get_autocomplete_results(self, query, parameters, user_parameters):
+    def get_autocomplete_results(self, query, parameters=None, user_parameters=None):
+        if not parameters:
+            parameters = {}
+        if not user_parameters:
+            user_parameters = {}
         headers = {}
         request_url = create_autocomplete_url(query, parameters, user_parameters, self.__options)
         security_token = self.__options.get('security_token')
         user_ip = user_parameters.get('user_ip')
         user_agent = user_parameters.get('user_agent')
+        requests = self.__options.get('requests') or r
 
         # Append security token as 'x-cnstrc-token' if available
         if security_token and isinstance(security_token, str):
@@ -77,7 +87,11 @@ class Autocomplete:
         if user_agent and isinstance(user_agent, str):
             headers['User-Agent'] = user_agent
 
-        response = requests.get(request_url, auth=create_auth_header(self.__options))
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=headers
+        )
 
         if not response.ok:
             throw_http_exception_from_response(response)
