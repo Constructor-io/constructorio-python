@@ -10,6 +10,7 @@ from constructorio_python.helpers.utils import (
 
 
 def create_autocomplete_url(query, parameters, user_parameters, options):
+    # pylint: disable=too-many-branches
     '''Create URL from supplied query (term) and parameters'''
 
     query_params = {
@@ -58,6 +59,7 @@ def create_autocomplete_url(query, parameters, user_parameters, options):
     return f'{options.get("service_url")}/autocomplete/{quote(query)}?{query_string}'
 
 class Autocomplete:
+    # pylint: disable=too-few-public-methods
     '''Autocomplete Class'''
 
     def __init__(self, options):
