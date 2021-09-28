@@ -1,4 +1,4 @@
-'''ConstructorIO Python Client'''
+'''ConstructorIO Python Package'''
 
 __version__ = 1.0
 
@@ -9,7 +9,16 @@ from constructorio_python.modules.search import Search
 
 
 class ConstructorIO:
-    '''ConstructorIO Python Client'''
+    '''
+        ConstructorIO Python Client
+
+        :param str api_key: Constructor.io API key
+        :param str api_token: Constructor.io API token
+        :param str security_token: Constructor security token
+        :param str service_url: API URL endpoint
+
+        :return: class
+    '''
 
     def __init__(self, options) -> None:
         api_key = options.get('api_key')
