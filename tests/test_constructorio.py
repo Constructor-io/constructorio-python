@@ -7,5 +7,5 @@ class TestConstructorIO():
     '''This tests nothing. Here as a placeholder'''
 
     def test_nothing(self):
-        client = ConstructorIO()
+        client = ConstructorIO({})
         assert client is not None
