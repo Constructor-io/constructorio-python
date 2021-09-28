@@ -9,10 +9,10 @@ from pytest import raises
 from constructorio_python.constructorio import ConstructorIO
 from constructorio_python.helpers.exception import HttpException
 
-test_api_key = environ['TEST_API_KEY']
+TEST_API_KEY = environ['TEST_API_KEY']
 VALID_CLIENT_ID = '2b23dd74-5672-4379-878c-9182938d2710'
 VALID_SESSION_ID = 2
-VALID_OPTIONS = { 'api_key': test_api_key }
+VALID_OPTIONS = { 'api_key': TEST_API_KEY }
 QUERY = 'item'
 
 def test_with_valid_query_and_identifiers():
@@ -209,35 +209,35 @@ def test_with_valid_query_and_hidden_fields():
     assert response.get('request').get('hidden_fields') == hidden_fields
 
 def test_with_invalid_query():
-    '''Should be rejected when invalid query is provided'''
+    '''Should raise exception when invalid query is provided'''
 
     with raises(Exception, match=r'query is a required parameter of type string'):
         autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
         autocomplete.get_autocomplete_results([])
 
 def test_with_no_query():
-    '''Should be rejected when no query is provided'''
+    '''Should raise exception when no query is provided'''
 
     with raises(Exception, match=r'query is a required parameter of type string'):
         autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
         autocomplete.get_autocomplete_results(None)
 
 def test_with_invalid_num_results():
-    '''Should be rejected when invalid num_results parameter is provided'''
+    '''Should raise exception when invalid num_results parameter is provided'''
 
     with raises(HttpException, match=r'num_results must be an integer'):
         autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
         autocomplete.get_autocomplete_results(QUERY, { 'num_results': 'abc' })
 
 def test_with_invalid_filters():
-    '''Should be rejected when invalid filters parameter is provided'''
+    '''Should raise exception when invalid filters parameter is provided'''
 
     with raises(Exception, match=r'filters must be a dictionary'):
         autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
         autocomplete.get_autocomplete_results(QUERY, { 'filters': 'abc' })
 
 def test_with_invalid_api_key():
-    '''Should be rejected when invalid api_key is provided'''
+    '''Should raise exception when invalid api_key is provided'''
 
     with raises(
             HttpException,
@@ -250,7 +250,7 @@ def test_with_invalid_api_key():
         autocomplete.get_autocomplete_results(QUERY)
 
 def test_with_no_api_key():
-    '''Should be rejected when no api_key is provided'''
+    '''Should raise exception when no api_key is provided'''
 
     with raises(Exception, match=r'API key is a required parameter of type string'):
         autocomplete = ConstructorIO({}).autocomplete

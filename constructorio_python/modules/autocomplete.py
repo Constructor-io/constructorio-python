@@ -91,6 +91,7 @@ class Autocomplete:
             parameters = {}
         if not user_parameters:
             user_parameters = {}
+
         headers = {}
         request_url = create_autocomplete_url(query, parameters, user_parameters, self.__options)
         security_token = self.__options.get('security_token')
