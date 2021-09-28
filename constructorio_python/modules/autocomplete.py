@@ -66,6 +66,27 @@ class Autocomplete:
         self.__options = options or {}
 
     def get_autocomplete_results(self, query, parameters=None, user_parameters=None):
+        '''
+        Retrieve autocomplete results from API
+
+        :param str query: Autocomplete query
+        :param dict parameters: Additional parameters to refine result set
+        :param int parameters.num_results: The total number of results to return
+        :param dict parameters.filters: Filters used to refine search
+        :param int parameters.results_per_section: Number of results to return per section
+        :param list parameters.hidden_fields: Hidden metadata fields to return
+        :param dict user_parameters: Parameters relevant to the user request
+        :param int user_parameters.session_id: Session ID, utilized to personalize results
+        :param str user_parameters.client_id: Client ID, utilized to personalize results
+        :param str user_parameters.user_id: User ID, utilized to personalize results
+        :param str user_parameters.segments: User segments
+        :param dict user_parameters.test_cells: User test cells
+        :param str user_parameters.user_ip: Origin user IP, from client
+        :param str user_parameters.user_agent: Origin user agent, from client
+
+        :return: dict
+        '''
+
         if not parameters:
             parameters = {}
         if not user_parameters:
