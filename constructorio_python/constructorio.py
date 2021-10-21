@@ -46,7 +46,11 @@ class ConstructorIO:
         self.recommendations = Recommendations()
 
     def get_options(self):
+        '''Get client options'''
+
         return self.__options
 
     def set_options(self, options):
+        '''Set client options'''
+
         self.__options = options

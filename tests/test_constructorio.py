@@ -51,12 +51,17 @@ def test_with_valid_api_key_and_options():
 def test_with_invalid_api_key():
     '''Should throw an error when invalid API key is provided'''
 
-    with pytest.raises(ConstructorException, match=r'API key is a required parameter of type string'):
+    with pytest.raises(
+        ConstructorException,
+        match=r'API key is a required parameter of type string'
+    ):
         ConstructorIO({'api_key': 123456})
 
 def test_with_no_api_key():
     '''Should throw an error when no API key is provided'''
 
-    with pytest.raises(ConstructorException, match=r'API key is a required parameter of type string'):
+    with pytest.raises(
+        ConstructorException,
+        match=r'API key is a required parameter of type string'
+    ):
         ConstructorIO({'api_key': None})
-
