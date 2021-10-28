@@ -33,7 +33,7 @@ class ConstructorServerError(ConstructorError):
 class ConstructorIO(object):
     def __init__(self, api_token, key=None, protocol="https",
                  host="ac.cnstrc.com", autocomplete_key=None,
-                 server_error_retries=10):
+                 server_error_retries=10, verify=True):
 
         # Support backward capability after
         # renaming `autocomplete_key` to `key`
@@ -47,6 +47,7 @@ class ConstructorIO(object):
         self._protocol = protocol
         self._host = host
         self._server_error_retries = server_error_retries
+        self._verify = verify
 
     def _serialize_params(self, params, sort=False):
         """
@@ -73,7 +74,7 @@ class ConstructorIO(object):
         while True:
             try:
                 # Wrap server error codes as exceptions
-                response = request_method(*args, **kwargs)
+                response = request_method(*args, **kwargs, verify=self._verify)
                 if response.status_code // 100 == 5:
                     raise ConstructorServerError(response.text)
                 elif response.status_code // 100 == 4:
