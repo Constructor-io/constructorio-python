@@ -1,3 +1,3 @@
 from .constructor_io import *  # noqa
-__version__ = '0.0.12'
+__version__ = '0.0.13'
 VERSION = tuple(map(int, __version__.split('.')))
