@@ -41,6 +41,6 @@ class ConstructorIO:
         }
 
         self.autocomplete = Autocomplete(self.__options)
-        self.search = Search()
+        self.search = Search(self.__options)
         self.browse = Browse()
         self.recommendations = Recommendations()
