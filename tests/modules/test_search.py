@@ -25,7 +25,11 @@ def test_with_valid_query_and_identifiers():
         'session_id': VALID_SESSION_ID,
     }
     search = ConstructorIO(VALID_OPTIONS).search
-    response = search.get_search_results(QUERY, { 'section': SECTION }, {**client_session_identifiers})
+    response = search.get_search_results(
+        QUERY,
+        { 'section': SECTION },
+        {**client_session_identifiers}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -39,7 +43,11 @@ def test_with_valid_query_and_test_cells():
 
     test_cells = { 'foo': 'bar' }
     search = ConstructorIO(VALID_OPTIONS).search
-    response = search.get_search_results(QUERY, { 'section': SECTION }, { 'test_cells': test_cells })
+    response = search.get_search_results(
+        QUERY,
+        { 'section': SECTION },
+        { 'test_cells': test_cells }
+    )
     first_key = next(iter(test_cells.keys()))
 
     assert isinstance(response.get('request'), dict)
@@ -190,7 +198,11 @@ def test_with_valid_query_and_user_agent():
 
     with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
         search = ConstructorIO({ **VALID_OPTIONS, 'requests': requests }).search
-        response = search.get_search_results(QUERY, { 'section': SECTION }, { 'user_agent': user_agent })
+        response = search.get_search_results(
+            QUERY,
+            { 'section': SECTION },
+            { 'user_agent': user_agent }
+        )
         headers = mocked_requests.call_args.kwargs.get('headers')
 
         assert isinstance(response.get('request'), dict)
@@ -199,7 +211,7 @@ def test_with_valid_query_and_user_agent():
         assert headers.get('User-Agent') == user_agent
 
 def test_with_valid_query_with_result_id():
-    '''Should return a response with a valid query and section with a result_id appended to each result'''
+    '''Should return a response with a valid query and section with a result_id appended to each result''' # pylint: disable=line-too-long
 
     search = ConstructorIO(VALID_OPTIONS).search
     response = search.get_search_results(QUERY, { 'section': SECTION })
@@ -218,7 +230,10 @@ def test_with_valid_query_and_hidden_fields():
 
     hidden_fields = ['hidden_field1', 'hidden_field2']
     search = ConstructorIO(VALID_OPTIONS).search
-    response = search.get_search_results(QUERY, { 'section': SECTION, 'hidden_fields': hidden_fields })
+    response = search.get_search_results(
+        QUERY,
+        { 'section': SECTION, 'hidden_fields': hidden_fields }
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)

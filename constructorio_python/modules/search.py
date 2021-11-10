@@ -75,6 +75,7 @@ def create_search_url(query, parameters, user_parameters, options):
     return f'{options.get("service_url")}/search/{quote(query)}?{query_string}'
 
 class Search:
+    # pylint: disable=too-few-public-methods
     '''Search Class'''
 
     def __init__(self, options) -> None:

@@ -9,6 +9,7 @@ from constructorio_python.modules.search import Search
 
 
 class ConstructorIO:
+    # pylint: disable=too-few-public-methods
     '''
         ConstructorIO Python Client
 
