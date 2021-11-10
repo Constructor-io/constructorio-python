@@ -140,13 +140,19 @@ class Search:
             throw_http_exception_from_response(response)
 
         json = response.json()
+        json_response = json.get('response')
 
-        if json.get('response') and json.get('response').get('results'):
-            result_id = json.get('result_id')
-            if result_id:
-                for result in json.get('response').get('results').values():
-                    result['result_id'] = result_id
+        if json_response:
+            if json_response.get('results') or json_response.get('results') == []:
+                result_id = json.get('result_id')
+                if result_id:
+                    for result in json_response.get('results'):
+                        result['result_id'] = result_id
 
-            return json
+                return json
+
+            # Redirect rules
+            if json_response.get('redirect'):
+                return json
 
         raise Exception('get_search_results response data is malformed')
