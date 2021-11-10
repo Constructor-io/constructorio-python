@@ -1,5 +1,6 @@
 '''ConstructorIO Python Client - Search Tests'''
 
+import re
 from os import environ
 from unittest import mock
 
@@ -61,14 +62,16 @@ def test_with_valid_query_and_segments():
 def test_with_valid_query_and_user_id():
     '''Should return a response with a valid query, section, and user_id'''
 
-    # TODO: This is not really testing anything
-    user_id = 'user-id'
-    search = ConstructorIO(VALID_OPTIONS).search
-    response = search.get_search_results(QUERY, { 'section': SECTION }, { 'user_id': user_id })
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        user_id = 'user-id'
+        search = ConstructorIO({ **VALID_OPTIONS, 'requests': requests }).search
+        response = search.get_search_results(QUERY, { 'section': SECTION }, { 'user_id': user_id })
+        request_url = mocked_requests.call_args.args[0]
 
-    assert isinstance(response.get('request'), dict)
-    assert isinstance(response.get('response'), dict)
-    assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert re.search('ui=user-id', request_url)
 
 def test_with_valid_query_and_page():
     '''Should return a response with a valid query, section, and page'''
