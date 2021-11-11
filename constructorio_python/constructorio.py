@@ -43,7 +43,7 @@ class ConstructorIO:
 
         self.autocomplete = Autocomplete(self.__options)
         self.search = Search()
-        self.browse = Browse()
+        self.browse = Browse(self.__options)
         self.recommendations = Recommendations()
 
     def get_options(self):
