@@ -1,5 +1,6 @@
 '''ConstructorIO Python Client - Autocomplete Tests'''
 
+import re
 from os import environ
 from unittest import mock
 
@@ -59,13 +60,16 @@ def test_with_valid_query_and_segments():
 def test_with_valid_query_and_user_id():
     '''Should return a response with a valid query and user_id'''
 
-    user_id = 'user-id'
-    autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
-    response = autocomplete.get_autocomplete_results(QUERY, {}, { 'user_id': user_id })
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        user_id = 'user-id'
+        autocomplete = ConstructorIO({ **VALID_OPTIONS, 'requests': requests }).autocomplete
+        response = autocomplete.get_autocomplete_results(QUERY, {}, { 'user_id': user_id })
+        request_url = mocked_requests.call_args.args[0]
 
-    assert isinstance(response.get('request'), dict)
-    assert isinstance(response.get('sections'), dict)
-    assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('sections'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert re.search('ui=user-id', request_url)
 
 def test_with_valid_query_and_num_results():
     '''Should return a response with a valid query and num_results'''
