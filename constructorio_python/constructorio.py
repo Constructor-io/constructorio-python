@@ -2,6 +2,7 @@
 
 __version__ = 1.0
 
+from constructorio_python.helpers.exception import ConstructorException
 from constructorio_python.modules.autocomplete import Autocomplete
 from constructorio_python.modules.browse import Browse
 from constructorio_python.modules.recommendations import Recommendations
@@ -29,7 +30,7 @@ class ConstructorIO:
         requests = options.get('requests')
 
         if not api_key or not isinstance(api_key, str):
-            raise Exception('API key is a required parameter of type string')
+            raise ConstructorException('API key is a required parameter of type string')
 
         self.__options = {
             'api_key': api_key,
@@ -44,3 +45,13 @@ class ConstructorIO:
         self.search = Search()
         self.browse = Browse()
         self.recommendations = Recommendations()
+
+    def get_options(self):
+        '''Get client options'''
+
+        return self.__options
+
+    def set_options(self, options):
+        '''Set client options'''
+
+        self.__options = options

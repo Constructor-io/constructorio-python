@@ -1,6 +1,9 @@
 '''Custom exceptions'''
 
-class HttpException(Exception):
+class ConstructorException(Exception):
+    '''Custom Constructor.io Exception'''
+
+class HttpException(ConstructorException):
     '''Custom HTTP exception'''
 
     def __init__(self, message, status, status_text, url, headers): # pylint: disable=too-many-arguments
@@ -11,3 +14,4 @@ class HttpException(Exception):
         self.headers = headers
 
         super().__init__(self.message)
+
