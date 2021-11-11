@@ -14,4 +14,3 @@ class HttpException(ConstructorException):
         self.headers = headers
 
         super().__init__(self.message)
-

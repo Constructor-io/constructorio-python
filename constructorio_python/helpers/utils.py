@@ -26,6 +26,8 @@ def create_auth_header(options):
     return (options.get('api_token'),'')
 
 def clean_params(params_obj):
+    '''Clean query parameters'''
+
     cleaned_params = {}
 
     for key, value in params_obj.items():
@@ -39,6 +41,8 @@ def clean_params(params_obj):
     return cleaned_params
 
 def our_encode_uri_component(string):
+    '''Replace special characters'''
+
     if string:
         str_replaced = sub('&', '%26', string)
         parsed_str_obj = parse_qs(f's={str_replaced}')
@@ -93,4 +97,3 @@ def create_request_headers(options, user_parameters):
         headers['User-Agent'] = user_agent
 
     return headers
-
