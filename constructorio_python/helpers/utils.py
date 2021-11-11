@@ -49,3 +49,48 @@ def our_encode_uri_component(string):
         return urlencode(decoded).split('=')[1]
 
     return None
+
+def create_shared_query_params(options, user_parameters):
+    '''Create query params shared between modules'''
+
+    query_params = {
+        'c': options.get('version'),
+        'key': options.get('api_key'),
+        'i': user_parameters.get('client_id'),
+        's': user_parameters.get('session_id'),
+    }
+
+    if user_parameters.get('test_cells'):
+        for key, value in user_parameters.get('test_cells').items():
+            query_params[f'ef-{key}'] = value
+
+    if user_parameters.get('segments') and len(user_parameters.get('segments')):
+        query_params['us'] = user_parameters.get('segments')
+
+    if user_parameters.get('user_id'):
+        query_params['ui'] = user_parameters.get('user_id')
+
+    return query_params
+
+def create_request_headers(options, user_parameters):
+    '''Create request headers shared between modules'''
+
+    headers = {}
+    security_token = options.get('security_token')
+    user_ip = user_parameters.get('user_ip')
+    user_agent = user_parameters.get('user_agent')
+
+    # Append security token as 'x-cnstrc-token' if available
+    if security_token and isinstance(security_token, str):
+        headers['x-cnstrc-token'] = security_token
+
+    # Append user IP as 'X-Forwarded-For' if available
+    if user_ip and isinstance(user_ip, str):
+        headers['X-Forwarded-For'] = user_ip
+
+    # Append user agent as 'User-Agent' if available
+    if user_agent and isinstance(user_agent, str):
+        headers['User-Agent'] = user_agent
+
+    return headers
+

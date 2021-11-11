@@ -6,32 +6,18 @@ from urllib.parse import quote, urlencode
 import requests as r
 
 from constructorio_python.helpers.utils import (
-    clean_params, create_auth_header, throw_http_exception_from_response)
+    clean_params, create_auth_header, create_request_headers,
+    create_shared_query_params, throw_http_exception_from_response)
 
 
 def create_autocomplete_url(query, parameters, user_parameters, options):
     # pylint: disable=too-many-branches
     '''Create URL from supplied query (term) and parameters'''
 
-    query_params = {
-        'c': options.get('version'),
-        'key': options.get('api_key'),
-        'i': user_parameters.get('client_id'),
-        's': user_parameters.get('session_id'),
-    }
+    query_params = create_shared_query_params(options, user_parameters)
 
     if not query or not isinstance(query, str):
         raise Exception('query is a required parameter of type string')
-
-    if user_parameters.get('test_cells'):
-        for key, value in user_parameters.get('test_cells').items():
-            query_params[f'ef-{key}'] = value
-
-    if user_parameters.get('segments') and len(user_parameters.get('segments')):
-        query_params['us'] = user_parameters.get('segments')
-
-    if user_parameters.get('user_id'):
-        query_params['ui'] = user_parameters.get('user_id')
 
     if parameters:
         if parameters.get('num_results'):
@@ -92,29 +78,13 @@ class Autocomplete:
         if not user_parameters:
             user_parameters = {}
 
-        headers = {}
         request_url = create_autocomplete_url(query, parameters, user_parameters, self.__options)
-        security_token = self.__options.get('security_token')
-        user_ip = user_parameters.get('user_ip')
-        user_agent = user_parameters.get('user_agent')
         requests = self.__options.get('requests') or r
-
-        # Append security token as 'x-cnstrc-token' if available
-        if security_token and isinstance(security_token, str):
-            headers['x-cnstrc-token'] = security_token
-
-        # Append user IP as 'X-Forwarded-For' if available
-        if user_ip and isinstance(user_ip, str):
-            headers['X-Forwarded-For'] = user_ip
-
-        # Append user agent as 'User-Agent' if available
-        if user_agent and isinstance(user_agent, str):
-            headers['User-Agent'] = user_agent
 
         response = requests.get(
             request_url,
             auth=create_auth_header(self.__options),
-            headers=headers
+            headers=create_request_headers(self.__options, user_parameters)
         )
 
         if not response.ok:
