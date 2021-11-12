@@ -61,7 +61,7 @@ def create_browse_url(filter_name, filter_value, parameters, user_parameters, op
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/browse/{quote(filter_name)}/{quote(filter_value)}?{query_string}'
+    return (f'{options.get("service_url")}/browse/{quote(filter_name)}/{quote(filter_value)}?{query_string}') # pylint: disable=line-too-long
 
 class Browse:
     '''Browse Class'''
@@ -101,7 +101,12 @@ class Browse:
         if not user_parameters:
             user_parameters = {}
 
-        request_url = create_browse_url(filter_name, filter_value, parameters, user_parameters, self.__options)
+        request_url = create_browse_url(
+            filter_name,
+            filter_value,
+            parameters,
+            user_parameters,
+            self.__options)
         requests = self.__options.get('requests') or r
         response = requests.get(
             request_url,

@@ -116,7 +116,7 @@ def test_with_valid_filter_name_filter_value_and_page():
 
 
 def test_with_valid_filter_name_filter_value_and_results_per_page():
-    '''Should return a response with a valid filter_name, filter_value, section, and results_per_page'''
+    '''Should return a response with a valid filter_name, filter_value, section, and results_per_page''' # pylint: disable=line-too-long
 
     results_per_page = 2
     browse = ConstructorIO(VALID_OPTIONS).browse
@@ -218,7 +218,7 @@ def test_with_valid_filter_name_filter_value_and_user_ip():
 
 
 def test_with_valid_filter_name_filter_value_and_security_token():
-    '''Should return a response with a valid filter_name, filter_value, section, and security_token'''
+    '''Should return a response with a valid filter_name, filter_value, section, and security_token''' # pylint: disable=line-too-long
 
     security_token = 'cio-python-test'
 
@@ -281,7 +281,7 @@ def test_with_valid_filter_name_filter_value_with_result_id():
 
 
 def test_with_valid_filter_name_filter_value_and_hidden_fields():
-    '''Should return a response with a valid filter_name, filter_value, section, and hiddenFields'''
+    '''Should return a response with a valid filter_name, filter_value, section, and hiddenFields''' # pylint: disable=line-too-long
 
     hidden_fields = ['hidden_field1', 'hidden_field2']
     browse = ConstructorIO(VALID_OPTIONS).browse
