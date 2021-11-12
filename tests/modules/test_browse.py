@@ -15,7 +15,7 @@ VALID_CLIENT_ID = '2b23dd74-5672-4379-878c-9182938d2710'
 VALID_SESSION_ID = 2
 VALID_OPTIONS = {'api_key': TEST_API_KEY}
 FILTER_NAME = 'group_id'
-FILTER_VALUE = 'CAT01'
+FILTER_VALUE = 'Brands'
 SECTION = 'Products'
 
 
@@ -72,7 +72,8 @@ def test_with_valid_filter_name_filter_value_and_segments():
         FILTER_NAME,
         FILTER_VALUE,
         {'section': SECTION},
-        {'segments': segments})
+        {'segments': segments}
+        )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -302,7 +303,7 @@ def test_with_invalid_filter_name():
 
     with raises(Exception, match=r'filter_name is a required parameter of type string'):
         browse = ConstructorIO(VALID_OPTIONS).browse
-        browse.get_browse_results([], FILTER_VALUE, {'section': SECTION})
+        browse.get_browse_results([], FILTER_VALUE)
 
 
 def test_with_invalid_filter_value():
@@ -310,7 +311,7 @@ def test_with_invalid_filter_value():
 
     with raises(Exception, match=r'filter_value is a required parameter of type string'):
         browse = ConstructorIO(VALID_OPTIONS).browse
-        browse.get_browse_results(FILTER_NAME, [], {'section': SECTION})
+        browse.get_browse_results(FILTER_NAME, [])
 
 
 def test_with_no_filter_name():
@@ -318,7 +319,7 @@ def test_with_no_filter_name():
 
     with raises(Exception, match=r'filter_name is a required parameter of type string'):
         browse = ConstructorIO(VALID_OPTIONS).browse
-        browse.get_browse_results(None, FILTER_VALUE, {'section': SECTION})
+        browse.get_browse_results(None, FILTER_VALUE)
 
 
 def test_with_no_filter_value():
@@ -326,7 +327,7 @@ def test_with_no_filter_value():
 
     with raises(Exception, match=r'filter_value is a required parameter of type string'):
         browse = ConstructorIO(VALID_OPTIONS).browse
-        browse.get_browse_results(FILTER_NAME, None, {'section': SECTION})
+        browse.get_browse_results(FILTER_NAME, None)
 
 
 def test_with_invalid_page():
@@ -393,6 +394,17 @@ def test_with_invalid_section():
             FILTER_NAME,
             FILTER_VALUE,
             {'section': 123})
+
+
+def test_with_invalid_fmt_options():
+    '''Should raise exception when invalid fmt_options parameter is provided'''
+
+    with raises(Exception, match=r'fmt_options must be a dictionary'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_results(
+            FILTER_NAME,
+            FILTER_VALUE,
+            {'fmt_options': 'abc'})
 
 
 def test_with_invalid_api_key():
