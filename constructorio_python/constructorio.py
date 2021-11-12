@@ -23,8 +23,8 @@ class ConstructorIO:
 
     def __init__(self, options) -> None:
         api_key = options.get('api_key')
-        api_token = options.get('api_token')
-        security_token = options.get('security_token')
+        api_token = options.get('api_token', '')
+        security_token = options.get('security_token', '')
         version = options.get('version')
         service_url = options.get('service_url')
         requests = options.get('requests')
@@ -34,8 +34,8 @@ class ConstructorIO:
 
         self.__options = {
             'api_key': api_key,
-            'api_token': api_token or '',
-            'security_token': security_token or '',
+            'api_token': api_token,
+            'security_token': security_token,
             'version': version or __version__,
             'service_url': service_url or 'https://ac.cnstrc.com',
             'requests': requests,
