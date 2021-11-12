@@ -20,7 +20,7 @@ SECTION = 'Products'
 
 
 def test_with_valid_filter_name_filter_value_and_identifiers():
-    '''Should return a response with a valid filter_name, filter_value, section, and client + session identifiers'''
+    '''Should return a response with a valid filter_name, filter_value, section, and client + session identifiers''' # pylint: disable=line-too-long
 
     client_session_identifiers = {
         'client_id': VALID_CLIENT_ID,
