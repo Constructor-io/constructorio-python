@@ -15,8 +15,8 @@ def create_recommendations_url(pod_id, parameters, user_parameters, options):
 
     query_params = create_shared_query_params(options, user_parameters)
 
-    if not pod_id or not isinstance(query, pod_id):
-        raise Exception('query is a required parameter of type string')
+    if not pod_id or not isinstance(pod_id, str):
+        raise Exception('pod_id is a required parameter of type string')
     
     if parameters:
         if parameters.get('num_results'):
@@ -50,7 +50,7 @@ def create_recommendations_url(pod_id, parameters, user_parameters, options):
 class Recommendations:
     '''Recommendations Class'''
 
-    def __init__(self) -> None:
+    def __init__(self, options):
         self.__options = options or {}
 
     def get_recommendation_results(self, pod_id, parameters=None, user_parameters=None):
@@ -95,10 +95,11 @@ class Recommendations:
 
         json = response.json()
 
-        if (json.get('response', {}).get('results')):
-            if (json.get('result_id')):
-                for result in json.get('response').get('results'):
-                    result['result_id'] = json.get('result_id')
+        if json.get('response'):
+            if json.get('response').get('results'):
+                if json.get('result_id'):
+                    for result in json.get('response').get('results'):
+                        result['result_id'] = json.get('result_id')
 
             return json
         
