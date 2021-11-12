@@ -17,7 +17,7 @@ def create_recommendations_url(pod_id, parameters, user_parameters, options):
 
     if not pod_id or not isinstance(pod_id, str):
         raise Exception('pod_id is a required parameter of type string')
-    
+
     if parameters:
         if parameters.get('num_results'):
             query_params['num_results'] = parameters.get('num_results')
@@ -74,13 +74,13 @@ class Recommendations:
         :param str user_parameters.user_agent: Origin user agent, from client
 
         :return: dict
-        '''
+        ''' # pylint: disable=line-too-long
 
         if not parameters:
             parameters = {}
         if not user_parameters:
             user_parameters = {}
-        
+
         request_url = create_recommendations_url(pod_id, parameters, user_parameters, self.__options)
         requests = self.__options.get('requests') or r
 
@@ -102,5 +102,5 @@ class Recommendations:
                         result['result_id'] = json.get('result_id')
 
             return json
-        
+
         raise Exception('get_recommendation_results response data is malformed')

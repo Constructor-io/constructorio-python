@@ -48,7 +48,7 @@ def test_with_valid_pod_id_and_test_cells():
     '''Should return a response with a valid pod_id and test_cells'''
 
     test_cells = { 'foo': 'bar' }
-    recommendations = ConstructorIO(VALID_OPTIONS).recommendations    
+    recommendations = ConstructorIO(VALID_OPTIONS).recommendations
     response = recommendations.get_recommendation_results(
         POD_ID,
         {},
@@ -68,7 +68,7 @@ def test_with_valid_pod_id_and_segments():
     '''Should return a response with a valid pod_id and segments'''
 
     segments = ['foo', 'bar']
-    recommendations = ConstructorIO(VALID_OPTIONS).recommendations    
+    recommendations = ConstructorIO(VALID_OPTIONS).recommendations
     response = recommendations.get_recommendation_results(
         POD_ID,
         {},
@@ -88,7 +88,7 @@ def test_with_valid_pod_id_and_user_id():
 
     with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
         user_id = 'user-id'
-        recommendations = ConstructorIO({ **VALID_OPTIONS, 'requests': requests }).recommendations   
+        recommendations = ConstructorIO({ **VALID_OPTIONS, 'requests': requests }).recommendations
         response = recommendations.get_recommendation_results(
             POD_ID,
             {},
@@ -108,7 +108,7 @@ def test_with_valid_pod_id_and_num_results():
     '''Should return a response with a valid pod_id and num_results'''
 
     num_results = 4
-    recommendations = ConstructorIO(VALID_OPTIONS).recommendations    
+    recommendations = ConstructorIO(VALID_OPTIONS).recommendations
     response = recommendations.get_recommendation_results(
         POD_ID,
         { 'num_results': num_results },
@@ -207,7 +207,7 @@ def test_with_valid_pod_id_with_result_id():
 def test_with_valid_pod_id_and_item_ids_singular():
     '''Should return a response with a valid pod_id and item_ids (singular)'''
 
-    recommendations = ConstructorIO(VALID_OPTIONS).recommendations    
+    recommendations = ConstructorIO(VALID_OPTIONS).recommendations
     response = recommendations.get_recommendation_results(
         POD_ID,
         { 'item_ids': ITEM_ID, },
@@ -222,39 +222,9 @@ def test_with_valid_pod_id_and_item_ids_singular():
 def test_with_valid_pod_id_and_item_ids_multiple():
     '''Should return a response with a valid pod_id and item_ids (multiple)'''
 
-    recommendations = ConstructorIO(VALID_OPTIONS).recommendations    
+    recommendations = ConstructorIO(VALID_OPTIONS).recommendations
     response = recommendations.get_recommendation_results(
         POD_ID,
-        { 'item_ids': ITEM_IDS },
-        { **CLIENT_SESSION_IDENTIFIERS },
-    )
-
-    assert isinstance(response.get('request'), dict)
-    assert isinstance(response.get('response'), dict)
-    assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('item_id') == ITEM_IDS
-
-def test_with_valid_pod_id_and_item_ids_multiple():
-    '''Should return a response with a valid pod_id and item_ids (multiple)'''
-
-    recommendations = ConstructorIO(VALID_OPTIONS).recommendations    
-    response = recommendations.get_recommendation_results(
-        POD_ID_ALTERNATIVE_RECOMMENDATIONS,
-        { 'item_ids': ITEM_IDS },
-        { **CLIENT_SESSION_IDENTIFIERS },
-    )
-
-    assert isinstance(response.get('request'), dict)
-    assert isinstance(response.get('response'), dict)
-    assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('item_id') == ITEM_IDS
-
-def test_with_valid_pod_id_and_item_ids_multiple():
-    '''Should return a response with a valid pod_id and item_ids (multiple)'''
-
-    recommendations = ConstructorIO(VALID_OPTIONS).recommendations    
-    response = recommendations.get_recommendation_results(
-        POD_ID_ALTERNATIVE_RECOMMENDATIONS,
         { 'item_ids': ITEM_IDS },
         { **CLIENT_SESSION_IDENTIFIERS },
     )
@@ -267,7 +237,7 @@ def test_with_valid_pod_id_and_item_ids_multiple():
 def test_with_valid_pod_id_and_term():
     '''Should return a response with a valid term for query recommendations strategy pod'''
 
-    recommendations = ConstructorIO(VALID_OPTIONS).recommendations    
+    recommendations = ConstructorIO(VALID_OPTIONS).recommendations
     response = recommendations.get_recommendation_results(
         POD_ID_QUERY_RECOMMENDATIONS,
         { 'term': TERM },
@@ -283,7 +253,7 @@ def test_with_valid_pod_id_and_filters():
     '''Should return a response with a valid filter for filtered items strategy pod'''
 
     filters = { 'keywords': ['battery-powered'] }
-    recommendations = ConstructorIO(VALID_OPTIONS).recommendations    
+    recommendations = ConstructorIO(VALID_OPTIONS).recommendations
     response = recommendations.get_recommendation_results(
         POD_ID_FILTERED_ITEMS_RECOMMENDATIONS,
         { 'filters': filters },
@@ -299,7 +269,7 @@ def test_with_valid_pod_id_and_multiple_filters():
     '''Should return a response with valid filters for filtered items strategy pod'''
 
     filters = { 'group_id': ['All'], 'Brand': ['XYZ', 'ABC'] }
-    recommendations = ConstructorIO(VALID_OPTIONS).recommendations    
+    recommendations = ConstructorIO(VALID_OPTIONS).recommendations
     response = recommendations.get_recommendation_results(
         POD_ID_FILTERED_ITEMS_RECOMMENDATIONS,
         { 'filters': filters },
@@ -337,7 +307,7 @@ def test_with_invalid_pod_id():
 
     with raises(Exception, match=r'pod_id is a required parameter of type string'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
-        response = recommendations.get_recommendation_results(
+        recommendations.get_recommendation_results(
             [],
             {},
             { **CLIENT_SESSION_IDENTIFIERS },
@@ -348,7 +318,7 @@ def test_with_no_pod_id():
 
     with raises(Exception, match=r'pod_id is a required parameter of type string'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
-        response = recommendations.get_recommendation_results(
+        recommendations.get_recommendation_results(
             None,
             {},
             { **CLIENT_SESSION_IDENTIFIERS },
@@ -359,7 +329,7 @@ def test_with_invalid_num_results():
 
     with raises(Exception, match=r'num_results must be an integer'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
-        response = recommendations.get_recommendation_results(
+        recommendations.get_recommendation_results(
             POD_ID,
             { 'num_results': 'abc' },
             { **CLIENT_SESSION_IDENTIFIERS },
@@ -370,7 +340,7 @@ def test_with_invalid_filters():
 
     with raises(Exception, match=r'filters must be a dictionary'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
-        response = recommendations.get_recommendation_results(
+        recommendations.get_recommendation_results(
             POD_ID_FILTERED_ITEMS_RECOMMENDATIONS,
             { 'filters': 'abc' },
             { **CLIENT_SESSION_IDENTIFIERS },
@@ -381,7 +351,7 @@ def test_with_invalid_item_ids():
 
     with raises(Exception, match=r'item_id is a required field of type string'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
-        response = recommendations.get_recommendation_results(
+        recommendations.get_recommendation_results(
             POD_ID_ALTERNATIVE_RECOMMENDATIONS,
             { 'item_ids': {} },
             { **CLIENT_SESSION_IDENTIFIERS },
