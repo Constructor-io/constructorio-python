@@ -94,12 +94,15 @@ class Recommendations:
             throw_http_exception_from_response(response)
 
         json = response.json()
+        json_response = json.get('response')
 
-        if json.get('response'):
-            if json.get('response').get('results'):
-                if json.get('result_id'):
-                    for result in json.get('response').get('results'):
-                        result['result_id'] = json.get('result_id')
+        if json_response:
+            if json_response.get('results') or json_response.get('results') == []:
+                result_id = json.get('result_id')
+
+                if result_id:
+                    for result in json_response.get('results'):
+                        result['result_id'] = result_id
 
             return json
 
