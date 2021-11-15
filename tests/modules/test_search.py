@@ -7,7 +7,7 @@ from unittest import mock
 import requests
 from pytest import raises
 
-from constructor_io.constructorio import ConstructorIO
+from constructor_io.constructor_io import ConstructorIO
 from constructor_io.helpers.exception import HttpException
 
 TEST_API_KEY = environ['TEST_API_KEY']

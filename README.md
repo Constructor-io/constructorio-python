@@ -20,7 +20,7 @@ You can find this in your [Constructor.io dashboard](https://constructor.io/dash
 Once imported, an instance of the client can be created as follows:
 
 ```python
-from constructor_io.constructorio import ConstructorIO
+from constructor_io.constructor_io import ConstructorIO
 
 constructorio = ConstructorIO({
     "api_key": "YOUR API KEY",
