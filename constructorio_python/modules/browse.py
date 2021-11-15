@@ -186,3 +186,58 @@ class Browse:
                 return json
 
         raise Exception('get_browse_groups response data is malformed')
+
+
+    def get_browse_facets(self, parameters=None, user_parameters=None):
+        '''
+        Retrieve facets from API
+
+        :param dict parameters: Additional parameters to refine result set
+        :param dict parameters.page: The page number of the results
+        :param dict parameters.results_per_page: The number of results per page to return
+        :param dict parameters.fmt_options: The format options used to refine result groups
+        :param int parameters.fmt_options.show_hidden_facets: Include facets configured as hidden
+        :param int parameters.fmt_options.show_protected_facets: Include facets configured as protected
+        :param dict user_parameters: Parameters relevant to the user request
+        :param int user_parameters.session_id: Session ID, utilized to personalize results
+        :param str user_parameters.client_id: Client ID, utilized to personalize results
+        :param str user_parameters.user_id: User ID, utilized to personalize results
+        :param str user_parameters.segments: User segments
+        :param dict user_parameters.test_cells: User test cells
+        :param str user_parameters.user_ip: Origin user IP, from client
+        :param str user_parameters.user_agent: Origin user agent, from client
+
+        :return: dict
+        '''
+
+        if not parameters:
+            parameters = {}
+        if not user_parameters:
+            user_parameters = {}
+
+        urlPrefix = f'browse/facets'
+        request_url = complete_browse_url(
+            urlPrefix,
+            parameters,
+            user_parameters,
+            self.__options,
+            True)
+        print(request_url)
+        requests = self.__options.get('requests') or r
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options, user_parameters)
+        )
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+        json_response = json.get('response')
+
+        if json_response:
+            if json_response.get('facets') or json_response.get('facets') == []:
+
+                return json
+
+        raise Exception('get_browse_facets response data is malformed')

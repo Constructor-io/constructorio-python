@@ -11,6 +11,7 @@ from constructorio_python.constructorio import ConstructorIO
 from constructorio_python.helpers.exception import HttpException
 
 TEST_API_KEY = environ['TEST_API_KEY']
+TEST_API_TOKEN = environ['TEST_API_TOKEN']
 VALID_CLIENT_ID = '2b23dd74-5672-4379-878c-9182938d2710'
 VALID_SESSION_ID = 2
 VALID_OPTIONS = {'api_key': TEST_API_KEY}
@@ -436,10 +437,7 @@ def test_get_browse_groups_without_additional_arguments():
     '''Should return a response without additional arguments'''
 
     browse = ConstructorIO(VALID_OPTIONS).browse
-    response = browse.get_browse_groups(
-        {},
-        {}
-    )
+    response = browse.get_browse_groups()
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -492,7 +490,6 @@ def test_get_browse_groups_with_valid_filters():
         browse = ConstructorIO(VALID_OPTIONS).browse
         response = browse.get_browse_groups(
             { 'filters': filters },
-            {}
         )
         request_url = mocked_requests.call_args.args[0]
 
@@ -511,7 +508,6 @@ def test_get_browse_groups_with_valid_fmt_options():
         browse = ConstructorIO(VALID_OPTIONS).browse
         response = browse.get_browse_groups(
             { 'fmt_options': { 'groups_max_depth': 4 } },
-            {}
         )
         request_url = mocked_requests.call_args.args[0]
 
@@ -531,7 +527,6 @@ def test_get_browse_groups_with_invalid_filters():
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_groups(
             { 'filters': 123},
-            {}
         )
 
 
@@ -542,7 +537,6 @@ def test_get_browse_groups_with_invalid_fmt_options():
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_groups(
             { 'fmt_options': 123},
-            {}
         )
 
 
@@ -551,4 +545,101 @@ def test_get_browse_groups_with_invalid_api_key():
 
     with raises(Exception, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'):
         browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
-        browse.get_browse_groups({}, {})
+        browse.get_browse_groups()
+
+
+def test_get_browse_facets_without_additional_arguments():
+    '''Should return a response without additional arguments'''
+
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_facets()
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('facets'), list)
+    assert isinstance(response.get('response').get('total_num_results'), int)
+
+
+def test_get_browse_facets_with_valid_page_and_results_per_page():
+    '''Should return a response with valid page and results_per_page'''
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        response = browse.get_browse_facets(
+            { 'page': 2, 'results_per_page': 5 },
+        )
+        request_url = mocked_requests.call_args.args[0]
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('facets'), list)
+        assert isinstance(response.get('response').get('total_num_results'), int)
+        assert isinstance(response.get('request').get('page'), int)
+        assert isinstance(response.get('request').get('num_results_per_page'), int)
+        assert re.search('page=2', request_url)
+        assert re.search('num_results_per_page=5', request_url)
+
+
+def test_get_browse_facets_with_valid_fmt_options():
+    '''Should return a response with valid fmt_options'''
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        browse = ConstructorIO({ **VALID_OPTIONS, 'api_token': TEST_API_TOKEN }).browse
+        response = browse.get_browse_facets(
+            {
+                'fmt_options': { 'show_hidden_facets': True,
+                'show_protected_facets': True }
+            }
+        )
+        request_url = mocked_requests.call_args.args[0]
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('facets'), list)
+        assert isinstance(response.get('response').get('total_num_results'), int)
+        assert isinstance(response.get('request').get('fmt_options'), dict)
+        assert isinstance(response.get('request').get('fmt_options').get('show_hidden_facets'), bool)
+        assert isinstance(response.get('request').get('fmt_options').get('show_protected_facets'), bool)
+        assert re.search('%5Bshow_hidden_facets%5D=True', request_url)
+        assert re.search('%5Bshow_protected_facets%5D=True', request_url)
+
+
+def test_get_browse_facets_with_invalid_page():
+    '''Should return a response with invalid page'''
+
+    with raises(HttpException, match=r'page must be an integer'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_facets(
+            { 'page': 'abc'},
+        )
+
+
+def test_get_browse_facets_with_invalid_results_per_page():
+    '''Should return a response with invalid results_per_page'''
+
+    with raises(HttpException, match=r'results_per_page must be an integer'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_facets(
+            { 'results_per_page': 'abc'},
+        )
+
+
+def test_get_browse_facets_with_invalid_fmt_options():
+    '''Should return a response with invalid fmt_options'''
+
+    with raises(Exception, match=r'fmt_options must be a dictionary'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_facets(
+            { 'fmt_options': 123},
+        )
+
+
+def test_get_browse_facets_with_invalid_api_key():
+    '''Should return a response with invalid api_key'''
+
+    with raises(Exception, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'):
+        browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
+        browse.get_browse_facets()
