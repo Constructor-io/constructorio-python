@@ -4,7 +4,6 @@ from time import time
 from urllib.parse import quote, urlencode
 
 import requests as r
-
 from constructorio_python.helpers.utils import (
     clean_params, create_auth_header, create_request_headers,
     create_shared_query_params, throw_http_exception_from_response)
