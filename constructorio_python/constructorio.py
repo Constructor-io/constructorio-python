@@ -42,8 +42,6 @@ class ConstructorIO:
         }
         self.autocomplete = Autocomplete()
         self.search = Search()
-        self.browse = Browse()
-        self.recommendations = Recommendations()
 
     def get_options(self):
         '''Get client options'''
