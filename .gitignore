@@ -1,18 +1,23 @@
- # Byte-compiled / optimized / DLL files
- __pycache__/
- *.py[cod]
- *$py.class
- 
- # IDE
- .idea/
- 
- # Distribution / packaging
- dist
- MANIFEST
- 
- # Unit test / coverage reports
- .cache
- 
- # Environments
- venv/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+pytest_cache/
 
+# IDE
+.idea/
+
+# Distribution / packaging
+dist
+MANIFEST
+
+# Unit test / coverage reports
+.cache
+coverage/
+.coverage
+
+# Environments
+venv/
+
+# MacOS
+.DS_Store

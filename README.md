@@ -1,44 +1,45 @@
-# Constructor-IO Python Client [![Build](https://travis-ci.org/Constructor-io/constructorio-python.svg?branch=master)](https://travis-ci.org/Constructor-io/constructorio-python) [![Version](https://img.shields.io/pypi/v/constructor-io.svg)](https://pypi.python.org/pypi/constructor-io) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+# Constructor.io Python Client
 
+[![Version](https://img.shields.io/pypi/v/constructor-io.svg)](https://pypi.python.org/pypi/constructor-io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
+A Python client for [Constructor.io](http://constructor.io/). [Constructor.io](http://constructor.io/) provides search as a service that optimizes results using artificial intelligence (including natural language processing, re-ranking to optimize for conversions, and user personalization).
 
-A Python package for the [Constructor.io API](http://constructor.io/docs).  Constructor.io provides a lightning-fast, typo-tolerant autocomplete service that ranks your users' queries by popularity to let them find what they're looking for as quickly as possible.
-
-## Installation
+## 1. Install
 
 ```
 pip install constructor-io
 ```
 
-## Usage
+## 2. Retrieve an API key and token
 
-Here is a simple example how autocomplete works:
-```
-from constructor_io import ConstructorIO
+You can find this in your [Constructor.io dashboard](https://constructor.io/dashboard). Contact sales if you'd like to sign up, or support if you believe your company already has an account.
 
-# Listed token and key will work for a small demo :)
-API_TOKEN = None
-KEY = "P03bVBcmyYjSG1ZQyD4V"
+## 3. Implement the Client
 
-constructor_instance = ConstructorIO(API_TOKEN, KEY)
+Once imported, an instance of the client can be created as follows:
 
-if __name__ == "__main__":
-    while True:
-        misspelled = raw_input("Type mispelled things and press enter! > ")
-        query = constructor_instance.query(misspelled)
-        suggestions = query["suggestions"]
-        suggested_queries = [suggestion["value"] for suggestion in suggestions]
-        print("Suggested queries: " + " | ".join(suggested_queries))
+```python
+from constructorio_python.constructorio import ConstructorIO
+
+constructorio = ConstructorIO({
+    "api_key": "YOUR API KEY",
+})
 ```
 
-Try it:
+## 4. Retrieve Results
+
+After instantiating an instance of the client, four modules will be exposed as properties to help retrieve data from Constructor.io: `search`, `browse`, `autocomplete`, and `recommendations`.
+
+Full API documentation is available on [Github Pages](https://constructor-io.github.io/constructorio-python)
+
+## Development
+
+```bash
+make install                            # install dependencies
+pipenv run pylint constructorio_python  # run lint
+pipenv run pytest .                     # run tests with coverage report
+make docs                               # output documentation to `./docs` directory
 ```
-# If you didn't install constructor-io with pip, uncomment next line:
-# export PYTHONPATH=$PYTHONPATH:$(pwd)
 
-python examples/autocomplete.py
-```
 
-![Run example](https://github.com/Constructor-io/constructorio-python/raw/master/run_example.gif)
-
-Check [examples folder](examples). You can read more in our most up-to-date API [documentation](https://constructor.io/docs/?python#).
