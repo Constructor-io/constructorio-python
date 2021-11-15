@@ -5,9 +5,10 @@ from urllib.parse import quote, urlencode
 
 import requests as r
 
-from constructorio_python.helpers.utils import (
-    clean_params, create_auth_header, create_request_headers,
-    create_shared_query_params, throw_http_exception_from_response)
+from constructor_io.helpers.utils import (clean_params, create_auth_header,
+                                          create_request_headers,
+                                          create_shared_query_params,
+                                          throw_http_exception_from_response)
 
 
 def create_search_url(query, parameters, user_parameters, options):

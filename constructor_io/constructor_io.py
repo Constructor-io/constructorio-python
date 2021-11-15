@@ -2,9 +2,9 @@
 
 __version__ = 1.0
 
-from constructorio_python.helpers.exception import ConstructorException
-from constructorio_python.modules.autocomplete import Autocomplete
-from constructorio_python.modules.search import Search
+from constructor_io.helpers.exception import ConstructorException
+from constructor_io.modules.autocomplete import Autocomplete
+from constructor_io.modules.search import Search
 
 
 class ConstructorIO:

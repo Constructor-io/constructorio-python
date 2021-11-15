@@ -20,7 +20,7 @@ You can find this in your [Constructor.io dashboard](https://constructor.io/dash
 Once imported, an instance of the client can be created as follows:
 
 ```python
-from constructorio_python.constructorio import ConstructorIO
+from constructor_io.constructor_io import ConstructorIO
 
 constructorio = ConstructorIO({
     "api_key": "YOUR API KEY",
@@ -37,7 +37,7 @@ Full API documentation is available on [Github Pages](https://constructor-io.git
 
 ```bash
 make install                            # install dependencies
-pipenv run pylint constructorio_python  # run lint
+pipenv run pylint constructor_io  # run lint
 pipenv run pytest .                     # run tests with coverage report
 make docs                               # output documentation to `./docs` directory
 ```
