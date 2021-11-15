@@ -10,17 +10,11 @@ from constructorio_python.helpers.utils import (
     create_shared_query_params, throw_http_exception_from_response)
 
 
-def create_browse_url(filter_name, filter_value, parameters, user_parameters, options):
+def complete_browse_url(prefix, parameters, user_parameters, options, omit_timestamp = False):
     # pylint: disable=too-many-branches
     '''Create URL from supplied filter name, filter value, and parameters'''
 
     query_params = create_shared_query_params(options, user_parameters)
-
-    if not filter_name or not isinstance(filter_name, str):
-        raise Exception('filter_name is a required parameter of type string')
-
-    if not filter_value or not isinstance(filter_value, str):
-        raise Exception('filter_value is a required parameter of type string')
 
     if parameters:
         if parameters.get('page'):
@@ -57,11 +51,14 @@ def create_browse_url(filter_name, filter_value, parameters, user_parameters, op
         if parameters.get('hidden_fields'):
             query_params['hidden_fields'] = parameters.get('hidden_fields')
 
-    query_params['_dt'] = int(time()*1000.0)
+    if not omit_timestamp:
+        query_params['_dt'] = int(time()*1000.0)
+
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/browse/{quote(filter_name)}/{quote(filter_value)}?{query_string}' # pylint: disable=line-too-long
+    return f'{options.get("service_url")}/{prefix}?{query_string}' # pylint: disable=line-too-long
+    # return f'{options.get("service_url")}/browse/{quote(filter_name)}/{quote(filter_value)}?{query_string}' # pylint: disable=line-too-long
 
 class Browse:
     '''Browse Class'''
@@ -96,14 +93,20 @@ class Browse:
         :return: dict
         '''
 
+        if not filter_name or not isinstance(filter_name, str):
+            raise Exception('filter_name is a required parameter of type string')
+
+        if not filter_value or not isinstance(filter_value, str):
+            raise Exception('filter_value is a required parameter of type string')
+
         if not parameters:
             parameters = {}
         if not user_parameters:
             user_parameters = {}
 
-        request_url = create_browse_url(
-            filter_name,
-            filter_value,
+        urlPrefix = f'browse/{quote(filter_name)}/{quote(filter_value)}'
+        request_url = complete_browse_url(
+            urlPrefix,
             parameters,
             user_parameters,
             self.__options)
@@ -131,3 +134,53 @@ class Browse:
                 return json
 
         raise Exception('get_browse_results response data is malformed')
+
+    def get_browse_groups(self, parameters=None, user_parameters=None):
+        '''
+        Retrieve browse groups from API
+
+        :param dict parameters: Additional parameters to refine result set
+        :param dict parameters.filters: Filters used to refine search
+        :param dict parameters.fmt_options: The format options used to refine result groups
+        :param dict user_parameters: Parameters relevant to the user request
+        :param int user_parameters.session_id: Session ID, utilized to personalize results
+        :param str user_parameters.client_id: Client ID, utilized to personalize results
+        :param str user_parameters.user_id: User ID, utilized to personalize results
+        :param str user_parameters.segments: User segments
+        :param dict user_parameters.test_cells: User test cells
+        :param str user_parameters.user_ip: Origin user IP, from client
+        :param str user_parameters.user_agent: Origin user agent, from client
+
+        :return: dict
+        '''
+
+        if not parameters:
+            parameters = {}
+        if not user_parameters:
+            user_parameters = {}
+
+        urlPrefix = f'browse/groups'
+        request_url = complete_browse_url(
+            urlPrefix,
+            parameters,
+            user_parameters,
+            self.__options,
+            True)
+        requests = self.__options.get('requests') or r
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options, user_parameters)
+        )
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+        json_response = json.get('response')
+
+        if json_response:
+            if json_response.get('groups') or json_response.get('groups') == []:
+
+                return json
+
+        raise Exception('get_browse_groups response data is malformed')

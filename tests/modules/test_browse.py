@@ -19,7 +19,7 @@ FILTER_VALUE = 'Brands'
 SECTION = 'Products'
 
 
-def test_with_valid_filter_name_filter_value_and_identifiers():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_identifiers():
     '''Should return a response with a valid filter_name, filter_value, section, and client + session identifiers''' # pylint: disable=line-too-long
 
     client_session_identifiers = {
@@ -43,7 +43,7 @@ def test_with_valid_filter_name_filter_value_and_identifiers():
     assert isinstance(response.get('response').get('results'), list)
 
 
-def test_with_valid_filter_name_filter_value_and_test_cells():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_test_cells():
     '''Should return a response with a valid filter_name, filter_value, section, and test_cells'''
 
     test_cells = {'foo': 'bar'}
@@ -63,7 +63,7 @@ def test_with_valid_filter_name_filter_value_and_test_cells():
         f'ef-{first_key}') == test_cells[first_key]
 
 
-def test_with_valid_filter_name_filter_value_and_segments():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_segments():
     '''Should return a response with a valid filter_name, filter_value, section, and segments'''
 
     segments = ['foo', 'bar']
@@ -81,7 +81,7 @@ def test_with_valid_filter_name_filter_value_and_segments():
     assert response.get('request').get('us') == segments
 
 
-def test_with_valid_filter_name_filter_value_and_user_id():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_user_id():
     '''Should return a response with a valid filter_name, filter_value, section, and user_id'''
 
     with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
@@ -100,7 +100,7 @@ def test_with_valid_filter_name_filter_value_and_user_id():
         assert re.search('ui=user-id', request_url)
 
 
-def test_with_valid_filter_name_filter_value_and_page():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_page():
     '''Should return a response with a valid filter_name, filter_value, section, and page'''
 
     page = 1
@@ -116,7 +116,7 @@ def test_with_valid_filter_name_filter_value_and_page():
     assert response.get('request').get('page') == page
 
 
-def test_with_valid_filter_name_filter_value_and_results_per_page():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_results_per_page():
     '''Should return a response with a valid filter_name, filter_value, section, and results_per_page''' # pylint: disable=line-too-long
 
     results_per_page = 2
@@ -134,7 +134,7 @@ def test_with_valid_filter_name_filter_value_and_results_per_page():
     assert num_results == results_per_page
 
 
-def test_with_valid_filter_name_filter_value_and_filters():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_filters():
     '''Should return a response with a valid filter_name, filter_value, section, and filters'''
 
     filters = {'keywords': ['battery-powered']}
@@ -150,7 +150,7 @@ def test_with_valid_filter_name_filter_value_and_filters():
     assert response.get('request').get('filters') == filters
 
 
-def test_with_valid_filter_name_filter_value_and_fmt_options():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_fmt_options():
     '''Should return a response with a valid filter_name, filter_value, section, and fmt_options'''
 
     fmt_options = {'groups_max_depth': 2, 'groups_start': 'current'}
@@ -166,7 +166,7 @@ def test_with_valid_filter_name_filter_value_and_fmt_options():
     assert response.get('request').get('fmt_options') == fmt_options
 
 
-def test_with_valid_filter_name_filter_value_and_sort_by():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_sort_by():
     '''Should return a response with a valid filter_name, filter_value, section, and sort_by'''
 
     sort_by = 'relevance'
@@ -182,7 +182,7 @@ def test_with_valid_filter_name_filter_value_and_sort_by():
     assert response.get('request').get('sort_by') == sort_by
 
 
-def test_with_valid_filter_name_filter_value_and_sort_order():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_sort_order():
     '''Should return a response with a valid filter_name, filter_value, section, and sort_by'''
 
     sort_order = 'ascending'
@@ -198,7 +198,7 @@ def test_with_valid_filter_name_filter_value_and_sort_order():
     assert response.get('request').get('sort_order') == sort_order
 
 
-def test_with_valid_filter_name_filter_value_and_user_ip():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_user_ip():
     '''Should return a response with a valid filter_name, filter_value, section, and user_ip'''
 
     user_ip = '127.0.0.1'
@@ -218,7 +218,7 @@ def test_with_valid_filter_name_filter_value_and_user_ip():
         assert headers.get('X-Forwarded-For') == user_ip
 
 
-def test_with_valid_filter_name_filter_value_and_security_token():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_security_token():
     '''Should return a response with a valid filter_name, filter_value, section, and security_token''' # pylint: disable=line-too-long
 
     security_token = 'cio-python-test'
@@ -241,7 +241,7 @@ def test_with_valid_filter_name_filter_value_and_security_token():
         assert headers.get('x-cnstrc-token') == security_token
 
 
-def test_with_valid_filter_name_filter_value_and_user_agent():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_user_agent():
     '''Should return a response with a valid filter_name, filter_value, section, and user_agent'''
 
     user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'  # pylint: disable=line-too-long
@@ -262,7 +262,7 @@ def test_with_valid_filter_name_filter_value_and_user_agent():
         assert headers.get('User-Agent') == user_agent
 
 
-def test_with_valid_filter_name_filter_value_with_result_id():
+def test_get_browse_results_with_valid_filter_name_filter_value_with_result_id():
     '''Should return a response with a valid filter_name, filter_value, and section with a result_id appended to each result'''  # pylint: disable=line-too-long
 
     browse = ConstructorIO(VALID_OPTIONS).browse
@@ -281,7 +281,7 @@ def test_with_valid_filter_name_filter_value_with_result_id():
         assert result.get('result_id') == response.get('result_id')
 
 
-def test_with_valid_filter_name_filter_value_and_hidden_fields():
+def test_get_browse_results_with_valid_filter_name_filter_value_and_hidden_fields():
     '''Should return a response with a valid filter_name, filter_value, section, and hiddenFields''' # pylint: disable=line-too-long
 
     hidden_fields = ['hidden_field1', 'hidden_field2']
@@ -298,7 +298,7 @@ def test_with_valid_filter_name_filter_value_and_hidden_fields():
     assert response.get('request').get('hidden_fields') == hidden_fields
 
 
-def test_with_invalid_filter_name():
+def test_get_browse_results_with_invalid_filter_name():
     '''Should raise exception when invalid filter_name is provided'''
 
     with raises(Exception, match=r'filter_name is a required parameter of type string'):
@@ -306,7 +306,7 @@ def test_with_invalid_filter_name():
         browse.get_browse_results([], FILTER_VALUE)
 
 
-def test_with_invalid_filter_value():
+def test_get_browse_results_with_invalid_filter_value():
     '''Should raise exception when invalid filter_value is provided'''
 
     with raises(Exception, match=r'filter_value is a required parameter of type string'):
@@ -314,7 +314,7 @@ def test_with_invalid_filter_value():
         browse.get_browse_results(FILTER_NAME, [])
 
 
-def test_with_no_filter_name():
+def test_get_browse_results_with_no_filter_name():
     '''Should raise exception when no filter_name is provided'''
 
     with raises(Exception, match=r'filter_name is a required parameter of type string'):
@@ -322,7 +322,7 @@ def test_with_no_filter_name():
         browse.get_browse_results(None, FILTER_VALUE)
 
 
-def test_with_no_filter_value():
+def test_get_browse_results_with_no_filter_value():
     '''Should raise exception when no filter_value is provided'''
 
     with raises(Exception, match=r'filter_value is a required parameter of type string'):
@@ -330,7 +330,7 @@ def test_with_no_filter_value():
         browse.get_browse_results(FILTER_NAME, None)
 
 
-def test_with_invalid_page():
+def test_get_browse_results_with_invalid_page():
     '''Should raise exception when invalid page parameter is provided'''
 
     with raises(HttpException, match=r'page must be an integer'):
@@ -341,7 +341,7 @@ def test_with_invalid_page():
             {'section': SECTION, 'page': 'abc'})
 
 
-def test_with_invalid_results_per_page():
+def test_get_browse_results_with_invalid_results_per_page():
     '''Should raise exception when invalid results_per_page parameter is provided'''
 
     with raises(HttpException, match=r'num_results_per_page must be an integer'):
@@ -352,7 +352,7 @@ def test_with_invalid_results_per_page():
             {'section': SECTION, 'results_per_page': 'abc'})
 
 
-def test_with_invalid_filters():
+def test_get_browse_results_with_invalid_filters():
     '''Should raise exception when invalid filters parameter is provided'''
 
     with raises(Exception, match=r'filters must be a dictionary'):
@@ -363,7 +363,7 @@ def test_with_invalid_filters():
             {'section': SECTION, 'filters': 'abc'})
 
 
-def test_with_invalid_sort_by():
+def test_get_browse_results_with_invalid_sort_by():
     '''Should raise exception when invalid sort_by parameter is provided'''
 
     with raises(HttpException, match=r'sort_by must be a string'):
@@ -374,7 +374,7 @@ def test_with_invalid_sort_by():
             {'section': SECTION, 'sort_by': ['foo', 'bar']})
 
 
-def test_with_invalid_sort_order():
+def test_get_browse_results_with_invalid_sort_order():
     '''Should raise exception when invalid sort_order parameter is provided'''
 
     with raises(HttpException, match=r'Invalid value for parameter: "sort_order"'):
@@ -385,7 +385,7 @@ def test_with_invalid_sort_order():
             {'section': SECTION, 'sort_order': 123})
 
 
-def test_with_invalid_section():
+def test_get_browse_results_with_invalid_section():
     '''Should raise exception when invalid section parameter is provided'''
 
     with raises(HttpException, match=r'Unknown section: 123'):
@@ -396,7 +396,7 @@ def test_with_invalid_section():
             {'section': 123})
 
 
-def test_with_invalid_fmt_options():
+def test_get_browse_results_with_invalid_fmt_options():
     '''Should raise exception when invalid fmt_options parameter is provided'''
 
     with raises(Exception, match=r'fmt_options must be a dictionary'):
@@ -407,7 +407,7 @@ def test_with_invalid_fmt_options():
             {'fmt_options': 'abc'})
 
 
-def test_with_invalid_api_key():
+def test_get_browse_results_with_invalid_api_key():
     '''Should raise exception when invalid api_key is provided'''
 
     with raises(
@@ -424,9 +424,28 @@ def test_with_invalid_api_key():
             {'section': SECTION})
 
 
-def test_with_no_api_key():
+def test_get_browse_results_with_no_api_key():
     '''Should raise exception when no api_key is provided'''
 
     with raises(Exception, match=r'API key is a required parameter of type string'):
         browse = ConstructorIO({}).browse
         browse.get_browse_results(FILTER_NAME, FILTER_VALUE)
+
+
+def test_get_browse_groups_with_valid_filter_name_filter_value_and_identifiers():
+    '''Should return a response with a valid filter_name, filter_value, section, and client + session identifiers''' # pylint: disable=line-too-long
+
+    client_session_identifiers = {
+        'client_id': VALID_CLIENT_ID,
+        'session_id': VALID_SESSION_ID,
+    }
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_groups(
+        {},
+        {**client_session_identifiers}
+    )
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('groups'), list)
