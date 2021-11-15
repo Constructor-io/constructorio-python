@@ -10,7 +10,7 @@ help:
 .PHONY: help Makefile
 
 docs: Makefile
-	pipenv run sphinx-apidoc -o source constructorio_python
+	pipenv run sphinx-apidoc -o source constructor_io
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	cp -a $(BUILDDIR)/html/. $(DOCSDIR)
 	rm -r $(BUILDDIR)

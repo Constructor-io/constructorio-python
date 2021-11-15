@@ -3,7 +3,7 @@
 from re import sub
 from urllib.parse import parse_qs, urlencode
 
-from constructorio_python.helpers.exception import HttpException
+from constructor_io.helpers.exception import HttpException
 
 
 def throw_http_exception_from_response(response):

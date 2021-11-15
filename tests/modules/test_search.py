@@ -7,8 +7,8 @@ from unittest import mock
 import requests
 from pytest import raises
 
-from constructorio_python.constructorio import ConstructorIO
-from constructorio_python.helpers.exception import HttpException
+from constructor_io.constructorio import ConstructorIO
+from constructor_io.helpers.exception import HttpException
 
 TEST_API_KEY = environ['TEST_API_KEY']
 VALID_CLIENT_ID = '2b23dd74-5672-4379-878c-9182938d2710'
