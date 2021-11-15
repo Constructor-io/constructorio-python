@@ -75,7 +75,7 @@ class Browse:
         :param dict parameters: Additional parameters to refine result set
         :param int parameters.page: The page number of the results
         :param int parameters.results_per_page: The number of results per page to return
-        :param dict parameters.filters: Filters used to refine search
+        :param dict parameters.filters: Filters used to refine results
         :param str parameters.sort_by: The sort method for results
         :param str parameters.sort_order: The sort order for results
         :param str parameters.section: Section name for results
@@ -135,13 +135,15 @@ class Browse:
 
         raise Exception('get_browse_results response data is malformed')
 
+
     def get_browse_groups(self, parameters=None, user_parameters=None):
         '''
-        Retrieve browse groups from API
+        Retrieve groups from API
 
         :param dict parameters: Additional parameters to refine result set
-        :param dict parameters.filters: Filters used to refine search
+        :param dict parameters.filters: Filters used to refine results
         :param dict parameters.fmt_options: The format options used to refine result groups
+        :param int parameters.fmt_options.groups_max_depth: The maximum depth of the hierarchy group structure
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results

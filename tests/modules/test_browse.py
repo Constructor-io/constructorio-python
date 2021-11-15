@@ -17,6 +17,7 @@ VALID_OPTIONS = {'api_key': TEST_API_KEY}
 FILTER_NAME = 'group_id'
 FILTER_VALUE = 'Brands'
 SECTION = 'Products'
+USER_ID = 'user-id'
 
 
 def test_get_browse_results_with_valid_filter_name_filter_value_and_identifiers():
@@ -85,13 +86,12 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_user_id():
     '''Should return a response with a valid filter_name, filter_value, section, and user_id'''
 
     with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
-        user_id = 'user-id'
         browse = ConstructorIO({**VALID_OPTIONS, 'requests': requests}).browse
         response = browse.get_browse_results(
             FILTER_NAME,
             FILTER_VALUE,
             {'section': SECTION},
-            {'user_id': user_id})
+            {'user_id': USER_ID})
         request_url = mocked_requests.call_args.args[0]
 
         assert isinstance(response.get('request'), dict)
@@ -432,8 +432,23 @@ def test_get_browse_results_with_no_api_key():
         browse.get_browse_results(FILTER_NAME, FILTER_VALUE)
 
 
-def test_get_browse_groups_with_valid_filter_name_filter_value_and_identifiers():
-    '''Should return a response with a valid filter_name, filter_value, section, and client + session identifiers''' # pylint: disable=line-too-long
+def test_get_browse_groups_without_additional_arguments():
+    '''Should return a response without additional arguments'''
+
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_groups(
+        {},
+        {}
+    )
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('groups'), list)
+
+
+def test_get_browse_groups_with_valid_identifiers():
+    '''Should return a response with valid client + session identifiers'''
 
     client_session_identifiers = {
         'client_id': VALID_CLIENT_ID,
@@ -449,3 +464,91 @@ def test_get_browse_groups_with_valid_filter_name_filter_value_and_identifiers()
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
     assert isinstance(response.get('response').get('groups'), list)
+
+
+def test_get_browse_groups_with_valid_user_id():
+    '''Should return a response with a valid user id'''
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        response = browse.get_browse_groups(
+            {},
+            {'user_id': USER_ID}
+        )
+        request_url = mocked_requests.call_args.args[0]
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('groups'), list)
+        assert re.search('ui=user-id', request_url)
+
+
+def test_get_browse_groups_with_valid_filters():
+    '''Should return a response with valid filters'''
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        filters = {'group_id': FILTER_VALUE}
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        response = browse.get_browse_groups(
+            { 'filters': filters },
+            {}
+        )
+        request_url = mocked_requests.call_args.args[0]
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('groups'), list)
+        assert isinstance(response.get('request').get('filters'), dict)
+        assert re.search('filters', request_url)
+
+
+def test_get_browse_groups_with_valid_fmt_options():
+    '''Should return a response with valid fmt_options'''
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        response = browse.get_browse_groups(
+            { 'fmt_options': { 'groups_max_depth': 4 } },
+            {}
+        )
+        request_url = mocked_requests.call_args.args[0]
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('groups'), list)
+        assert isinstance(response.get('request').get('fmt_options'), dict)
+        assert isinstance(response.get('request').get('fmt_options').get('groups_max_depth'), int)
+        assert re.search('fmt_options%5Bgroups_max_depth', request_url)
+
+
+def test_get_browse_groups_with_invalid_filters():
+    '''Should return a response with invalid filters'''
+
+    with raises(Exception, match=r'filters must be a dictionary'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_groups(
+            { 'filters': 123},
+            {}
+        )
+
+
+def test_get_browse_groups_with_invalid_fmt_options():
+    '''Should return a response with invalid fmt_options'''
+
+    with raises(Exception, match=r'fmt_options must be a dictionary'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_groups(
+            { 'fmt_options': 123},
+            {}
+        )
+
+
+def test_get_browse_groups_with_invalid_api_key():
+    '''Should return a response with invalid api_key'''
+
+    with raises(Exception, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'):
+        browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
+        browse.get_browse_groups({}, {})
