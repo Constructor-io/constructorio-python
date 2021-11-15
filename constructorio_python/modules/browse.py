@@ -25,6 +25,7 @@ def complete_browse_url(prefix, parameters, user_parameters, options, omit_times
 
         if parameters.get('filters'):
             filters = parameters.get('filters')
+
             if isinstance(filters, dict):
                 for key, value in filters.items():
                     query_params[f'filters[{key}]'] = value
@@ -42,6 +43,7 @@ def complete_browse_url(prefix, parameters, user_parameters, options, omit_times
 
         if parameters.get('fmt_options'):
             fmt_options = parameters.get('fmt_options')
+
             if isinstance(fmt_options, dict):
                 for key, value in fmt_options.items():
                     query_params[f'fmt_options[{key}]'] = value
@@ -51,6 +53,9 @@ def complete_browse_url(prefix, parameters, user_parameters, options, omit_times
         if parameters.get('hidden_fields'):
             query_params['hidden_fields'] = parameters.get('hidden_fields')
 
+        if parameters.get('itemIds'):
+            query_params['ids'] = parameters.get('itemIds')
+
     if not omit_timestamp:
         query_params['_dt'] = int(time()*1000.0)
 
@@ -58,13 +63,14 @@ def complete_browse_url(prefix, parameters, user_parameters, options, omit_times
     query_string = urlencode(query_params, doseq=True)
 
     return f'{options.get("service_url")}/{prefix}?{query_string}' # pylint: disable=line-too-long
-    # return f'{options.get("service_url")}/browse/{quote(filter_name)}/{quote(filter_value)}?{query_string}' # pylint: disable=line-too-long
 
 class Browse:
     '''Browse Class'''
 
+
     def __init__(self, options):
         self.__options = options or {}
+
 
     def get_browse_results(self, filter_name, filter_value, parameters=None, user_parameters=None):
         '''
@@ -134,6 +140,72 @@ class Browse:
                 return json
 
         raise Exception('get_browse_results response data is malformed')
+
+
+    def get_browse_results_for_item_ids(self, itemIds, parameters=None, user_parameters=None):
+        '''
+        Retrieve browse results from API using item ID's
+
+        :param list itemIds: Item ID's of results to get results for
+        :param dict parameters: Additional parameters to refine result set
+        :param int parameters.page: The page number of the results
+        :param int parameters.results_per_page: The number of results per page to return
+        :param dict parameters.filters: Filters used to refine results
+        :param str parameters.sort_by: The sort method for results
+        :param str parameters.sort_order: The sort order for results
+        :param str parameters.section: Section name for results
+        :param dict parameters.fmt_options: The format options used to refine result groups
+        :param list parameters.hidden_fields: Hidden metadata fields to return
+        :param dict user_parameters: Parameters relevant to the user request
+        :param int user_parameters.session_id: Session ID, utilized to personalize results
+        :param str user_parameters.client_id: Client ID, utilized to personalize results
+        :param str user_parameters.user_id: User ID, utilized to personalize results
+        :param str user_parameters.segments: User segments
+        :param dict user_parameters.test_cells: User test cells
+        :param str user_parameters.user_ip: Origin user IP, from client
+        :param str user_parameters.user_agent: Origin user agent, from client
+
+        :return: dict
+        '''
+
+        if not itemIds or not isinstance(itemIds, list):
+            raise Exception('itemIds is a required parameter of type list')
+
+        if not parameters:
+            parameters = {}
+        if not user_parameters:
+            user_parameters = {}
+
+        urlPrefix = f'browse/items'
+        request_url = complete_browse_url(
+            urlPrefix,
+            { **parameters, 'itemIds': itemIds},
+            user_parameters,
+            self.__options)
+        requests = self.__options.get('requests') or r
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options, user_parameters)
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+        json_response = json.get('response')
+
+        if json_response:
+            if json_response.get('results') or json_response.get('results') == []:
+                result_id = json.get('result_id')
+
+                if result_id:
+                    for result in json_response.get('results'):
+                        result['result_id'] = result_id
+
+                return json
+
+        raise Exception('get_browse_results_for_item_ids response data is malformed')
 
 
     def get_browse_groups(self, parameters=None, user_parameters=None):
@@ -222,7 +294,6 @@ class Browse:
             user_parameters,
             self.__options,
             True)
-        print(request_url)
         requests = self.__options.get('requests') or r
         response = requests.get(
             request_url,

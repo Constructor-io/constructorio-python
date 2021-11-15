@@ -19,6 +19,7 @@ FILTER_NAME = 'group_id'
 FILTER_VALUE = 'Brands'
 SECTION = 'Products'
 USER_ID = 'user-id'
+IDS = ['10001', '10002']
 
 
 def test_get_browse_results_with_valid_filter_name_filter_value_and_identifiers():
@@ -643,3 +644,382 @@ def test_get_browse_facets_with_invalid_api_key():
     with raises(Exception, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'):
         browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
         browse.get_browse_facets()
+
+
+def test_get_browse_results_for_item_ids_without_additional_arguments():
+    '''Should return a response with valid ids'''
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        response = browse.get_browse_results_for_item_ids(IDS)
+        request_url = mocked_requests.call_args.args[0]
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('results'), list)
+        assert isinstance(response.get('response').get('total_num_results'), int)
+        assert re.search('ids=10001&ids=10002', request_url)
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_test_cells():
+    '''Should return a response with a valid ids and test_cells'''
+
+    test_cells = {'foo': 'bar'}
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {},
+        {'test_cells': test_cells})
+    first_key = next(iter(test_cells.keys()))
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert isinstance(response.get('response').get('results'), list)
+    assert response.get('request').get(
+        f'ef-{first_key}') == test_cells[first_key]
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_segments():
+    '''Should return a response with a valid ids, section, and segments'''
+
+    segments = ['foo', 'bar']
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {},
+        {'segments': segments})
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert response.get('request').get('us') == segments
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_user_id():
+    '''Should return a response with a valid ids and user_id'''
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        browse = ConstructorIO({**VALID_OPTIONS, 'requests': requests}).browse
+        response = browse.get_browse_results_for_item_ids(
+            IDS,
+            {},
+            {'user_id': USER_ID})
+        request_url = mocked_requests.call_args.args[0]
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('results'), list)
+        assert re.search('ui=user-id', request_url)
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_page():
+    '''Should return a response with a valid ids, section, and page'''
+
+    page = 1
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {'section': SECTION,'page': page})
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert response.get('request').get('page') == page
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_results_per_page():
+    '''Should return a response with a valid ids, section, and results_per_page''' # pylint: disable=line-too-long
+
+    results_per_page = 2
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {'results_per_page': results_per_page}
+    )
+    num_results = response.get('request').get('num_results_per_page')
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert num_results == results_per_page
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_filters():
+    '''Should return a response with a valid ids, section, and filters'''
+
+    filters = {'keywords': ['battery-powered']}
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {'section': SECTION, 'filters': filters})
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert response.get('request').get('filters') == filters
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_fmt_options():
+    '''Should return a response with a valid ids, section, and fmt_options'''
+
+    fmt_options = {'groups_max_depth': 2, 'groups_start': 'current'}
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {'section': SECTION, 'fmt_options': fmt_options})
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert response.get('request').get('fmt_options') == fmt_options
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_sort_by():
+    '''Should return a response with a valid ids, section, and sort_by'''
+
+    sort_by = 'relevance'
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {'section': SECTION, 'sort_by': sort_by})
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert response.get('request').get('sort_by') == sort_by
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_sort_order():
+    '''Should return a response with a valid ids, section, and sort_by'''
+
+    sort_order = 'ascending'
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {'section': SECTION, 'sort_order': sort_order})
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert response.get('request').get('sort_order') == sort_order
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_user_ip():
+    '''Should return a response with a valid ids, section, and user_ip'''
+
+    user_ip = '127.0.0.1'
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        browse = ConstructorIO({**VALID_OPTIONS, 'requests': requests}).browse
+        response = browse.get_browse_results_for_item_ids(
+            IDS,
+            {'section': SECTION},
+            {'user_ip': user_ip})
+        headers = mocked_requests.call_args.kwargs.get('headers')
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('results'), list)
+        assert headers.get('X-Forwarded-For') == user_ip
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_security_token():
+    '''Should return a response with a valid ids, section, and security_token''' # pylint: disable=line-too-long
+
+    security_token = 'cio-python-test'
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        browse = ConstructorIO({
+            **VALID_OPTIONS,
+            'requests': requests,
+            'security_token': security_token
+        }).browse
+        response = browse.get_browse_results_for_item_ids(
+            IDS,
+            {'section': SECTION})
+        headers = mocked_requests.call_args.kwargs.get('headers')
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('results'), list)
+        assert headers.get('x-cnstrc-token') == security_token
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_user_agent():
+    '''Should return a response with a valid ids, section, and user_agent'''
+
+    user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'  # pylint: disable=line-too-long
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        browse = ConstructorIO({**VALID_OPTIONS, 'requests': requests}).browse
+        response = browse.get_browse_results_for_item_ids(
+            IDS,
+            {'section': SECTION},
+            {'user_agent': user_agent}
+        )
+        headers = mocked_requests.call_args.kwargs.get('headers')
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('results'), list)
+        assert headers.get('User-Agent') == user_agent
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_with_result_id():
+    '''Should return a response with a valid ids, and section with a result_id appended to each result'''  # pylint: disable=line-too-long
+
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {'section': SECTION})
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert isinstance(response.get('response').get('results'), list)
+
+    for result in response.get('response').get('results'):
+        assert isinstance(result.get('result_id'), str)
+        assert result.get('result_id') == response.get('result_id')
+
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_hidden_fields():
+    '''Should return a response with a valid ids, section, and hiddenFields''' # pylint: disable=line-too-long
+
+    hidden_fields = ['hidden_field1', 'hidden_field2']
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {'section': SECTION, 'hidden_fields': hidden_fields}
+    )
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert response.get('request').get('hidden_fields') == hidden_fields
+
+
+def test_get_browse_results_for_item_ids_with_invalid_item_ids():
+    '''Should raise exception when invalid item_ids is provided'''
+
+    with raises(Exception, match=r'itemIds is a required parameter of type list'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_results_for_item_ids({})
+
+
+def test_get_browse_results_for_item_ids_with_missing_item_ids():
+    '''Should raise exception when item_ids is missing'''
+
+    with raises(Exception, match=r"get_browse_results_for_item_ids\(\) missing 1 required positional argument: 'itemIds'"):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_results_for_item_ids()
+
+
+def test_get_browse_results_for_item_ids_with_invalid_page():
+    '''Should raise exception when invalid page parameter is provided'''
+
+    with raises(HttpException, match=r'page must be an integer'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_results_for_item_ids(
+            IDS,
+            {'section': SECTION, 'page': 'abc'})
+
+
+def test_get_browse_results_for_item_ids_with_invalid_results_per_page():
+    '''Should raise exception when invalid results_per_page parameter is provided'''
+
+    with raises(HttpException, match=r'num_results_per_page must be an integer'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_results_for_item_ids(
+            IDS,
+            {'section': SECTION, 'results_per_page': 'abc'})
+
+
+def test_get_browse_results_for_item_ids_with_invalid_filters():
+    '''Should raise exception when invalid filters parameter is provided'''
+
+    with raises(Exception, match=r'filters must be a dictionary'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_results_for_item_ids(
+            IDS,
+            {'section': SECTION, 'filters': 'abc'})
+
+
+def test_get_browse_results_for_item_ids_with_invalid_sort_by():
+    '''Should raise exception when invalid sort_by parameter is provided'''
+
+    with raises(HttpException, match=r'sort_by must be a string'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_results_for_item_ids(
+            IDS,
+            {'section': SECTION, 'sort_by': ['foo', 'bar']})
+
+
+def test_get_browse_results_for_item_ids_with_invalid_sort_order():
+    '''Should raise exception when invalid sort_order parameter is provided'''
+
+    with raises(HttpException, match=r'Invalid value for parameter: "sort_order"'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_results_for_item_ids(
+            IDS,
+            {'section': SECTION, 'sort_order': 123})
+
+
+def test_get_browse_results_for_item_ids_with_invalid_section():
+    '''Should raise exception when invalid section parameter is provided'''
+
+    with raises(HttpException, match=r'Unknown section: 123'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_results_for_item_ids(
+            IDS,
+            {'section': 123})
+
+
+def test_get_browse_results_for_item_ids_with_invalid_fmt_options():
+    '''Should raise exception when invalid fmt_options parameter is provided'''
+
+    with raises(Exception, match=r'fmt_options must be a dictionary'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_results_for_item_ids(
+            IDS,
+            {'fmt_options': 'abc'})
+
+
+def test_get_browse_results_for_item_ids_with_invalid_api_key():
+    '''Should raise exception when invalid api_key is provided'''
+
+    with raises(
+            HttpException,
+            match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'  # pylint: disable=line-too-long
+    ):
+        browse = ConstructorIO({
+            **VALID_OPTIONS,
+            'api_key': 'fyzs7tfF8L161VoAXQ8u'
+        }).browse
+        browse.get_browse_results_for_item_ids(
+            IDS,
+            {'section': SECTION})
+
+
+def test_get_browse_results_for_item_ids_with_no_api_key():
+    '''Should raise exception when no api_key is provided'''
+
+    with raises(Exception, match=r'API key is a required parameter of type string'):
+        browse = ConstructorIO({}).browse
+        browse.get_browse_results_for_item_ids(IDS)
