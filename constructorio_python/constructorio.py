@@ -4,8 +4,6 @@ __version__ = 1.0
 
 from constructorio_python.helpers.exception import ConstructorException
 from constructorio_python.modules.autocomplete import Autocomplete
-from constructorio_python.modules.browse import Browse
-from constructorio_python.modules.recommendations import Recommendations
 from constructorio_python.modules.search import Search
 
 
