@@ -10,6 +10,7 @@ from constructorio_python.modules.search import Search
 
 
 class ConstructorIO:
+    # pylint: disable=too-few-public-methods
     '''
         ConstructorIO Python Client
 
@@ -42,7 +43,7 @@ class ConstructorIO:
         }
 
         self.autocomplete = Autocomplete(self.__options)
-        self.search = Search()
+        self.search = Search(self.__options)
         self.browse = Browse()
         self.recommendations = Recommendations()
 
