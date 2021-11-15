@@ -8,7 +8,7 @@ A Python client for [Constructor.io](http://constructor.io/). [Constructor.io](h
 ## 1. Install
 
 ```
-pip install constructorio-python
+pip install constructor-io
 ```
 
 ## 2. Retrieve an API key and token
@@ -36,10 +36,10 @@ Full API documentation is available on [Github Pages](https://constructor-io.git
 ## Development
 
 ```bash
-make install        # install dependencies
-pipenv run pylint     # run lint
-pipenv run pytest     # run tests with coverage report
-make docs             # output documentation to `./docs` directory
+make install                            # install dependencies
+pipenv run pylint constructorio_python  # run lint
+pipenv run pytest .                     # run tests with coverage report
+make docs                               # output documentation to `./docs` directory
 ```
 
 
