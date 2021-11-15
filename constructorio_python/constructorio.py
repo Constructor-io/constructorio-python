@@ -8,6 +8,7 @@ from constructorio_python.modules.search import Search
 
 
 class ConstructorIO:
+    # pylint: disable=too-few-public-methods
     '''
         ConstructorIO Python Client
 
@@ -38,8 +39,9 @@ class ConstructorIO:
             'service_url': service_url or 'https://ac.cnstrc.com',
             'requests': requests,
         }
-        self.autocomplete = Autocomplete()
-        self.search = Search()
+
+        self.autocomplete = Autocomplete(self.__options)
+        self.search = Search(self.__options)
 
     def get_options(self):
         '''Get client options'''
