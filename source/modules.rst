@@ -1,7 +1,7 @@
-constructorio_python
-====================
+constructor_io
+==============
 
 .. toctree::
    :maxdepth: 4
 
-   constructorio_python
+   constructor_io
