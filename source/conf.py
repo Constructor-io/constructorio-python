@@ -14,6 +14,8 @@
 import os
 import sys
 
+from constructor_io import __version__
+
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -22,6 +24,7 @@ sys.path.insert(0, os.path.abspath('..'))
 project = 'ConstructorIO Python'
 copyright = '2021, ConstructorIO'
 author = 'ConstructorIO'
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------
