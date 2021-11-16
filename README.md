@@ -5,7 +5,7 @@
 
 A Python client for [Constructor.io](http://constructor.io/). [Constructor.io](http://constructor.io/) provides search as a service that optimizes results using artificial intelligence (including natural language processing, re-ranking to optimize for conversions, and user personalization).
 
-# Requirements
+## Requirements
 
 Requesting results from your back-end can be useful in order to control result rendering logic on your server, or augment/hydrate results with data from another system. However, a back-end integration has additional requirements compared to a front-end integration. Please review [Back End API Integration](https://constructorio.zendesk.com/hc/en-us/articles/360047993194-Back-end-API-Integration) for more detail.
 
