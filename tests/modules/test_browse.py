@@ -1,4 +1,4 @@
-'''ConstructorIO Python Client - Search Tests'''
+'''ConstructorIO Python Client - Search Tests''' # pylint: disable=too-many-lines
 
 import re
 from os import environ
@@ -544,7 +544,7 @@ def test_get_browse_groups_with_invalid_fmt_options():
 def test_get_browse_groups_with_invalid_api_key():
     '''Should return a response with invalid api_key'''
 
-    with raises(Exception, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'):
+    with raises(Exception, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'): # pylint: disable=line-too-long
         browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
         browse.get_browse_groups()
 
@@ -602,8 +602,8 @@ def test_get_browse_facets_with_valid_fmt_options():
         assert isinstance(response.get('response').get('facets'), list)
         assert isinstance(response.get('response').get('total_num_results'), int)
         assert isinstance(response.get('request').get('fmt_options'), dict)
-        assert isinstance(response.get('request').get('fmt_options').get('show_hidden_facets'), bool)
-        assert isinstance(response.get('request').get('fmt_options').get('show_protected_facets'), bool)
+        assert isinstance(response.get('request').get('fmt_options').get('show_hidden_facets'), bool) # pylint: disable=line-too-long
+        assert isinstance(response.get('request').get('fmt_options').get('show_protected_facets'), bool) # pylint: disable=line-too-long
         assert re.search('%5Bshow_hidden_facets%5D=True', request_url)
         assert re.search('%5Bshow_protected_facets%5D=True', request_url)
 
@@ -641,7 +641,7 @@ def test_get_browse_facets_with_invalid_fmt_options():
 def test_get_browse_facets_with_invalid_api_key():
     '''Should return a response with invalid api_key'''
 
-    with raises(Exception, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'):
+    with raises(Exception, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'): # pylint: disable=line-too-long
         browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
         browse.get_browse_facets()
 
@@ -926,9 +926,9 @@ def test_get_browse_results_for_item_ids_with_invalid_item_ids():
 def test_get_browse_results_for_item_ids_with_missing_item_ids():
     '''Should raise exception when item_ids is missing'''
 
-    with raises(Exception, match=r"get_browse_results_for_item_ids\(\) missing 1 required positional argument: 'itemIds'"):
+    with raises(Exception, match=r"get_browse_results_for_item_ids\(\) missing 1 required positional argument: 'itemIds'"): # pylint: disable=line-too-long
         browse = ConstructorIO(VALID_OPTIONS).browse
-        browse.get_browse_results_for_item_ids()
+        browse.get_browse_results_for_item_ids() # pylint: disable=no-value-for-parameter
 
 
 def test_get_browse_results_for_item_ids_with_invalid_page():

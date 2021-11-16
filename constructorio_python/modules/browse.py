@@ -53,8 +53,8 @@ def complete_browse_url(prefix, parameters, user_parameters, options, omit_times
         if parameters.get('hidden_fields'):
             query_params['hidden_fields'] = parameters.get('hidden_fields')
 
-        if parameters.get('itemIds'):
-            query_params['ids'] = parameters.get('itemIds')
+        if parameters.get('item_ids'):
+            query_params['ids'] = parameters.get('item_ids')
 
     if not omit_timestamp:
         query_params['_dt'] = int(time()*1000.0)
@@ -110,9 +110,9 @@ class Browse:
         if not user_parameters:
             user_parameters = {}
 
-        urlPrefix = f'browse/{quote(filter_name)}/{quote(filter_value)}'
+        url_prefix = f'browse/{quote(filter_name)}/{quote(filter_value)}'
         request_url = complete_browse_url(
-            urlPrefix,
+            url_prefix,
             parameters,
             user_parameters,
             self.__options)
@@ -142,11 +142,11 @@ class Browse:
         raise Exception('get_browse_results response data is malformed')
 
 
-    def get_browse_results_for_item_ids(self, itemIds, parameters=None, user_parameters=None):
+    def get_browse_results_for_item_ids(self, item_ids, parameters=None, user_parameters=None):
         '''
         Retrieve browse results from API using item ID's
 
-        :param list itemIds: Item ID's of results to get results for
+        :param list item_ids: Item ID's of results to get results for
         :param dict parameters: Additional parameters to refine result set
         :param int parameters.page: The page number of the results
         :param int parameters.results_per_page: The number of results per page to return
@@ -168,18 +168,18 @@ class Browse:
         :return: dict
         '''
 
-        if not itemIds or not isinstance(itemIds, list):
-            raise Exception('itemIds is a required parameter of type list')
+        if not item_ids or not isinstance(item_ids, list):
+            raise Exception('item_ids is a required parameter of type list')
 
         if not parameters:
             parameters = {}
         if not user_parameters:
             user_parameters = {}
 
-        urlPrefix = f'browse/items'
+        url_prefix = 'browse/items'
         request_url = complete_browse_url(
-            urlPrefix,
-            { **parameters, 'itemIds': itemIds},
+            url_prefix,
+            { **parameters, 'item_ids': item_ids},
             user_parameters,
             self.__options)
         requests = self.__options.get('requests') or r
@@ -215,7 +215,7 @@ class Browse:
         :param dict parameters: Additional parameters to refine result set
         :param dict parameters.filters: Filters used to refine results
         :param dict parameters.fmt_options: The format options used to refine result groups
-        :param int parameters.fmt_options.groups_max_depth: The maximum depth of the hierarchy group structure
+        :param int parameters.fmt_options.groups_max_depth: The maximum depth of the hierarchy group structure # pylint: disable=line-too-long
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -233,9 +233,9 @@ class Browse:
         if not user_parameters:
             user_parameters = {}
 
-        urlPrefix = f'browse/groups'
+        url_prefix = 'browse/groups'
         request_url = complete_browse_url(
-            urlPrefix,
+            url_prefix,
             parameters,
             user_parameters,
             self.__options,
@@ -269,7 +269,7 @@ class Browse:
         :param dict parameters.results_per_page: The number of results per page to return
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param int parameters.fmt_options.show_hidden_facets: Include facets configured as hidden
-        :param int parameters.fmt_options.show_protected_facets: Include facets configured as protected
+        :param int parameters.fmt_options.show_protected_facets: Include facets configured as protected # pylint: disable=line-too-long
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -287,9 +287,9 @@ class Browse:
         if not user_parameters:
             user_parameters = {}
 
-        urlPrefix = f'browse/facets'
+        url_prefix = 'browse/facets'
         request_url = complete_browse_url(
-            urlPrefix,
+            url_prefix,
             parameters,
             user_parameters,
             self.__options,
