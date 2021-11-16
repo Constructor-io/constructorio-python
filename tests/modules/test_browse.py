@@ -918,7 +918,7 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_hidden_fields()
 def test_get_browse_results_for_item_ids_with_invalid_item_ids():
     '''Should raise exception when invalid item_ids is provided'''
 
-    with raises(Exception, match=r'itemIds is a required parameter of type list'):
+    with raises(Exception, match=r'item_ids is a required parameter of type list'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids({})
 
@@ -926,7 +926,7 @@ def test_get_browse_results_for_item_ids_with_invalid_item_ids():
 def test_get_browse_results_for_item_ids_with_missing_item_ids():
     '''Should raise exception when item_ids is missing'''
 
-    with raises(Exception, match=r"get_browse_results_for_item_ids\(\) missing 1 required positional argument: 'itemIds'"): # pylint: disable=line-too-long
+    with raises(Exception, match=r"get_browse_results_for_item_ids\(\) missing 1 required positional argument: 'item_ids'"): # pylint: disable=line-too-long
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids() # pylint: disable=no-value-for-parameter
 

@@ -10,7 +10,7 @@ from constructorio_python.helpers.utils import (
     create_shared_query_params, throw_http_exception_from_response)
 
 
-def complete_browse_url(prefix, parameters, user_parameters, options, omit_timestamp = False):
+def create_browse_url(prefix, parameters, user_parameters, options, omit_timestamp = False):
     # pylint: disable=too-many-branches
     '''Create URL from supplied filter name, filter value, and parameters'''
 
@@ -111,7 +111,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = f'browse/{quote(filter_name)}/{quote(filter_value)}'
-        request_url = complete_browse_url(
+        request_url = create_browse_url(
             url_prefix,
             parameters,
             user_parameters,
@@ -177,7 +177,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = 'browse/items'
-        request_url = complete_browse_url(
+        request_url = create_browse_url(
             url_prefix,
             { **parameters, 'item_ids': item_ids},
             user_parameters,
@@ -234,7 +234,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = 'browse/groups'
-        request_url = complete_browse_url(
+        request_url = create_browse_url(
             url_prefix,
             parameters,
             user_parameters,
@@ -288,7 +288,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = 'browse/facets'
-        request_url = complete_browse_url(
+        request_url = create_browse_url(
             url_prefix,
             parameters,
             user_parameters,
