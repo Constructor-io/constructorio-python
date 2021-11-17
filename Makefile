@@ -19,3 +19,8 @@ install: Makefile
 	pipenv install --dev
 	pipenv run pre-commit install --hook-type pre-commit --hook-type pre-push
 
+build: Makefile
+	pipenv run python setup.py sdist
+
+publish: Makefile
+	twine upload dist/*

@@ -1,7 +1,6 @@
 '''ConstructorIO Python Package'''
 
-__version__ = 1.0
-
+from constructor_io import __version__
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.modules.autocomplete import Autocomplete
 from constructor_io.modules.browse import Browse
