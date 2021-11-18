@@ -5,6 +5,10 @@
 
 A Python client for [Constructor.io](http://constructor.io/). [Constructor.io](http://constructor.io/) provides search as a service that optimizes results using artificial intelligence (including natural language processing, re-ranking to optimize for conversions, and user personalization).
 
+## Requirements
+
+Requesting results from your back-end can be useful in order to control result rendering logic on your server, or augment/hydrate results with data from another system. However, a back-end integration has additional requirements compared to a front-end integration. Please review [Back End API Integration](https://constructorio.zendesk.com/hc/en-us/articles/360047993194-Back-end-API-Integration) for more detail.
+
 ## 1. Install
 
 ```
@@ -20,7 +24,7 @@ You can find this in your [Constructor.io dashboard](https://constructor.io/dash
 Once imported, an instance of the client can be created as follows:
 
 ```python
-from constructorio_python.constructorio import ConstructorIO
+from constructor_io.constructor_io import ConstructorIO
 
 constructorio = ConstructorIO({
     "api_key": "YOUR API KEY",
@@ -36,10 +40,10 @@ Full API documentation is available on [Github Pages](https://constructor-io.git
 ## Development
 
 ```bash
-make install        # install dependencies
-pipenv run pylint     # run lint
-pipenv run pytest     # run tests with coverage report
-make docs             # output documentation to `./docs` directory
+make install                            # install dependencies
+pipenv run pylint constructor_io  # run lint
+pipenv run pytest .                     # run tests with coverage report
+make docs                               # output documentation to `./docs` directory
 ```
 
 

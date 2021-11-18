@@ -1,12 +1,16 @@
-from setuptools import setup
+from pathlib import Path
 
-VERSION = "0.0.12"
+from setuptools import find_packages, setup
 
+from constructor_io import __version__
+
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 setup(
-    name="constructorio_python",
-    version=VERSION,
-    download_url='https://github.com/Constructor-io/constructorio-python/tarball/' + VERSION,
+    name="constructor-io",
+    version=__version__,
+    download_url='https://github.com/Constructor-io/constructor-io/tarball/' + __version__,
     license="MIT",
     description="Constructor.IO Python Client",
     author="Constructor.io",
@@ -16,4 +20,7 @@ setup(
     install_requires=[
         'requests~=2.26'
     ],
+    packages = find_packages(exclude=["tests.*", "tests"]),
+    long_description=long_description,
+    long_description_content_type='text/markdown',
 )

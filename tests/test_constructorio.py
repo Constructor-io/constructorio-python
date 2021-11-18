@@ -4,8 +4,8 @@ from os import environ
 
 import pytest
 
-from constructorio_python.constructorio import ConstructorIO
-from constructorio_python.helpers.exception import ConstructorException
+from constructor_io.constructor_io import ConstructorIO
+from constructor_io.helpers.exception import ConstructorException
 
 TEST_API_KEY = environ['TEST_API_KEY']
 VALID_OPTIONS = { 'api_key': TEST_API_KEY }
@@ -22,8 +22,6 @@ def test_with_valid_api_key():
     assert options.get('service_url') is not None
     assert client.autocomplete is not None
     assert client.search is not None
-    assert client.browse is not None
-    assert client.recommendations is not None
 
 def test_with_valid_api_key_and_options():
     '''Should return an instance with custom options when valid API key is provided'''
