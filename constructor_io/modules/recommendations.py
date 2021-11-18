@@ -14,7 +14,7 @@ from constructor_io.helpers.utils import (clean_params, create_auth_header,
 def create_recommendations_url(pod_id, parameters, user_parameters, options):
     '''Create URL from supplied parameters'''
 
-    query_params = create_shared_query_params(options, user_parameters)
+    query_params = create_shared_query_params(options, parameters, user_parameters)
 
     if not pod_id or not isinstance(pod_id, str):
         raise Exception('pod_id is a required parameter of type string')
@@ -28,17 +28,6 @@ def create_recommendations_url(pod_id, parameters, user_parameters, options):
 
         if parameters.get('term'):
             query_params['term'] = parameters.get('term')
-
-        if parameters.get('filters'):
-            filters = parameters.get('filters')
-            if isinstance(filters, dict):
-                for key, value in filters.items():
-                    query_params[f'filters[{key}]'] = value
-            else:
-                raise Exception('filters must be a dictionary')
-
-        if parameters.get('section'):
-            query_params['section'] = parameters.get('section')
 
     query_params['_dt'] = int(time()*1000.0)
     query_params = clean_params(query_params)
