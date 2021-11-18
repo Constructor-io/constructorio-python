@@ -12,7 +12,7 @@ Requesting results from your back-end can be useful in order to control result r
 ## 1. Install
 
 ```
-pip install constructorio-python
+pip install constructor-io
 ```
 
 ## 2. Retrieve an API key and token
