@@ -5,9 +5,10 @@ from urllib.parse import quote, urlencode
 
 import requests as r
 
-from constructorio_python.helpers.utils import (
-    clean_params, create_auth_header, create_request_headers,
-    create_shared_query_params, throw_http_exception_from_response)
+from constructor_io.helpers.utils import (clean_params, create_auth_header,
+                                          create_request_headers,
+                                          create_shared_query_params,
+                                          throw_http_exception_from_response)
 
 
 def create_recommendations_url(pod_id, parameters, user_parameters, options):
@@ -90,6 +91,7 @@ class Recommendations:
             headers=create_request_headers(self.__options, user_parameters)
         )
 
+        print(response)
         if not response.ok:
             throw_http_exception_from_response(response)
 
