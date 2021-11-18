@@ -75,7 +75,7 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_segments():
         FILTER_VALUE,
         {'section': SECTION},
         {'segments': segments}
-        )
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -92,7 +92,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_user_id():
             FILTER_NAME,
             FILTER_VALUE,
             {'section': SECTION},
-            {'user_id': USER_ID})
+            {'user_id': USER_ID}
+        )
         request_url = mocked_requests.call_args.args[0]
 
         assert isinstance(response.get('request'), dict)
@@ -109,7 +110,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_page():
     response = browse.get_browse_results(
         FILTER_NAME,
         FILTER_VALUE,
-        {'section': SECTION,'page': page})
+        {'section': SECTION,'page': page}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -143,7 +145,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_filters():
     response = browse.get_browse_results(
         FILTER_NAME,
         FILTER_VALUE,
-        {'section': SECTION, 'filters': filters})
+        {'section': SECTION, 'filters': filters}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -159,7 +162,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_fmt_options(
     response = browse.get_browse_results(
         FILTER_NAME,
         FILTER_VALUE,
-        {'section': SECTION, 'fmt_options': fmt_options})
+        {'section': SECTION, 'fmt_options': fmt_options}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -175,7 +179,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_sort_by():
     response = browse.get_browse_results(
         FILTER_NAME,
         FILTER_VALUE,
-        {'section': SECTION, 'sort_by': sort_by})
+        {'section': SECTION, 'sort_by': sort_by}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -191,7 +196,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_sort_order()
     response = browse.get_browse_results(
         FILTER_NAME,
         FILTER_VALUE,
-        {'section': SECTION, 'sort_order': sort_order})
+        {'section': SECTION, 'sort_order': sort_order}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -210,7 +216,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_user_ip():
             FILTER_NAME,
             FILTER_VALUE,
             {'section': SECTION},
-            {'user_ip': user_ip})
+            {'user_ip': user_ip}
+        )
         headers = mocked_requests.call_args.kwargs.get('headers')
 
         assert isinstance(response.get('request'), dict)
@@ -233,7 +240,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_security_tok
         response = browse.get_browse_results(
             FILTER_NAME,
             FILTER_VALUE,
-            {'section': SECTION})
+            {'section': SECTION}
+        )
         headers = mocked_requests.call_args.kwargs.get('headers')
 
         assert isinstance(response.get('request'), dict)
@@ -270,7 +278,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_with_result_id()
     response = browse.get_browse_results(
         FILTER_NAME,
         FILTER_VALUE,
-        {'section': SECTION})
+        {'section': SECTION}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -339,7 +348,8 @@ def test_get_browse_results_with_invalid_page():
         browse.get_browse_results(
             FILTER_NAME,
             FILTER_VALUE,
-            {'section': SECTION, 'page': 'abc'})
+            {'section': SECTION, 'page': 'abc'}
+        )
 
 
 def test_get_browse_results_with_invalid_results_per_page():
@@ -350,7 +360,8 @@ def test_get_browse_results_with_invalid_results_per_page():
         browse.get_browse_results(
             FILTER_NAME,
             FILTER_VALUE,
-            {'section': SECTION, 'results_per_page': 'abc'})
+            {'section': SECTION, 'results_per_page': 'abc'}
+        )
 
 
 def test_get_browse_results_with_invalid_filters():
@@ -361,7 +372,8 @@ def test_get_browse_results_with_invalid_filters():
         browse.get_browse_results(
             FILTER_NAME,
             FILTER_VALUE,
-            {'section': SECTION, 'filters': 'abc'})
+            {'section': SECTION, 'filters': 'abc'}
+        )
 
 
 def test_get_browse_results_with_invalid_sort_by():
@@ -372,7 +384,8 @@ def test_get_browse_results_with_invalid_sort_by():
         browse.get_browse_results(
             FILTER_NAME,
             FILTER_VALUE,
-            {'section': SECTION, 'sort_by': ['foo', 'bar']})
+            {'section': SECTION, 'sort_by': ['foo', 'bar']}
+        )
 
 
 def test_get_browse_results_with_invalid_sort_order():
@@ -383,7 +396,8 @@ def test_get_browse_results_with_invalid_sort_order():
         browse.get_browse_results(
             FILTER_NAME,
             FILTER_VALUE,
-            {'section': SECTION, 'sort_order': 123})
+            {'section': SECTION, 'sort_order': 123}
+        )
 
 
 def test_get_browse_results_with_invalid_section():
@@ -394,7 +408,8 @@ def test_get_browse_results_with_invalid_section():
         browse.get_browse_results(
             FILTER_NAME,
             FILTER_VALUE,
-            {'section': 123})
+            {'section': 123}
+        )
 
 
 def test_get_browse_results_with_invalid_fmt_options():
@@ -405,7 +420,8 @@ def test_get_browse_results_with_invalid_fmt_options():
         browse.get_browse_results(
             FILTER_NAME,
             FILTER_VALUE,
-            {'fmt_options': 'abc'})
+            {'fmt_options': 'abc'}
+        )
 
 
 def test_get_browse_results_with_invalid_api_key():
@@ -422,7 +438,8 @@ def test_get_browse_results_with_invalid_api_key():
         browse.get_browse_results(
             FILTER_NAME,
             FILTER_VALUE,
-            {'section': SECTION})
+            {'section': SECTION}
+        )
 
 
 def test_get_browse_results_with_no_api_key():
@@ -669,7 +686,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_test_cells():
     response = browse.get_browse_results_for_item_ids(
         IDS,
         {},
-        {'test_cells': test_cells})
+        {'test_cells': test_cells}
+    )
     first_key = next(iter(test_cells.keys()))
 
     assert isinstance(response.get('request'), dict)
@@ -689,7 +707,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_segments():
     response = browse.get_browse_results_for_item_ids(
         IDS,
         {},
-        {'segments': segments})
+        {'segments': segments}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -706,7 +725,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_user_id():
         response = browse.get_browse_results_for_item_ids(
             IDS,
             {},
-            {'user_id': USER_ID})
+            {'user_id': USER_ID}
+        )
         request_url = mocked_requests.call_args.args[0]
 
         assert isinstance(response.get('request'), dict)
@@ -723,7 +743,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_page():
     browse = ConstructorIO(VALID_OPTIONS).browse
     response = browse.get_browse_results_for_item_ids(
         IDS,
-        {'section': SECTION,'page': page})
+        {'section': SECTION,'page': page}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -757,7 +778,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_filters():
     browse = ConstructorIO(VALID_OPTIONS).browse
     response = browse.get_browse_results_for_item_ids(
         IDS,
-        {'section': SECTION, 'filters': filters})
+        {'section': SECTION, 'filters': filters}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -773,7 +795,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_fmt_options():
     browse = ConstructorIO(VALID_OPTIONS).browse
     response = browse.get_browse_results_for_item_ids(
         IDS,
-        {'section': SECTION, 'fmt_options': fmt_options})
+        {'section': SECTION, 'fmt_options': fmt_options}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -789,7 +812,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_sort_by():
     browse = ConstructorIO(VALID_OPTIONS).browse
     response = browse.get_browse_results_for_item_ids(
         IDS,
-        {'section': SECTION, 'sort_by': sort_by})
+        {'section': SECTION, 'sort_by': sort_by}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -805,7 +829,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_sort_order():
     browse = ConstructorIO(VALID_OPTIONS).browse
     response = browse.get_browse_results_for_item_ids(
         IDS,
-        {'section': SECTION, 'sort_order': sort_order})
+        {'section': SECTION, 'sort_order': sort_order}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -824,7 +849,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_user_ip():
         response = browse.get_browse_results_for_item_ids(
             IDS,
             {'section': SECTION},
-            {'user_ip': user_ip})
+            {'user_ip': user_ip}
+        )
         headers = mocked_requests.call_args.kwargs.get('headers')
 
         assert isinstance(response.get('request'), dict)
@@ -847,7 +873,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_security_token(
         }).browse
         response = browse.get_browse_results_for_item_ids(
             IDS,
-            {'section': SECTION})
+            {'section': SECTION}
+        )
         headers = mocked_requests.call_args.kwargs.get('headers')
 
         assert isinstance(response.get('request'), dict)
@@ -884,7 +911,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_with_result_id():
     browse = ConstructorIO(VALID_OPTIONS).browse
     response = browse.get_browse_results_for_item_ids(
         IDS,
-        {'section': SECTION})
+        {'section': SECTION}
+    )
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
@@ -937,7 +965,8 @@ def test_get_browse_results_for_item_ids_with_invalid_page():
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
-            {'section': SECTION, 'page': 'abc'})
+            {'section': SECTION, 'page': 'abc'}
+        )
 
 
 def test_get_browse_results_for_item_ids_with_invalid_results_per_page():
@@ -947,7 +976,8 @@ def test_get_browse_results_for_item_ids_with_invalid_results_per_page():
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
-            {'section': SECTION, 'results_per_page': 'abc'})
+            {'section': SECTION, 'results_per_page': 'abc'}
+        )
 
 
 def test_get_browse_results_for_item_ids_with_invalid_filters():
@@ -957,7 +987,8 @@ def test_get_browse_results_for_item_ids_with_invalid_filters():
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
-            {'section': SECTION, 'filters': 'abc'})
+            {'section': SECTION, 'filters': 'abc'}
+        )
 
 
 def test_get_browse_results_for_item_ids_with_invalid_sort_by():
@@ -967,7 +998,8 @@ def test_get_browse_results_for_item_ids_with_invalid_sort_by():
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
-            {'section': SECTION, 'sort_by': ['foo', 'bar']})
+            {'section': SECTION, 'sort_by': ['foo', 'bar']}
+        )
 
 
 def test_get_browse_results_for_item_ids_with_invalid_sort_order():
@@ -977,7 +1009,8 @@ def test_get_browse_results_for_item_ids_with_invalid_sort_order():
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
-            {'section': SECTION, 'sort_order': 123})
+            {'section': SECTION, 'sort_order': 123}
+        )
 
 
 def test_get_browse_results_for_item_ids_with_invalid_section():
@@ -987,7 +1020,8 @@ def test_get_browse_results_for_item_ids_with_invalid_section():
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
-            {'section': 123})
+            {'section': 123}
+        )
 
 
 def test_get_browse_results_for_item_ids_with_invalid_fmt_options():
@@ -997,7 +1031,8 @@ def test_get_browse_results_for_item_ids_with_invalid_fmt_options():
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
-            {'fmt_options': 'abc'})
+            {'fmt_options': 'abc'}
+        )
 
 
 def test_get_browse_results_for_item_ids_with_invalid_api_key():
@@ -1013,7 +1048,8 @@ def test_get_browse_results_for_item_ids_with_invalid_api_key():
         }).browse
         browse.get_browse_results_for_item_ids(
             IDS,
-            {'section': SECTION})
+            {'section': SECTION}
+        )
 
 
 def test_get_browse_results_for_item_ids_with_no_api_key():

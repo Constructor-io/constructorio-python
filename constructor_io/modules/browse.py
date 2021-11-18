@@ -81,7 +81,8 @@ class Browse:
             url_prefix,
             parameters,
             user_parameters,
-            self.__options)
+            self.__options
+        )
         requests = self.__options.get('requests') or r
         response = requests.get(
             request_url,
@@ -147,7 +148,8 @@ class Browse:
             url_prefix,
             { **parameters, 'item_ids': item_ids},
             user_parameters,
-            self.__options)
+            self.__options
+        )
         requests = self.__options.get('requests') or r
         response = requests.get(
             request_url,
@@ -205,7 +207,8 @@ class Browse:
             parameters,
             user_parameters,
             self.__options,
-            True)
+            True
+        )
         requests = self.__options.get('requests') or r
         response = requests.get(
             request_url,
@@ -259,7 +262,8 @@ class Browse:
             parameters,
             user_parameters,
             self.__options,
-            True)
+            True
+        )
         requests = self.__options.get('requests') or r
         response = requests.get(
             request_url,
