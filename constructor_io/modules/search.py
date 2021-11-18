@@ -15,45 +15,10 @@ def create_search_url(query, parameters, user_parameters, options):
     # pylint: disable=too-many-branches
     '''Create URL from supplied query (term) and parameters'''
 
-    query_params = create_shared_query_params(options, user_parameters)
+    query_params = create_shared_query_params(options, parameters, user_parameters)
 
     if not query or not isinstance(query, str):
         raise Exception('query is a required parameter of type string')
-
-    if parameters:
-        if parameters.get('page'):
-            query_params['page'] = parameters.get('page')
-
-        if parameters.get('results_per_page'):
-            query_params['num_results_per_page'] = parameters.get('results_per_page')
-
-        if parameters.get('filters'):
-            filters = parameters.get('filters')
-            if isinstance(filters, dict):
-                for key, value in filters.items():
-                    query_params[f'filters[{key}]'] = value
-            else:
-                raise Exception('filters must be a dictionary')
-
-        if parameters.get('sort_by'):
-            query_params['sort_by'] = parameters.get('sort_by')
-
-        if parameters.get('sort_order'):
-            query_params['sort_order'] = parameters.get('sort_order')
-
-        if parameters.get('section'):
-            query_params['section'] = parameters.get('section')
-
-        if parameters.get('fmt_options'):
-            fmt_options = parameters.get('fmt_options')
-            if isinstance(fmt_options, dict):
-                for key, value in fmt_options.items():
-                    query_params[f'fmt_options[{key}]'] = value
-            else:
-                raise Exception('fmt_options must be a dictionary')
-
-        if parameters.get('hidden_fields'):
-            query_params['hidden_fields'] = parameters.get('hidden_fields')
 
     query_params['_dt'] = int(time()*1000.0)
     query_params = clean_params(query_params)
