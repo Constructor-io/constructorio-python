@@ -54,7 +54,8 @@ def our_encode_uri_component(string):
 
     return None
 
-def create_shared_query_params(options, user_parameters):
+def create_shared_query_params(options, parameters, user_parameters):
+    # pylint: disable=too-many-branches
     '''Create query params shared between modules'''
 
     query_params = {
@@ -63,6 +64,41 @@ def create_shared_query_params(options, user_parameters):
         'i': user_parameters.get('client_id'),
         's': user_parameters.get('session_id'),
     }
+
+    if parameters:
+        if parameters.get('page'):
+            query_params['page'] = parameters.get('page')
+
+        if parameters.get('results_per_page'):
+            query_params['num_results_per_page'] = parameters.get('results_per_page')
+
+        if parameters.get('filters'):
+            filters = parameters.get('filters')
+            if isinstance(filters, dict):
+                for key, value in filters.items():
+                    query_params[f'filters[{key}]'] = value
+            else:
+                raise Exception('filters must be a dictionary')
+
+        if parameters.get('sort_by'):
+            query_params['sort_by'] = parameters.get('sort_by')
+
+        if parameters.get('sort_order'):
+            query_params['sort_order'] = parameters.get('sort_order')
+
+        if parameters.get('section'):
+            query_params['section'] = parameters.get('section')
+
+        if parameters.get('hidden_fields'):
+            query_params['hidden_fields'] = parameters.get('hidden_fields')
+
+        if parameters.get('fmt_options'):
+            fmt_options = parameters.get('fmt_options')
+            if isinstance(fmt_options, dict):
+                for key, value in fmt_options.items():
+                    query_params[f'fmt_options[{key}]'] = value
+            else:
+                raise Exception('fmt_options must be a dictionary')
 
     if user_parameters.get('test_cells'):
         for key, value in user_parameters.get('test_cells').items():

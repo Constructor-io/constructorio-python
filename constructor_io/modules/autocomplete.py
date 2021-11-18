@@ -15,7 +15,7 @@ def create_autocomplete_url(query, parameters, user_parameters, options):
     # pylint: disable=too-many-branches
     '''Create URL from supplied query (term) and parameters'''
 
-    query_params = create_shared_query_params(options, user_parameters)
+    query_params = create_shared_query_params(options, parameters, user_parameters)
 
     if not query or not isinstance(query, str):
         raise Exception('query is a required parameter of type string')
@@ -27,17 +27,6 @@ def create_autocomplete_url(query, parameters, user_parameters, options):
         if parameters.get('results_per_section'):
             for key, value in parameters.get('results_per_section').items():
                 query_params[f'num_results_{key}'] = value
-
-        if parameters.get('filters'):
-            filters = parameters.get('filters')
-            if isinstance(filters, dict):
-                for key, value in filters.items():
-                    query_params[f'filters[{key}]'] = value
-            else:
-                raise Exception('filters must be a dictionary')
-
-        if parameters.get('hidden_fields'):
-            query_params['hidden_fields'] = parameters.get('hidden_fields')
 
     query_params['_dt'] = int(time()*1000.0)
     query_params = clean_params(query_params)
