@@ -11,6 +11,8 @@ from constructor_io.helpers.utils import (clean_params, create_auth_header,
 
 
 def create_query_params_and_file_data(parameters):
+    '''Create query params and file data'''
+
     query_params = {}
     file_data = {}
 
@@ -44,6 +46,8 @@ def create_query_params_and_file_data(parameters):
     return query_params, file_data
 
 def create_catalog_url(path, options, additional_query_params):
+    '''Create catalog API url'''
+
     api_key = options.get('api_key')
     query_params = {**additional_query_params}
 
@@ -64,6 +68,7 @@ class Catalog:
         self.__options = options or {}
 
     def replace_catalog(self, parameters=None):
+        #pylint: disable=line-too-long
         '''
         Send full catalog files to replace the current catalog
 
