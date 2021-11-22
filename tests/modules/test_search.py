@@ -8,7 +8,8 @@ import requests
 from pytest import raises
 
 from constructor_io.constructor_io import ConstructorIO
-from constructor_io.helpers.exception import HttpException
+from constructor_io.helpers.exception import (ConstructorException,
+                                              HttpException)
 
 TEST_API_KEY = environ['TEST_API_KEY']
 VALID_CLIENT_ID = '2b23dd74-5672-4379-878c-9182938d2710'
@@ -256,14 +257,14 @@ def test_with_valid_query_and_redirect_rule():
 def test_with_invalid_query():
     '''Should raise exception when invalid query is provided'''
 
-    with raises(Exception, match=r'query is a required parameter of type string'):
+    with raises(ConstructorException, match=r'query is a required parameter of type string'):
         search = ConstructorIO(VALID_OPTIONS).search
         search.get_search_results([], { 'section': SECTION })
 
 def test_with_no_query():
     '''Should raise exception when no query is provided'''
 
-    with raises(Exception, match=r'query is a required parameter of type string'):
+    with raises(ConstructorException, match=r'query is a required parameter of type string'):
         search = ConstructorIO(VALID_OPTIONS).search
         search.get_search_results(None, { 'section': SECTION })
 
@@ -284,7 +285,7 @@ def test_with_invalid_results_per_page():
 def test_with_invalid_filters():
     '''Should raise exception when invalid filters parameter is provided'''
 
-    with raises(Exception, match=r'filters must be a dictionary'):
+    with raises(ConstructorException, match=r'filters must be a dictionary'):
         search = ConstructorIO(VALID_OPTIONS).search
         search.get_search_results(QUERY, { 'section': SECTION, 'filters': 'abc' })
 
@@ -325,6 +326,6 @@ def test_with_invalid_api_key():
 def test_with_no_api_key():
     '''Should raise exception when no api_key is provided'''
 
-    with raises(Exception, match=r'API key is a required parameter of type string'):
+    with raises(ConstructorException, match=r'API key is a required parameter of type string'):
         search = ConstructorIO({}).search
         search.get_search_results(QUERY)

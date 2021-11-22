@@ -5,6 +5,7 @@ from urllib.parse import quote, urlencode
 
 import requests as r
 
+from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
                                           create_request_headers,
                                           create_shared_query_params,
@@ -18,7 +19,7 @@ def create_autocomplete_url(query, parameters, user_parameters, options):
     query_params = create_shared_query_params(options, parameters, user_parameters)
 
     if not query or not isinstance(query, str):
-        raise Exception('query is a required parameter of type string')
+        raise ConstructorException('query is a required parameter of type string')
 
     if parameters:
         if parameters.get('num_results'):
@@ -90,4 +91,4 @@ class Autocomplete:
 
             return json
 
-        raise Exception('get_autocomplete_results response data is malformed')
+        raise ConstructorException('get_autocomplete_results response data is malformed')

@@ -5,6 +5,7 @@ from urllib.parse import quote, urlencode
 
 import requests as r
 
+from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
                                           create_request_headers,
                                           create_shared_query_params,
@@ -17,7 +18,7 @@ def create_recommendations_url(pod_id, parameters, user_parameters, options):
     query_params = create_shared_query_params(options, parameters, user_parameters)
 
     if not pod_id or not isinstance(pod_id, str):
-        raise Exception('pod_id is a required parameter of type string')
+        raise ConstructorException('pod_id is a required parameter of type string')
 
     if parameters:
         if parameters.get('num_results'):
@@ -97,4 +98,4 @@ class Recommendations:
 
             return json
 
-        raise Exception('get_recommendation_results response data is malformed')
+        raise ConstructorException('get_recommendation_results response data is malformed')

@@ -6,6 +6,7 @@ from urllib.parse import quote, urlencode
 
 import requests as r
 
+from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
                                           create_request_headers,
                                           create_shared_query_params,
@@ -66,10 +67,10 @@ class Browse:
         '''
 
         if not filter_name or not isinstance(filter_name, str):
-            raise Exception('filter_name is a required parameter of type string')
+            raise ConstructorException('filter_name is a required parameter of type string')
 
         if not filter_value or not isinstance(filter_value, str):
-            raise Exception('filter_value is a required parameter of type string')
+            raise ConstructorException('filter_value is a required parameter of type string')
 
         if not parameters:
             parameters = {}
@@ -106,7 +107,7 @@ class Browse:
 
                 return json
 
-        raise Exception('get_browse_results response data is malformed')
+        raise ConstructorException('get_browse_results response data is malformed')
 
 
     def get_browse_results_for_item_ids(self, item_ids, parameters=None, user_parameters=None):
@@ -136,7 +137,7 @@ class Browse:
         '''
 
         if not item_ids or not isinstance(item_ids, list):
-            raise Exception('item_ids is a required parameter of type list')
+            raise ConstructorException('item_ids is a required parameter of type list')
 
         if not parameters:
             parameters = {}
@@ -173,7 +174,7 @@ class Browse:
 
                 return json
 
-        raise Exception('get_browse_results_for_item_ids response data is malformed')
+        raise ConstructorException('get_browse_results_for_item_ids response data is malformed')
 
 
     def get_browse_groups(self, parameters=None, user_parameters=None):
@@ -226,7 +227,7 @@ class Browse:
 
                 return json
 
-        raise Exception('get_browse_groups response data is malformed')
+        raise ConstructorException('get_browse_groups response data is malformed')
 
 
     def get_browse_facets(self, parameters=None, user_parameters=None):
@@ -281,4 +282,4 @@ class Browse:
 
                 return json
 
-        raise Exception('get_browse_facets response data is malformed')
+        raise ConstructorException('get_browse_facets response data is malformed')

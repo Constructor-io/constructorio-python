@@ -8,6 +8,8 @@ import requests
 from pytest import raises
 
 from constructor_io.constructor_io import ConstructorIO
+from constructor_io.helpers.exception import (ConstructorException,
+                                              HttpException)
 
 TEST_API_KEY = environ['TEST_API_KEY']
 TEST_API_TOKEN = environ['TEST_API_TOKEN']
@@ -311,7 +313,7 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_hidden_field
 def test_get_browse_results_with_invalid_filter_name():
     '''Should raise exception when invalid filter_name is provided'''
 
-    with raises(Exception, match=r'filter_name is a required parameter of type string'):
+    with raises(ConstructorException, match=r'filter_name is a required parameter of type string'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results([], FILTER_VALUE)
 
@@ -319,7 +321,7 @@ def test_get_browse_results_with_invalid_filter_name():
 def test_get_browse_results_with_invalid_filter_value():
     '''Should raise exception when invalid filter_value is provided'''
 
-    with raises(Exception, match=r'filter_value is a required parameter of type string'):
+    with raises(ConstructorException, match=r'filter_value is a required parameter of type string'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(FILTER_NAME, [])
 
@@ -327,7 +329,7 @@ def test_get_browse_results_with_invalid_filter_value():
 def test_get_browse_results_with_no_filter_name():
     '''Should raise exception when no filter_name is provided'''
 
-    with raises(Exception, match=r'filter_name is a required parameter of type string'):
+    with raises(ConstructorException, match=r'filter_name is a required parameter of type string'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(None, FILTER_VALUE)
 
@@ -335,7 +337,7 @@ def test_get_browse_results_with_no_filter_name():
 def test_get_browse_results_with_no_filter_value():
     '''Should raise exception when no filter_value is provided'''
 
-    with raises(Exception, match=r'filter_value is a required parameter of type string'):
+    with raises(ConstructorException, match=r'filter_value is a required parameter of type string'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(FILTER_NAME, None)
 
@@ -343,7 +345,7 @@ def test_get_browse_results_with_no_filter_value():
 def test_get_browse_results_with_invalid_page():
     '''Should raise exception when invalid page parameter is provided'''
 
-    with raises(Exception, match=r'page must be an integer'):
+    with raises(HttpException, match=r'page must be an integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -355,7 +357,7 @@ def test_get_browse_results_with_invalid_page():
 def test_get_browse_results_with_invalid_results_per_page():
     '''Should raise exception when invalid results_per_page parameter is provided'''
 
-    with raises(Exception, match=r'num_results_per_page must be an integer'):
+    with raises(HttpException, match=r'num_results_per_page must be an integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -367,7 +369,7 @@ def test_get_browse_results_with_invalid_results_per_page():
 def test_get_browse_results_with_invalid_filters():
     '''Should raise exception when invalid filters parameter is provided'''
 
-    with raises(Exception, match=r'filters must be a dictionary'):
+    with raises(ConstructorException, match=r'filters must be a dictionary'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -379,7 +381,7 @@ def test_get_browse_results_with_invalid_filters():
 def test_get_browse_results_with_invalid_sort_by():
     '''Should raise exception when invalid sort_by parameter is provided'''
 
-    with raises(Exception, match=r'sort_by must be a string'):
+    with raises(HttpException, match=r'sort_by must be a string'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -391,7 +393,7 @@ def test_get_browse_results_with_invalid_sort_by():
 def test_get_browse_results_with_invalid_sort_order():
     '''Should raise exception when invalid sort_order parameter is provided'''
 
-    with raises(Exception, match=r'Invalid value for parameter: "sort_order"'):
+    with raises(HttpException, match=r'Invalid value for parameter: "sort_order"'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -403,7 +405,7 @@ def test_get_browse_results_with_invalid_sort_order():
 def test_get_browse_results_with_invalid_section():
     '''Should raise exception when invalid section parameter is provided'''
 
-    with raises(Exception, match=r'Unknown section: 123'):
+    with raises(HttpException, match=r'Unknown section: 123'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -415,7 +417,7 @@ def test_get_browse_results_with_invalid_section():
 def test_get_browse_results_with_invalid_fmt_options():
     '''Should raise exception when invalid fmt_options parameter is provided'''
 
-    with raises(Exception, match=r'fmt_options must be a dictionary'):
+    with raises(ConstructorException, match=r'fmt_options must be a dictionary'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -428,7 +430,7 @@ def test_get_browse_results_with_invalid_api_key():
     '''Should raise exception when invalid api_key is provided'''
 
     with raises(
-            Exception,
+            HttpException,
             match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'  # pylint: disable=line-too-long
     ):
         browse = ConstructorIO({
@@ -445,7 +447,7 @@ def test_get_browse_results_with_invalid_api_key():
 def test_get_browse_results_with_no_api_key():
     '''Should raise exception when no api_key is provided'''
 
-    with raises(Exception, match=r'API key is a required parameter of type string'):
+    with raises(ConstructorException, match=r'API key is a required parameter of type string'):
         browse = ConstructorIO({}).browse
         browse.get_browse_results(FILTER_NAME, FILTER_VALUE)
 
@@ -540,7 +542,7 @@ def test_get_browse_groups_with_valid_fmt_options():
 def test_get_browse_groups_with_invalid_filters():
     '''Should return a response with invalid filters'''
 
-    with raises(Exception, match=r'filters must be a dictionary'):
+    with raises(ConstructorException, match=r'filters must be a dictionary'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_groups(
             { 'filters': 123},
@@ -550,7 +552,7 @@ def test_get_browse_groups_with_invalid_filters():
 def test_get_browse_groups_with_invalid_fmt_options():
     '''Should return a response with invalid fmt_options'''
 
-    with raises(Exception, match=r'fmt_options must be a dictionary'):
+    with raises(ConstructorException, match=r'fmt_options must be a dictionary'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_groups(
             { 'fmt_options': 123},
@@ -560,7 +562,7 @@ def test_get_browse_groups_with_invalid_fmt_options():
 def test_get_browse_groups_with_invalid_api_key():
     '''Should return a response with invalid api_key'''
 
-    with raises(Exception, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'): # pylint: disable=line-too-long
+    with raises(HttpException, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'): # pylint: disable=line-too-long
         browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
         browse.get_browse_groups()
 
@@ -627,7 +629,7 @@ def test_get_browse_facets_with_valid_fmt_options():
 def test_get_browse_facets_with_invalid_page():
     '''Should return a response with invalid page'''
 
-    with raises(Exception, match=r'page must be an integer'):
+    with raises(HttpException, match=r'page must be an integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_facets(
             { 'page': 'abc'},
@@ -637,7 +639,7 @@ def test_get_browse_facets_with_invalid_page():
 def test_get_browse_facets_with_invalid_results_per_page():
     '''Should return a response with invalid results_per_page'''
 
-    with raises(Exception, match=r'results_per_page must be an integer'):
+    with raises(HttpException, match=r'results_per_page must be an integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_facets(
             { 'results_per_page': 'abc'},
@@ -647,7 +649,7 @@ def test_get_browse_facets_with_invalid_results_per_page():
 def test_get_browse_facets_with_invalid_fmt_options():
     '''Should return a response with invalid fmt_options'''
 
-    with raises(Exception, match=r'fmt_options must be a dictionary'):
+    with raises(ConstructorException, match=r'fmt_options must be a dictionary'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_facets(
             { 'fmt_options': 123},
@@ -657,7 +659,7 @@ def test_get_browse_facets_with_invalid_fmt_options():
 def test_get_browse_facets_with_invalid_api_key():
     '''Should return a response with invalid api_key'''
 
-    with raises(Exception, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'): # pylint: disable=line-too-long
+    with raises(HttpException, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'): # pylint: disable=line-too-long
         browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
         browse.get_browse_facets()
 
@@ -945,23 +947,15 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_hidden_fields()
 def test_get_browse_results_for_item_ids_with_invalid_item_ids():
     '''Should raise exception when invalid item_ids is provided'''
 
-    with raises(Exception, match=r'item_ids is a required parameter of type list'):
+    with raises(ConstructorException, match=r'item_ids is a required parameter of type list'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids({})
-
-
-def test_get_browse_results_for_item_ids_with_missing_item_ids():
-    '''Should raise exception when item_ids is missing'''
-
-    with raises(Exception, match=r"get_browse_results_for_item_ids\(\) missing 1 required positional argument: 'item_ids'"): # pylint: disable=line-too-long
-        browse = ConstructorIO(VALID_OPTIONS).browse
-        browse.get_browse_results_for_item_ids() # pylint: disable=no-value-for-parameter
 
 
 def test_get_browse_results_for_item_ids_with_invalid_page():
     '''Should raise exception when invalid page parameter is provided'''
 
-    with raises(Exception, match=r'page must be an integer'):
+    with raises(HttpException, match=r'page must be an integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
@@ -972,7 +966,7 @@ def test_get_browse_results_for_item_ids_with_invalid_page():
 def test_get_browse_results_for_item_ids_with_invalid_results_per_page():
     '''Should raise exception when invalid results_per_page parameter is provided'''
 
-    with raises(Exception, match=r'num_results_per_page must be an integer'):
+    with raises(HttpException, match=r'num_results_per_page must be an integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
@@ -983,7 +977,7 @@ def test_get_browse_results_for_item_ids_with_invalid_results_per_page():
 def test_get_browse_results_for_item_ids_with_invalid_filters():
     '''Should raise exception when invalid filters parameter is provided'''
 
-    with raises(Exception, match=r'filters must be a dictionary'):
+    with raises(ConstructorException, match=r'filters must be a dictionary'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
@@ -994,7 +988,7 @@ def test_get_browse_results_for_item_ids_with_invalid_filters():
 def test_get_browse_results_for_item_ids_with_invalid_sort_by():
     '''Should raise exception when invalid sort_by parameter is provided'''
 
-    with raises(Exception, match=r'sort_by must be a string'):
+    with raises(HttpException, match=r'sort_by must be a string'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
@@ -1005,7 +999,7 @@ def test_get_browse_results_for_item_ids_with_invalid_sort_by():
 def test_get_browse_results_for_item_ids_with_invalid_sort_order():
     '''Should raise exception when invalid sort_order parameter is provided'''
 
-    with raises(Exception, match=r'Invalid value for parameter: "sort_order"'):
+    with raises(HttpException, match=r'Invalid value for parameter: "sort_order"'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
@@ -1016,7 +1010,7 @@ def test_get_browse_results_for_item_ids_with_invalid_sort_order():
 def test_get_browse_results_for_item_ids_with_invalid_section():
     '''Should raise exception when invalid section parameter is provided'''
 
-    with raises(Exception, match=r'Unknown section: 123'):
+    with raises(HttpException, match=r'Unknown section: 123'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
@@ -1027,7 +1021,7 @@ def test_get_browse_results_for_item_ids_with_invalid_section():
 def test_get_browse_results_for_item_ids_with_invalid_fmt_options():
     '''Should raise exception when invalid fmt_options parameter is provided'''
 
-    with raises(Exception, match=r'fmt_options must be a dictionary'):
+    with raises(ConstructorException, match=r'fmt_options must be a dictionary'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
@@ -1039,7 +1033,7 @@ def test_get_browse_results_for_item_ids_with_invalid_api_key():
     '''Should raise exception when invalid api_key is provided'''
 
     with raises(
-            Exception,
+            HttpException,
             match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'  # pylint: disable=line-too-long
     ):
         browse = ConstructorIO({
@@ -1055,6 +1049,6 @@ def test_get_browse_results_for_item_ids_with_invalid_api_key():
 def test_get_browse_results_for_item_ids_with_no_api_key():
     '''Should raise exception when no api_key is provided'''
 
-    with raises(Exception, match=r'API key is a required parameter of type string'):
+    with raises(ConstructorException, match=r'API key is a required parameter of type string'):
         browse = ConstructorIO({}).browse
         browse.get_browse_results_for_item_ids(IDS)

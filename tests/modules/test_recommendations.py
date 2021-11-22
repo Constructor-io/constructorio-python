@@ -8,7 +8,8 @@ import requests
 from pytest import raises
 
 from constructor_io.constructor_io import ConstructorIO
-from constructor_io.helpers.exception import HttpException
+from constructor_io.helpers.exception import (ConstructorException,
+                                              HttpException)
 
 TEST_API_KEY = environ['TEST_API_KEY']
 VALID_CLIENT_ID = '2b23dd74-5672-4379-878c-9182938d2710'
@@ -298,14 +299,14 @@ def test_with_invalid_api_key():
 def test_with_no_api_key():
     '''Should raise exception when no api_key is provided'''
 
-    with raises(Exception, match=r'API key is a required parameter of type string'):
+    with raises(ConstructorException, match=r'API key is a required parameter of type string'):
         recommendations = ConstructorIO({}).recommendations
         recommendations.get_recommendation_results(POD_ID)
 
 def test_with_invalid_pod_id():
     '''Should raise exception when invalid pod_id is provided'''
 
-    with raises(Exception, match=r'pod_id is a required parameter of type string'):
+    with raises(ConstructorException, match=r'pod_id is a required parameter of type string'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
         recommendations.get_recommendation_results(
             [],
@@ -316,7 +317,7 @@ def test_with_invalid_pod_id():
 def test_with_no_pod_id():
     '''Should raise exception when no pod_id is provided'''
 
-    with raises(Exception, match=r'pod_id is a required parameter of type string'):
+    with raises(ConstructorException, match=r'pod_id is a required parameter of type string'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
         recommendations.get_recommendation_results(
             None,
@@ -327,7 +328,7 @@ def test_with_no_pod_id():
 def test_with_invalid_num_results():
     '''Should raise exception when invalid num_results is provided'''
 
-    with raises(Exception, match=r'num_results must be an integer'):
+    with raises(ConstructorException, match=r'num_results must be an integer'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
         recommendations.get_recommendation_results(
             POD_ID,
@@ -338,7 +339,7 @@ def test_with_invalid_num_results():
 def test_with_invalid_filters():
     '''Should raise exception when invalid filters is provided'''
 
-    with raises(Exception, match=r'filters must be a dictionary'):
+    with raises(ConstructorException, match=r'filters must be a dictionary'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
         recommendations.get_recommendation_results(
             POD_ID_FILTERED_ITEMS_RECOMMENDATIONS,
@@ -349,7 +350,7 @@ def test_with_invalid_filters():
 def test_with_invalid_item_ids():
     '''Should raise exception when invalid item_ids is provided'''
 
-    with raises(Exception, match=r'item_id is a required field of type string'):
+    with raises(ConstructorException, match=r'item_id is a required field of type string'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
         recommendations.get_recommendation_results(
             POD_ID_ALTERNATIVE_RECOMMENDATIONS,
