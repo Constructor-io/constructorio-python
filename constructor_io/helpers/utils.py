@@ -112,8 +112,11 @@ def create_shared_query_params(options, parameters, user_parameters):
 
     return query_params
 
-def create_request_headers(options, user_parameters):
+def create_request_headers(options, user_parameters=None):
     '''Create request headers shared between modules'''
+
+    if not user_parameters:
+        user_parameters = {}
 
     headers = {}
     security_token = options.get('security_token')

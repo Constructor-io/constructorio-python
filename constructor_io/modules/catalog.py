@@ -54,7 +54,7 @@ def create_catalog_url(path, options, additional_query_params):
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/v1/{quote(path)}/?{query_string}'
+    return f'{options.get("service_url")}/v1/{quote(path)}?{query_string}'
 
 
 class Catalog:
@@ -83,7 +83,7 @@ class Catalog:
         response = requests.put(
             request_url,
             auth=create_auth_header(self.__options),
-            headers=create_request_headers(self.__options, None),
+            headers=create_request_headers(self.__options),
             files=file_data
         )
 
