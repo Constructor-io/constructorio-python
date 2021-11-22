@@ -25,7 +25,7 @@ def slow_down_tests():
     yield
     sleep(2)
 
-def test_with_items():
+def test_with_replace_items():
     '''Should replace a catalog of items'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
@@ -36,7 +36,7 @@ def test_with_items():
 
     catalog.replace_catalog(data)
 
-def test_with_variations():
+def test_with_replace_variations():
     '''Should replace a catalog of variations'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
@@ -47,7 +47,7 @@ def test_with_variations():
 
     catalog.replace_catalog(data)
 
-def test_with_item_groups():
+def test_with_replace_item_groups():
     '''Should replace a catalog of item_groups'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
@@ -58,7 +58,7 @@ def test_with_item_groups():
 
     catalog.replace_catalog(data)
 
-def test_with_items_variations_item_groups():
+def test_with_replace_items_variations_item_groups():
     '''Should replace a catalog of items, variations, and item_groups'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
@@ -70,3 +70,95 @@ def test_with_items_variations_item_groups():
     }
 
     catalog.replace_catalog(data)
+
+def test_with_update_items():
+    '''Should update a catalog of items'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'items': ITEMS,
+        'section': SECTION
+    }
+
+    catalog.update_catalog(data)
+
+def test_with_update_variations():
+    '''Should update a catalog of variations'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'variations': VARIATIONS,
+        'section': SECTION
+    }
+
+    catalog.update_catalog(data)
+
+def test_with_update_item_groups():
+    '''Should update a catalog of item_groups'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'item_groups': ITEM_GROUPS,
+        'section': SECTION
+    }
+
+    catalog.update_catalog(data)
+
+def test_with_update_items_variations_item_groups():
+    '''Should update a catalog of items, variations, and item_groups'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'items': ITEMS,
+        'variations': VARIATIONS,
+        'item_groups': ITEM_GROUPS,
+        'section': SECTION
+    }
+
+    catalog.update_catalog(data)
+
+def test_with_patch_items():
+    '''Should patch a catalog of items'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'items': ITEMS,
+        'section': SECTION
+    }
+
+    catalog.patch_catalog(data)
+
+def test_with_patch_variations():
+    '''Should patch a catalog of variations'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'variations': VARIATIONS,
+        'section': SECTION
+    }
+
+    catalog.patch_catalog(data)
+
+def test_with_patch_item_groups():
+    '''Should patch a catalog of item_groups'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'item_groups': ITEM_GROUPS,
+        'section': SECTION
+    }
+
+    catalog.patch_catalog(data)
+
+def test_with_patch_items_variations_item_groups():
+    '''Should patch a catalog of items, variations, and item_groups'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'items': ITEMS,
+        'variations': VARIATIONS,
+        'item_groups': ITEM_GROUPS,
+        'section': SECTION
+    }
+
+    catalog.patch_catalog(data)

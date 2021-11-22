@@ -98,3 +98,67 @@ class Catalog:
         json = response.json()
 
         return json
+
+    def update_catalog(self, parameters=None):
+        #pylint: disable=line-too-long
+        '''
+        Send full catalog files to update the current catalog
+
+        :param dict parameters: Additional parameters for catalog details
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the catalog even if it will invalidate a large number of existing items
+        :param file parameters.items: The CSV file with all new items
+        :param file parameters.variations: The CSV file with all new variations
+        :param file parameters.item_groups: The CSV file with all new item_groups
+        '''
+
+        query_params, file_data = create_query_params_and_file_data(parameters)
+        request_url = create_catalog_url('catalog', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.patch(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            files=file_data
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def patch_catalog(self, parameters=None):
+        #pylint: disable=line-too-long
+        '''
+        Send full catalog files to update the current catalog
+
+        :param dict parameters: Additional parameters for catalog details
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the catalog even if it will invalidate a large number of existing items
+        :param file parameters.items: The CSV file with all new items
+        :param file parameters.variations: The CSV file with all new variations
+        :param file parameters.item_groups: The CSV file with all new item_groups
+        '''
+
+        query_params, file_data = create_query_params_and_file_data(parameters)
+        request_url = create_catalog_url('catalog', self.__options, { **query_params, 'patch_delta': True })
+        requests = self.__options.get('requests') or r
+
+        response = requests.patch(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            files=file_data
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
