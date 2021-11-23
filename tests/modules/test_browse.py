@@ -321,7 +321,7 @@ def test_get_browse_results_with_invalid_filter_name():
 def test_get_browse_results_with_invalid_filter_value():
     '''Should raise exception when invalid filter_value is provided'''
 
-    with raises(ConstructorException, match=r'filter_value is a required parameter of type string'):
+    with raises(ConstructorException, match=r'filter_value is a required parameter of type string'): #pylint: disable = line-too-long
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(FILTER_NAME, [])
 
@@ -337,7 +337,7 @@ def test_get_browse_results_with_no_filter_name():
 def test_get_browse_results_with_no_filter_value():
     '''Should raise exception when no filter_value is provided'''
 
-    with raises(ConstructorException, match=r'filter_value is a required parameter of type string'):
+    with raises(ConstructorException, match=r'filter_value is a required parameter of type string'): # pylint: disable=line-too-long
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(FILTER_NAME, None)
 
