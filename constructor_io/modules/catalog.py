@@ -42,7 +42,6 @@ def _create_query_params_and_file_data(parameters):
         if item_groups:
             file_data['item_groups'] = ('item_groups.csv', item_groups)
 
-
     return query_params, file_data
 
 def _create_catalog_url(path, options, additional_query_params):

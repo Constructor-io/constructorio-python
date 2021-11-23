@@ -34,7 +34,10 @@ def test_with_replace_items():
         'section': SECTION
     }
 
-    catalog.replace_catalog(data)
+    response = catalog.replace_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_replace_variations():
     '''Should replace a catalog of variations'''
@@ -45,7 +48,10 @@ def test_with_replace_variations():
         'section': SECTION
     }
 
-    catalog.replace_catalog(data)
+    response = catalog.replace_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_replace_item_groups():
     '''Should replace a catalog of item_groups'''
@@ -56,7 +62,10 @@ def test_with_replace_item_groups():
         'section': SECTION
     }
 
-    catalog.replace_catalog(data)
+    response = catalog.replace_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_replace_items_variations_item_groups():
     '''Should replace a catalog of items, variations, and item_groups'''
@@ -69,7 +78,10 @@ def test_with_replace_items_variations_item_groups():
         'section': SECTION
     }
 
-    catalog.replace_catalog(data)
+    response = catalog.replace_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_update_items():
     '''Should update a catalog of items'''
@@ -80,7 +92,10 @@ def test_with_update_items():
         'section': SECTION
     }
 
-    catalog.update_catalog(data)
+    response = catalog.update_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_update_variations():
     '''Should update a catalog of variations'''
@@ -91,7 +106,10 @@ def test_with_update_variations():
         'section': SECTION
     }
 
-    catalog.update_catalog(data)
+    response = catalog.update_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_update_item_groups():
     '''Should update a catalog of item_groups'''
@@ -102,7 +120,10 @@ def test_with_update_item_groups():
         'section': SECTION
     }
 
-    catalog.update_catalog(data)
+    response = catalog.update_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_update_items_variations_item_groups():
     '''Should update a catalog of items, variations, and item_groups'''
@@ -115,7 +136,10 @@ def test_with_update_items_variations_item_groups():
         'section': SECTION
     }
 
-    catalog.update_catalog(data)
+    response = catalog.update_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_patch_items():
     '''Should patch a catalog of items'''
@@ -126,7 +150,10 @@ def test_with_patch_items():
         'section': SECTION
     }
 
-    catalog.patch_catalog(data)
+    response = catalog.patch_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_patch_variations():
     '''Should patch a catalog of variations'''
@@ -137,7 +164,10 @@ def test_with_patch_variations():
         'section': SECTION
     }
 
-    catalog.patch_catalog(data)
+    response = catalog.patch_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_patch_item_groups():
     '''Should patch a catalog of item_groups'''
@@ -148,7 +178,10 @@ def test_with_patch_item_groups():
         'section': SECTION
     }
 
-    catalog.patch_catalog(data)
+    response = catalog.patch_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
 
 def test_with_patch_items_variations_item_groups():
     '''Should patch a catalog of items, variations, and item_groups'''
@@ -161,4 +194,7 @@ def test_with_patch_items_variations_item_groups():
         'section': SECTION
     }
 
-    catalog.patch_catalog(data)
+    response = catalog.patch_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
