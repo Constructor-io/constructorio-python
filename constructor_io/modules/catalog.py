@@ -10,7 +10,7 @@ from constructor_io.helpers.utils import (clean_params, create_auth_header,
                                           throw_http_exception_from_response)
 
 
-def create_query_params_and_file_data(parameters):
+def _create_query_params_and_file_data(parameters):
     '''Create query params and file data'''
 
     query_params = {}
@@ -45,7 +45,7 @@ def create_query_params_and_file_data(parameters):
 
     return query_params, file_data
 
-def create_catalog_url(path, options, additional_query_params):
+def _create_catalog_url(path, options, additional_query_params):
     '''Create catalog API url'''
 
     api_key = options.get('api_key')
@@ -81,8 +81,8 @@ class Catalog:
         :param file parameters.item_groups: The CSV file with all new item_groups
         '''
 
-        query_params, file_data = create_query_params_and_file_data(parameters)
-        request_url = create_catalog_url('catalog', self.__options, query_params)
+        query_params, file_data = _create_query_params_and_file_data(parameters)
+        request_url = _create_catalog_url('catalog', self.__options, query_params)
         requests = self.__options.get('requests') or r
 
         response = requests.put(
@@ -113,8 +113,8 @@ class Catalog:
         :param file parameters.item_groups: The CSV file with all new item_groups
         '''
 
-        query_params, file_data = create_query_params_and_file_data(parameters)
-        request_url = create_catalog_url('catalog', self.__options, query_params)
+        query_params, file_data = _create_query_params_and_file_data(parameters)
+        request_url = _create_catalog_url('catalog', self.__options, query_params)
         requests = self.__options.get('requests') or r
 
         response = requests.patch(
@@ -145,8 +145,8 @@ class Catalog:
         :param file parameters.item_groups: The CSV file with all new item_groups
         '''
 
-        query_params, file_data = create_query_params_and_file_data(parameters)
-        request_url = create_catalog_url('catalog', self.__options, { **query_params, 'patch_delta': True })
+        query_params, file_data = _create_query_params_and_file_data(parameters)
+        request_url = _create_catalog_url('catalog', self.__options, { **query_params, 'patch_delta': True })
         requests = self.__options.get('requests') or r
 
         response = requests.patch(
