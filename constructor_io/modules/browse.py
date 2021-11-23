@@ -1,5 +1,4 @@
 '''Browse Module'''
-# pylint: disable-all
 
 from time import time
 from urllib.parse import quote, urlencode
