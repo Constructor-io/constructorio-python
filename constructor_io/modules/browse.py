@@ -12,7 +12,7 @@ from constructor_io.helpers.utils import (clean_params, create_auth_header,
                                           throw_http_exception_from_response)
 
 
-def create_browse_url(prefix, parameters, user_parameters, options, omit_timestamp = False):
+def __create_browse_url(prefix, parameters, user_parameters, options, omit_timestamp = False):
     # pylint: disable=too-many-branches
     '''Create URL from supplied filter name, filter value, and parameters'''
 
@@ -77,7 +77,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = f'browse/{quote(filter_name)}/{quote(filter_value)}'
-        request_url = create_browse_url(
+        request_url = __create_browse_url(
             url_prefix,
             parameters,
             user_parameters,
@@ -144,7 +144,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = 'browse/items'
-        request_url = create_browse_url(
+        request_url = __create_browse_url(
             url_prefix,
             { **parameters, 'item_ids': item_ids},
             user_parameters,
@@ -202,7 +202,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = 'browse/groups'
-        request_url = create_browse_url(
+        request_url = __create_browse_url(
             url_prefix,
             parameters,
             user_parameters,
@@ -257,7 +257,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = 'browse/facets'
-        request_url = create_browse_url(
+        request_url = __create_browse_url(
             url_prefix,
             parameters,
             user_parameters,

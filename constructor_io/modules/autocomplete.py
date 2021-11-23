@@ -12,7 +12,7 @@ from constructor_io.helpers.utils import (clean_params, create_auth_header,
                                           throw_http_exception_from_response)
 
 
-def create_autocomplete_url(query, parameters, user_parameters, options):
+def __create_autocomplete_url(query, parameters, user_parameters, options):
     # pylint: disable=too-many-branches
     '''Create URL from supplied query (term) and parameters'''
 
@@ -69,7 +69,7 @@ class Autocomplete:
         if not user_parameters:
             user_parameters = {}
 
-        request_url = create_autocomplete_url(query, parameters, user_parameters, self.__options)
+        request_url = __create_autocomplete_url(query, parameters, user_parameters, self.__options)
         requests = self.__options.get('requests') or r
 
         response = requests.get(

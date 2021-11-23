@@ -12,7 +12,7 @@ from constructor_io.helpers.utils import (clean_params, create_auth_header,
                                           throw_http_exception_from_response)
 
 
-def create_recommendations_url(pod_id, parameters, user_parameters, options):
+def __create_recommendations_url(pod_id, parameters, user_parameters, options):
     '''Create URL from supplied parameters'''
 
     query_params = create_shared_query_params(options, parameters, user_parameters)
@@ -72,7 +72,7 @@ class Recommendations:
         if not user_parameters:
             user_parameters = {}
 
-        request_url = create_recommendations_url(pod_id, parameters, user_parameters, self.__options)
+        request_url = __create_recommendations_url(pod_id, parameters, user_parameters, self.__options)
         requests = self.__options.get('requests') or r
 
         response = requests.get(
