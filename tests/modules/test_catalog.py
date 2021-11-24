@@ -6,8 +6,10 @@ from time import sleep
 
 import pytest
 import requests
+from pytest import raises
 
 from constructor_io.constructor_io import ConstructorIO
+from constructor_io.helpers.exception import HttpException
 
 TEST_API_KEY = environ['TEST_API_KEY']
 TEST_API_TOKEN = environ['TEST_API_TOKEN']
@@ -83,6 +85,20 @@ def test_with_replace_items_variations_item_groups():
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
+def test_with_replace_no_files():
+    '''Should raise an HTTP error'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'section': SECTION
+    }
+
+    with raises(
+        HttpException,
+        match=r'At least one file of "items", "variations", "item_groups" is required'
+    ):
+        catalog.replace_catalog(data)
+
 def test_with_update_items():
     '''Should update a catalog of items'''
 
@@ -141,6 +157,20 @@ def test_with_update_items_variations_item_groups():
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
+def test_with_update_no_files():
+    '''Should raise an HTTP error'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'section': SECTION
+    }
+
+    with raises(
+        HttpException,
+        match=r'At least one file of "items", "variations", "item_groups" is required'
+    ):
+        catalog.update_catalog(data)
+
 def test_with_patch_items():
     '''Should patch a catalog of items'''
 
@@ -195,6 +225,50 @@ def test_with_patch_items_variations_item_groups():
     }
 
     response = catalog.patch_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
+
+def test_with_patch_no_files():
+    '''Should raise an HTTP error'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'section': SECTION
+    }
+
+    with raises(
+        HttpException,
+        match=r'At least one file of "items", "variations", "item_groups" is required'
+    ):
+        catalog.patch_catalog(data)
+
+def test_with_force_replace_items():
+    '''Should force replace a catalog of items'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'items': ITEMS,
+        'section': SECTION,
+        'force': True,
+    }
+
+    response = catalog.replace_catalog(data)
+
+    assert isinstance(response.get('task_id'), int)
+    assert isinstance(response.get('task_status_path'), str)
+
+def test_with_notification_email():
+    '''Should force replace a catalog of items'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    data = {
+        'items': ITEMS,
+        'section': SECTION,
+        'notification_email': 'test@constructor.io',
+    }
+
+    response = catalog.replace_catalog(data)
 
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)

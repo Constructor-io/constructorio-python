@@ -1,7 +1,7 @@
 '''Utility functions'''
 
 from re import sub
-from urllib.parse import parse_qs, urlencode
+from urllib.parse import parse_qs, quote, unquote
 
 from constructor_io.helpers.exception import HttpException
 
@@ -34,7 +34,7 @@ def clean_params(params_obj):
         if isinstance(value, str):
             # Replace non-breaking spaces (or any other type of spaces caught by the regex)
             # - with a regular white space
-            cleaned_params[key] = our_encode_uri_component(value)
+            cleaned_params[key] = unquote(our_encode_uri_component(value))
         elif value is not None:
             cleaned_params[key] = value
 
@@ -46,11 +46,9 @@ def our_encode_uri_component(string):
     if string:
         str_replaced = sub('&', '%26', string)
         parsed_str_obj = parse_qs(f's={str_replaced}')
-        decoded = {
-            "s": sub(r'\s', ' ', parsed_str_obj['s'][0])
-        }
+        decoded = sub(r'\s', ' ', parsed_str_obj['s'][0])
 
-        return urlencode(decoded).split('=')[1]
+        return quote(decoded)
 
     return None
 
