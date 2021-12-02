@@ -20,6 +20,14 @@ constructor\_io.modules.browse module
    :undoc-members:
    :show-inheritance:
 
+constructor\_io.modules.catalog module
+--------------------------------------
+
+.. automodule:: constructor_io.modules.catalog
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 constructor\_io.modules.recommendations module
 ----------------------------------------------
 
