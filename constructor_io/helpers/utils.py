@@ -1,7 +1,7 @@
 '''Utility functions'''
 
 from re import sub
-from urllib.parse import parse_qs, urlencode
+from urllib.parse import parse_qs, quote, unquote
 
 from constructor_io.helpers.exception import (ConstructorException,
                                               HttpException)
@@ -35,7 +35,7 @@ def clean_params(params_obj):
         if isinstance(value, str):
             # Replace non-breaking spaces (or any other type of spaces caught by the regex)
             # - with a regular white space
-            cleaned_params[key] = our_encode_uri_component(value)
+            cleaned_params[key] = unquote(our_encode_uri_component(value))
         elif value is not None:
             cleaned_params[key] = value
 
@@ -47,11 +47,9 @@ def our_encode_uri_component(string):
     if string:
         str_replaced = sub('&', '%26', string)
         parsed_str_obj = parse_qs(f's={str_replaced}')
-        decoded = {
-            "s": sub(r'\s', ' ', parsed_str_obj['s'][0])
-        }
+        decoded = sub(r'\s', ' ', parsed_str_obj['s'][0])
 
-        return urlencode(decoded).split('=')[1]
+        return quote(decoded)
 
     return None
 
@@ -113,8 +111,11 @@ def create_shared_query_params(options, parameters, user_parameters):
 
     return query_params
 
-def create_request_headers(options, user_parameters):
+def create_request_headers(options, user_parameters=None):
     '''Create request headers shared between modules'''
+
+    if not user_parameters:
+        user_parameters = {}
 
     headers = {}
     security_token = options.get('security_token')

@@ -4,6 +4,7 @@ from constructor_io import __version__
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.modules.autocomplete import Autocomplete
 from constructor_io.modules.browse import Browse
+from constructor_io.modules.catalog import Catalog
 from constructor_io.modules.recommendations import Recommendations
 from constructor_io.modules.search import Search
 
@@ -45,6 +46,7 @@ class ConstructorIO:
         self.search = Search(self.__options)
         self.browse = Browse(self.__options)
         self.recommendations = Recommendations(self.__options)
+        self.catalog = Catalog(self.__options)
 
     def get_options(self):
         '''Get client options'''
