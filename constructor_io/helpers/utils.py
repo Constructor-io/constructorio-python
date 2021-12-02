@@ -3,7 +3,8 @@
 from re import sub
 from urllib.parse import parse_qs, quote, unquote
 
-from constructor_io.helpers.exception import HttpException
+from constructor_io.helpers.exception import (ConstructorException,
+                                              HttpException)
 
 
 def throw_http_exception_from_response(response):
@@ -76,7 +77,7 @@ def create_shared_query_params(options, parameters, user_parameters):
                 for key, value in filters.items():
                     query_params[f'filters[{key}]'] = value
             else:
-                raise Exception('filters must be a dictionary')
+                raise ConstructorException('filters must be a dictionary')
 
         if parameters.get('sort_by'):
             query_params['sort_by'] = parameters.get('sort_by')
@@ -96,7 +97,7 @@ def create_shared_query_params(options, parameters, user_parameters):
                 for key, value in fmt_options.items():
                     query_params[f'fmt_options[{key}]'] = value
             else:
-                raise Exception('fmt_options must be a dictionary')
+                raise ConstructorException('fmt_options must be a dictionary')
 
     if user_parameters.get('test_cells'):
         for key, value in user_parameters.get('test_cells').items():

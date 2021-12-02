@@ -12,6 +12,30 @@ constructor\_io.modules.autocomplete module
    :undoc-members:
    :show-inheritance:
 
+constructor\_io.modules.browse module
+-------------------------------------
+
+.. automodule:: constructor_io.modules.browse
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+constructor\_io.modules.catalog module
+--------------------------------------
+
+.. automodule:: constructor_io.modules.catalog
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+constructor\_io.modules.recommendations module
+----------------------------------------------
+
+.. automodule:: constructor_io.modules.recommendations
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 constructor\_io.modules.search module
 -------------------------------------
 
@@ -20,10 +44,3 @@ constructor\_io.modules.search module
    :undoc-members:
    :show-inheritance:
 
-Module contents
----------------
-
-.. automodule:: constructor_io.modules
-   :members:
-   :undoc-members:
-   :show-inheritance:

@@ -5,20 +5,21 @@ from urllib.parse import quote, urlencode
 
 import requests as r
 
+from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
                                           create_request_headers,
                                           create_shared_query_params,
                                           throw_http_exception_from_response)
 
 
-def create_search_url(query, parameters, user_parameters, options):
+def _create_search_url(query, parameters, user_parameters, options):
     # pylint: disable=too-many-branches
     '''Create URL from supplied query (term) and parameters'''
 
     query_params = create_shared_query_params(options, parameters, user_parameters)
 
     if not query or not isinstance(query, str):
-        raise Exception('query is a required parameter of type string')
+        raise ConstructorException('query is a required parameter of type string')
 
     query_params['_dt'] = int(time()*1000.0)
     query_params = clean_params(query_params)
@@ -64,7 +65,7 @@ class Search:
         if not user_parameters:
             user_parameters = {}
 
-        request_url = create_search_url(query, parameters, user_parameters, self.__options)
+        request_url = _create_search_url(query, parameters, user_parameters, self.__options)
         requests = self.__options.get('requests') or r
 
         response = requests.get(
@@ -92,4 +93,4 @@ class Search:
             if json_response.get('redirect'):
                 return json
 
-        raise Exception('get_search_results response data is malformed')
+        raise ConstructorException('get_search_results response data is malformed')

@@ -1,18 +1,18 @@
 '''Browse Module'''
-# pylint: disable-all
 
 from time import time
 from urllib.parse import quote, urlencode
 
 import requests as r
 
+from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
                                           create_request_headers,
                                           create_shared_query_params,
                                           throw_http_exception_from_response)
 
 
-def create_browse_url(prefix, parameters, user_parameters, options, omit_timestamp = False):
+def _create_browse_url(prefix, parameters, user_parameters, options, omit_timestamp = False):
     # pylint: disable=too-many-branches
     '''Create URL from supplied filter name, filter value, and parameters'''
 
@@ -66,10 +66,10 @@ class Browse:
         '''
 
         if not filter_name or not isinstance(filter_name, str):
-            raise Exception('filter_name is a required parameter of type string')
+            raise ConstructorException('filter_name is a required parameter of type string')
 
         if not filter_value or not isinstance(filter_value, str):
-            raise Exception('filter_value is a required parameter of type string')
+            raise ConstructorException('filter_value is a required parameter of type string')
 
         if not parameters:
             parameters = {}
@@ -77,7 +77,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = f'browse/{quote(filter_name)}/{quote(filter_value)}'
-        request_url = create_browse_url(
+        request_url = _create_browse_url(
             url_prefix,
             parameters,
             user_parameters,
@@ -106,7 +106,7 @@ class Browse:
 
                 return json
 
-        raise Exception('get_browse_results response data is malformed')
+        raise ConstructorException('get_browse_results response data is malformed')
 
 
     def get_browse_results_for_item_ids(self, item_ids, parameters=None, user_parameters=None):
@@ -136,7 +136,7 @@ class Browse:
         '''
 
         if not item_ids or not isinstance(item_ids, list):
-            raise Exception('item_ids is a required parameter of type list')
+            raise ConstructorException('item_ids is a required parameter of type list')
 
         if not parameters:
             parameters = {}
@@ -144,7 +144,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = 'browse/items'
-        request_url = create_browse_url(
+        request_url = _create_browse_url(
             url_prefix,
             { **parameters, 'item_ids': item_ids},
             user_parameters,
@@ -173,7 +173,7 @@ class Browse:
 
                 return json
 
-        raise Exception('get_browse_results_for_item_ids response data is malformed')
+        raise ConstructorException('get_browse_results_for_item_ids response data is malformed')
 
 
     def get_browse_groups(self, parameters=None, user_parameters=None):
@@ -202,7 +202,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = 'browse/groups'
-        request_url = create_browse_url(
+        request_url = _create_browse_url(
             url_prefix,
             parameters,
             user_parameters,
@@ -226,7 +226,7 @@ class Browse:
 
                 return json
 
-        raise Exception('get_browse_groups response data is malformed')
+        raise ConstructorException('get_browse_groups response data is malformed')
 
 
     def get_browse_facets(self, parameters=None, user_parameters=None):
@@ -257,7 +257,7 @@ class Browse:
             user_parameters = {}
 
         url_prefix = 'browse/facets'
-        request_url = create_browse_url(
+        request_url = _create_browse_url(
             url_prefix,
             parameters,
             user_parameters,
@@ -281,4 +281,4 @@ class Browse:
 
                 return json
 
-        raise Exception('get_browse_facets response data is malformed')
+        raise ConstructorException('get_browse_facets response data is malformed')
