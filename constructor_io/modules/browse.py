@@ -1,9 +1,9 @@
 '''Browse Module'''
 
 from time import time
-from urllib.parse import quote, urlencode
 
 import requests as r
+from six.moves.urllib.parse import quote
 
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
@@ -28,7 +28,7 @@ def _create_browse_url(prefix, parameters, user_parameters, options, omit_timest
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/{prefix}?{query_string}' # pylint: disable=line-too-long
+    return '{options.get("service_url")}/{}?{}'.format(prefix, query_string) # pylint: disable=line-too-long
 
 class Browse:
     '''Browse Class'''
@@ -76,7 +76,7 @@ class Browse:
         if not user_parameters:
             user_parameters = {}
 
-        url_prefix = f'browse/{quote(filter_name)}/{quote(filter_value)}'
+        url_prefix = 'browse/{}/{}'.format(quote(filter_name), quote(filter_value))
         request_url = _create_browse_url(
             url_prefix,
             parameters,
@@ -144,9 +144,11 @@ class Browse:
             user_parameters = {}
 
         url_prefix = 'browse/items'
+        new_parameters = dict(parameters)
+        new_parameters['item_ids'] = item_ids
         request_url = _create_browse_url(
             url_prefix,
-            { **parameters, 'item_ids': item_ids},
+            new_parameters,
             user_parameters,
             self.__options
         )

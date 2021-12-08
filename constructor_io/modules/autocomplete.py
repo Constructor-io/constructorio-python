@@ -1,9 +1,9 @@
 '''Autocomplete Module'''
 
 from time import time
-from urllib.parse import quote, urlencode
 
 import requests as r
+from six.moves.urllib.parse import quote
 
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
@@ -27,13 +27,13 @@ def _create_autocomplete_url(query, parameters, user_parameters, options):
 
         if parameters.get('results_per_section'):
             for key, value in parameters.get('results_per_section').items():
-                query_params[f'num_results_{key}'] = value
+                query_params['num_results_{}'.format(key)] = value
 
     query_params['_dt'] = int(time()*1000.0)
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/autocomplete/{quote(query)}?{query_string}'
+    return '{}/autocomplete/{}?{}'.format(options.get("service_url"), quote(query),query_string)
 
 class Autocomplete:
     # pylint: disable=too-few-public-methods

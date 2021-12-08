@@ -1,9 +1,9 @@
 '''Recommendations Module'''
 
 from time import time
-from urllib.parse import quote, urlencode
 
 import requests as r
+from six.moves.urllib.parse import quote
 
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
@@ -34,7 +34,7 @@ def _create_recommendations_url(pod_id, parameters, user_parameters, options):
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/recommendations/v1/pods/{quote(pod_id)}?{query_string}'
+    return '{}/recommendations/v1/pods/{}?{}'.format(options.get("service_url"), quote(pod_id), query_string)
 
 
 

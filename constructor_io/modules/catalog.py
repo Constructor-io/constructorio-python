@@ -1,8 +1,7 @@
 '''Catalog Module'''
 
-from urllib.parse import quote, urlencode
-
 import requests as r
+from six.moves.urllib.parse import quote
 
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
@@ -48,7 +47,7 @@ def _create_catalog_url(path, options, additional_query_params):
     '''Create catalog API url'''
 
     api_key = options.get('api_key')
-    query_params = {**additional_query_params}
+    query_params = dict(additional_query_params)
 
     if not path or not isinstance(path, str):
         raise ConstructorException('path is a required parameter of type string')
@@ -57,7 +56,7 @@ def _create_catalog_url(path, options, additional_query_params):
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/v1/{quote(path)}?{query_string}'
+    return '{}/v1/{}?{}'.format(options.get("service_url"), quote(path), query_string)
 
 
 class Catalog:
@@ -145,7 +144,8 @@ class Catalog:
         '''
 
         query_params, file_data = _create_query_params_and_file_data(parameters)
-        request_url = _create_catalog_url('catalog', self.__options, { **query_params, 'patch_delta': True })
+        query_params['patch_delta'] = True
+        request_url = _create_catalog_url('catalog', self.__options, query_params)
         requests = self.__options.get('requests') or r
 
         response = requests.patch(

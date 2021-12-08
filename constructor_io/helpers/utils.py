@@ -1,7 +1,8 @@
 '''Utility functions'''
 
 from re import sub
-from urllib.parse import parse_qs, quote, unquote
+
+from six.moves.urllib.parse import parse_qs, quote, unquote
 
 from constructor_io.helpers.exception import (ConstructorException,
                                               HttpException)
@@ -46,12 +47,12 @@ def our_encode_uri_component(string):
 
     if string:
         str_replaced = sub('&', '%26', string)
-        parsed_str_obj = parse_qs(f's={str_replaced}')
+        parsed_str_obj = parse_qs('s={}'.format(str_replaced))
         decoded = sub(r'\s', ' ', parsed_str_obj['s'][0])
 
         return quote(decoded)
 
-    return None
+    return ''
 
 def create_shared_query_params(options, parameters, user_parameters):
     # pylint: disable=too-many-branches
@@ -75,7 +76,7 @@ def create_shared_query_params(options, parameters, user_parameters):
             filters = parameters.get('filters')
             if isinstance(filters, dict):
                 for key, value in filters.items():
-                    query_params[f'filters[{key}]'] = value
+                    query_params['filters[{}]'.format(key)] = value
             else:
                 raise ConstructorException('filters must be a dictionary')
 
@@ -95,13 +96,13 @@ def create_shared_query_params(options, parameters, user_parameters):
             fmt_options = parameters.get('fmt_options')
             if isinstance(fmt_options, dict):
                 for key, value in fmt_options.items():
-                    query_params[f'fmt_options[{key}]'] = value
+                    query_params['fmt_options[{}]'.format(key)] = value
             else:
                 raise ConstructorException('fmt_options must be a dictionary')
 
     if user_parameters.get('test_cells'):
         for key, value in user_parameters.get('test_cells').items():
-            query_params[f'ef-{key}'] = value
+            query_params['ef-{key}'.format(key)] = value
 
     if user_parameters.get('segments') and len(user_parameters.get('segments')):
         query_params['us'] = user_parameters.get('segments')

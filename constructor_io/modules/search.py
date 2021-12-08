@@ -1,9 +1,9 @@
 '''Search Module'''
 
 from time import time
-from urllib.parse import quote, urlencode
 
 import requests as r
+from six.moves.urllib.parse import quote, urlencode
 
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
@@ -25,13 +25,13 @@ def _create_search_url(query, parameters, user_parameters, options):
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/search/{quote(query)}?{query_string}'
+    return '{}/search/{}?{}'.format(options.get("service_url"), quote(query), query_string)
 
 class Search:
     # pylint: disable=too-few-public-methods
     '''Search Class'''
 
-    def __init__(self, options) -> None:
+    def __init__(self, options):
         self.__options = options or {}
 
     def get_search_results(self, query, parameters=None, user_parameters=None):
