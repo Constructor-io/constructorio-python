@@ -1,3 +1,6 @@
+[MASTER]
+disable=consider-using-f-string
+
 [FORMAT]
 max-line-length=99
 

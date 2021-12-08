@@ -34,7 +34,7 @@ def _create_recommendations_url(pod_id, parameters, user_parameters, options):
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return '{}/recommendations/v1/pods/{}?{}'.format(options.get("service_url"), quote(pod_id), query_string)
+    return '{}/recommendations/v1/pods/{}?{}'.format(options.get("service_url"), quote(pod_id), query_string) # pylint: disable=line-too-long
 
 
 
