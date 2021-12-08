@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 requests = "*"
+six = "*"
 
 [dev-packages]
 isort = "*"
@@ -14,6 +15,3 @@ pytest-cov = "*"
 pre-commit = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
-
-[requires]
-python_version = "3"
