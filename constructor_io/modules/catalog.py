@@ -1,7 +1,7 @@
 '''Catalog Module'''
 
 import requests as r
-from six.moves.urllib.parse import quote
+from six.moves.urllib.parse import quote, urlencode
 
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,

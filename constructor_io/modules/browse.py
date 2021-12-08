@@ -3,7 +3,7 @@
 from time import time
 
 import requests as r
-from six.moves.urllib.parse import quote
+from six.moves.urllib.parse import quote, urlencode
 
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
@@ -28,7 +28,7 @@ def _create_browse_url(prefix, parameters, user_parameters, options, omit_timest
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return '{options.get("service_url")}/{}?{}'.format(prefix, query_string) # pylint: disable=line-too-long
+    return '{}/{}?{}'.format(options.get("service_url"), prefix, query_string) # pylint: disable=line-too-long
 
 class Browse:
     '''Browse Class'''

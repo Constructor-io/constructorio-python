@@ -102,7 +102,7 @@ def create_shared_query_params(options, parameters, user_parameters):
 
     if user_parameters.get('test_cells'):
         for key, value in user_parameters.get('test_cells').items():
-            query_params['ef-{key}'.format(key)] = value
+            query_params['ef-{}'.format(key)] = value
 
     if user_parameters.get('segments') and len(user_parameters.get('segments')):
         query_params['us'] = user_parameters.get('segments')
