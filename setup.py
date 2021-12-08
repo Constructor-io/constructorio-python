@@ -1,11 +1,14 @@
-from pathlib import Path
+import os
 
 from setuptools import find_packages, setup
 
 from constructor_io import __version__
 
-this_directory = Path(__file__).parent
-long_description = (this_directory / "README.md").read_text()
+this_directory = os.path.dirname(os.path.abspath(__file__))
+long_description_path = os.path.join(this_directory, "README.md")
+
+with open(long_description_path, "r") as long_description_file: # pylint: disable=unspecified-encoding
+    long_description = long_description_file.read()
 
 setup(
     name="constructor-io",
