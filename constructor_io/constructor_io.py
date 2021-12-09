@@ -1,6 +1,7 @@
 '''ConstructorIO Python Package'''
 from __future__ import absolute_import
 
+from constructor_io import __version__
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.modules.autocomplete import Autocomplete
 from constructor_io.modules.browse import Browse
@@ -37,7 +38,7 @@ class ConstructorIO:
             'api_key': api_key,
             'api_token': api_token,
             'security_token': security_token,
-            'version': version or '',
+            'version': version or __version__,
             'service_url': service_url or 'https://ac.cnstrc.com',
             'requests': requests,
         }
