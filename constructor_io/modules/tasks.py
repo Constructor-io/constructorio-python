@@ -1,6 +1,5 @@
 '''Tasks Module'''
 
-from time import time
 from urllib.parse import quote, urlencode
 
 import requests as r

@@ -48,7 +48,7 @@ class ConstructorIO:
         self.browse = Browse(self.__options)
         self.recommendations = Recommendations(self.__options)
         self.catalog = Catalog(self.__options)
-        self.tasks = Tasks(self.__options);
+        self.tasks = Tasks(self.__options)
 
     def get_options(self):
         '''Get client options'''

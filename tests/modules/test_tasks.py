@@ -38,10 +38,9 @@ def test_get_all_tasks_with_no_params():
     assert isinstance(response.get('total_count'), int)
     assert len(response.get('tasks')) <= 20 and len(response.get('tasks')) >= 1
 
-    task = next(filter(lambda task: task.get('id') == task_id, response.get('tasks')), None);
-    assert isinstance(task, dict);
+    task = next(filter(lambda task: task.get('id') == task_id, response.get('tasks')), None)
+    assert isinstance(task, dict)
     assert task.get('id') == task_id
-    
 
 def test_get_all_tasks_with_params():
     '''Should return a response with a valid total_count, tasks, status_counts'''
@@ -80,12 +79,12 @@ def test_get_task_with_task_id():
     '''Should return result when valid task_id is provided'''
 
     tasks = ConstructorIO(VALID_OPTIONS).tasks
-    response = tasks.get_task(task_id)
+    curResponse = tasks.get_task(task_id)
 
-    assert isinstance(response.get('id'), int)
-    assert response.get('id') == task_id
-    assert isinstance(response.get('status'), str)
-    assert isinstance(response.get('submission_time'), str)
+    assert isinstance(curResponse.get('id'), int)
+    assert curResponse.get('id') == task_id
+    assert isinstance(curResponse.get('status'), str)
+    assert isinstance(curResponse.get('submission_time'), str)
 
 def task_get_task_without_task_id():
     '''Should raise exception when no task_id is provided'''
@@ -95,7 +94,7 @@ def task_get_task_without_task_id():
         match=r'task_id is a required parameter of type int'
     ):
         tasks = ConstructorIO(VALID_OPTIONS).tasks
-        response = tasks.get_task()
+        tasks.get_task(None)
 
 def test_get_task_with_invalid_api_key():
     '''Should raise exception when invalid api_key is provided'''
