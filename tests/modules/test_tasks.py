@@ -1,8 +1,6 @@
 '''ConstructorIO Python Client - Tasks Tests'''
 
-import re
 from os import environ
-from unittest import mock
 
 import requests
 from pytest import raises
@@ -19,11 +17,11 @@ ITEMS = requests.get(f'{CATALOG_EXAMPLES_BASE_URL}items.csv').content
 
 #make a replace catalog request and get task_id to use in tests
 catalog = ConstructorIO(VALID_OPTIONS).catalog
-response = catalog.replace_catalog({
+catalogResponse = catalog.replace_catalog({
     'items': ITEMS,
     'section': 'Products'
 })
-task_id = response.get('task_id')
+task_id = catalogResponse.get('task_id')
 
 def test_get_all_tasks_with_no_params():
     '''Should return a response with a valid total_count, tasks, status_counts'''
@@ -79,12 +77,12 @@ def test_get_task_with_task_id():
     '''Should return result when valid task_id is provided'''
 
     tasks = ConstructorIO(VALID_OPTIONS).tasks
-    curResponse = tasks.get_task(task_id)
+    response = tasks.get_task(task_id)
 
-    assert isinstance(curResponse.get('id'), int)
-    assert curResponse.get('id') == task_id
-    assert isinstance(curResponse.get('status'), str)
-    assert isinstance(curResponse.get('submission_time'), str)
+    assert isinstance(response.get('id'), int)
+    assert response.get('id') == task_id
+    assert isinstance(response.get('status'), str)
+    assert isinstance(response.get('submission_time'), str)
 
 def task_get_task_without_task_id():
     '''Should raise exception when no task_id is provided'''
