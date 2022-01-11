@@ -27,9 +27,7 @@ def test_get_all_tasks_with_no_params():
     '''Should return a response with a valid total_count, tasks, status_counts'''
 
     tasks = ConstructorIO(VALID_OPTIONS).tasks
-    response = tasks.get_all_tasks(
-        { },
-    )
+    response = tasks.get_all_tasks()
 
     assert isinstance(response.get('status_counts'), dict)
     assert isinstance(response.get('tasks'), list)
@@ -44,9 +42,7 @@ def test_get_all_tasks_with_params():
     '''Should return a response with a valid total_count, tasks, status_counts'''
 
     tasks = ConstructorIO(VALID_OPTIONS).tasks
-    response = tasks.get_all_tasks(
-        { 'page': 2, 'results_per_page': 50 },
-    )
+    response = tasks.get_all_tasks({ 'page': 2, 'results_per_page': 50 })
 
     assert isinstance(response.get('status_counts'), dict)
     assert isinstance(response.get('tasks'), list)
@@ -57,8 +53,8 @@ def test_get_all_tasks_with_invalid_api_key():
     '''Should raise exception when invalid api_key is provided'''
 
     with raises(
-            HttpException,
-            match=r'You have supplied an invalid `key` or `autocomplete_key`. You can find your key at app.constructor.io/dashboard/accounts/api_integration.' # pylint: disable=line-too-long
+        HttpException,
+        match=r'You have supplied an invalid `key` or `autocomplete_key`. You can find your key at app.constructor.io/dashboard/accounts/api_integration.' # pylint: disable=line-too-long
     ):
         tasks = ConstructorIO({ 'api_key': 'invalidkey', 'api_token': TEST_API_TOKEN}).tasks
         tasks.get_all_tasks()
@@ -67,8 +63,8 @@ def test_get_all_tasks_with_invalid_api_token():
     '''Should raise exception when invalid api_token is provided'''
 
     with raises(
-            HttpException,
-            match=r'Invalid auth_token. If you\'ve forgotten your token, you can generate a new one at app.constructor.io/dashboard' # pylint: disable=line-too-long
+        HttpException,
+        match=r'Invalid auth_token. If you\'ve forgotten your token, you can generate a new one at app.constructor.io/dashboard' # pylint: disable=line-too-long
     ):
         tasks = ConstructorIO({ 'api_key': TEST_API_KEY, 'api_token': 'invalidapitoken'}).tasks
         tasks.get_all_tasks()
@@ -98,8 +94,8 @@ def test_get_task_with_invalid_api_key():
     '''Should raise exception when invalid api_key is provided'''
 
     with raises(
-            HttpException,
-            match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.' # pylint: disable=line-too-long
+        HttpException,
+        match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.' # pylint: disable=line-too-long
     ):
         tasks = ConstructorIO({ 'api_key': 'invalidkey', 'api_token': TEST_API_TOKEN}).tasks
         tasks.get_task(1)
@@ -108,8 +104,8 @@ def test_get_task_with_invalid_api_token():
     '''Should raise exception when invalid api_token is provided'''
 
     with raises(
-            HttpException,
-            match=r'Invalid auth_token. If you\'ve forgotten your token, you can generate a new one at app.constructor.io/dashboard' # pylint: disable=line-too-long
+        HttpException,
+        match=r'Invalid auth_token. If you\'ve forgotten your token, you can generate a new one at app.constructor.io/dashboard' # pylint: disable=line-too-long
     ):
         tasks = ConstructorIO({ 'api_key': TEST_API_KEY, 'api_token': 'invalidapitoken'}).tasks
         tasks.get_task(1)
