@@ -31,6 +31,8 @@ def _create_quizzes_url(quiz_id, parameters, options, path):
     if parameters:
         if parameters.get('section'):
             query_params['section'] = parameters.get('section')
+        if parameters.get('version_id'):
+            query_params['version_id'] = parameters.get('version_id')
         if parameters.get('a'):
             answers_param = []
             answers = parameters.get('a')
@@ -55,10 +57,11 @@ class Quizzes:
         '''
         Retrieve next quiz from API
 
-        :param str id: Quiz Id
+        :param str quiz_id: Quiz Id
         :param dict parameters: Additional parameters to determine next quiz
         :param list parameters.a: 2d Array of quiz answers in the format [[1],[1,2]]
-        :param int parameters.section: Section for customer's product catalog
+        :param str parameters.section: Section for customer's product catalog
+        :param str parameters.version_id: Specific version_id for the quiz
         :param dict user_parameters: Parameters relevant to the user request
         :param str user_parameters.user_ip: Origin user IP, from client
         :param str user_parameters.user_agent: Origin user agent, from client
@@ -94,10 +97,11 @@ class Quizzes:
         '''
         Retrieve quiz results from API
 
-        :param str id: Quiz Id
+        :param str quiz_id: Quiz Id
         :param dict parameters: Additional parameters to determine next quiz
         :param list parameters.a: 2d Array of quiz answers in the format [[1],[1,2]]
-        :param int parameters.section: Section for customer's product catalog
+        :param str parameters.section: Section for customer's product catalog
+        :param str parameters.version_id: Specific version_id for the quiz
         :param dict user_parameters: Parameters relevant to the user request
         :param str user_parameters.user_ip: Origin user IP, from client
         :param str user_parameters.user_agent: Origin user agent, from client
