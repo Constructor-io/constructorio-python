@@ -2,28 +2,26 @@
 
 from time import time
 from urllib.parse import quote, urlencode
-from urllib.request import Request
 
 import requests as r
 
 from constructor_io.helpers.exception import ConstructorException
 from constructor_io.helpers.utils import (clean_params, create_auth_header,
                                           create_request_headers,
-                                          create_shared_query_params,
                                           throw_http_exception_from_response)
 
 
-def _create_quizzes_url(quizId, parameters, user_parameters, options, path):
+def _create_quizzes_url(quiz_id, parameters, options, path):
     # pylint: disable=too-many-branches
-    '''Create URL from supplied quizId and parameters'''
-
+    '''Create URL from supplied quiz_id and parameters'''
+    quiz_service_url = 'https://quizzes.cnstrc.com/v1/quizzes'
     query_params = {}
     ans_query_string = ''
 
-    if not quizId or not isinstance(quizId, str):
-        raise ConstructorException('quizId is a required parameter of type str')
+    if not quiz_id or not isinstance(quiz_id, str):
+        raise ConstructorException('quiz_id is a required parameter of type str')
 
-    if path == 'finalize' and (type(parameters.get('a')) is not list or len(parameters.get('a')) == 0):
+    if path == 'finalize' and (isinstance(parameters.get('a'), list) or len(parameters.get('a')) == 0): # pylint: disable=line-too-long
         raise ConstructorException('a is a required parameter of type list')
 
     if options:
@@ -34,17 +32,17 @@ def _create_quizzes_url(quizId, parameters, user_parameters, options, path):
         if parameters.get('section'):
             query_params['section'] = parameters.get('section')
         if parameters.get('a'):
-            answersParam = []
+            answers_param = []
             answers = parameters.get('a')
-            for questionAnswer in answers:
-                answersParam.append(','.join(map(str, questionAnswer)))
-            ans_query_string = urlencode({'a': answersParam}, doseq=True)
+            for question_answer in answers:
+                answers_param.append(','.join(map(str, question_answer)))
+            ans_query_string = urlencode({'a': answers_param}, doseq=True)
 
     query_params['_dt'] = int(time()*1000.0)
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'https://quizzes.cnstrc.com/v1/quizzes/{quote(quizId)}/{quote(path)}?{query_string}&{ans_query_string}'
+    return f'{quiz_service_url}/{quote(quiz_id)}/{quote(path)}?{query_string}&{ans_query_string}'
 
 class Quizzes:
     # pylint: disable=too-few-public-methods
@@ -53,7 +51,7 @@ class Quizzes:
     def __init__(self, options):
         self.__options = options or {}
 
-    def get_next_quiz(self, quizId, parameters=None, user_parameters=None):
+    def get_next_quiz(self, quiz_id, parameters=None, user_parameters=None):
         '''
         Retrieve next quiz from API
 
@@ -72,7 +70,7 @@ class Quizzes:
         if not user_parameters:
             user_parameters = {}
 
-        request_url = _create_quizzes_url(quizId, parameters, user_parameters, self.__options, 'next')
+        request_url = _create_quizzes_url(quiz_id, parameters, self.__options, 'next') # pylint: disable=line-too-long
         requests = self.__options.get('requests') or r
 
         response = requests.get(
@@ -92,7 +90,7 @@ class Quizzes:
 
         raise ConstructorException('get_next_quiz response data is malformed')
 
-    def get_finalize_quiz(self, quizId, parameters=None, user_parameters=None):
+    def get_finalize_quiz(self, quiz_id, parameters=None, user_parameters=None):
         '''
         Retrieve quiz results from API
 
@@ -111,7 +109,7 @@ class Quizzes:
         if not user_parameters:
             user_parameters = {}
 
-        request_url = _create_quizzes_url(quizId, parameters, user_parameters, self.__options, 'finalize')
+        request_url = _create_quizzes_url(quiz_id, parameters, self.__options, 'finalize') #pylint: disable=line-too-long
         requests = self.__options.get('requests') or r
 
         response = requests.get(
@@ -130,4 +128,3 @@ class Quizzes:
                 return json
 
         raise ConstructorException('get_finalize_quiz response data is malformed')
-

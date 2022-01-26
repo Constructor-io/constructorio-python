@@ -13,6 +13,7 @@ from constructor_io.modules.tasks import Tasks
 
 class ConstructorIO:
     # pylint: disable=too-few-public-methods
+    # pylint: disable=too-many-instance-attributes
     '''
         ConstructorIO Python Client
 
@@ -50,7 +51,7 @@ class ConstructorIO:
         self.recommendations = Recommendations(self.__options)
         self.catalog = Catalog(self.__options)
         self.tasks = Tasks(self.__options)
-        self.quizzes = Quizzes(self.__options);
+        self.quizzes = Quizzes(self.__options)
 
     def get_options(self):
         '''Get client options'''
