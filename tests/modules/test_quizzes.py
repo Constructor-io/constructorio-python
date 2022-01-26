@@ -40,7 +40,7 @@ def test_get_next_quiz_with_no_quiz_id():
 
     with raises(
         ConstructorException,
-        match=r'quizId is a required parameter of type str'
+        match=r'quiz_id is a required parameter of type str'
     ):
         quizzes = ConstructorIO(VALID_OPTIONS).quizzes
         quizzes.get_next_quiz(None)
@@ -50,7 +50,7 @@ def test_get_finalize_quiz_with_no_quiz_id():
 
     with raises(
         ConstructorException,
-        match=r'quizId is a required parameter of type str'
+        match=r'quiz_id is a required parameter of type str'
     ):
         quizzes = ConstructorIO(VALID_OPTIONS).quizzes
         quizzes.get_finalize_quiz(None)
