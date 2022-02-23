@@ -968,7 +968,7 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_hidden_facets()
         IDS,
         {'section': SECTION, 'hidden_facets': hidden_facets}
     )
-    
+
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
