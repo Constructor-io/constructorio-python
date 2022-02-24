@@ -239,7 +239,23 @@ def test_with_valid_query_and_hidden_fields():
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('hidden_fields') == hidden_fields
+    assert response.get('request').get('fmt_options').get('hidden_fields') == hidden_fields
+
+def test_with_valid_query_and_hidden_facets():
+    '''Should return a response with a valid query, section, and hiddenFacets'''
+
+    hidden_facets = ['Brand', 'testFacet']
+    search = ConstructorIO(VALID_OPTIONS).search
+    response = search.get_search_results(
+        QUERY,
+        { 'section': SECTION, 'hidden_facets': hidden_facets }
+    )
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert response.get('request').get('fmt_options').get('hidden_facets') == hidden_facets
+    assert response.get('response').get('facets')[0].get('name') == hidden_facets[0]
 
 def test_with_valid_query_and_redirect_rule():
     '''Should return a redirect rule with a valid query and section'''
