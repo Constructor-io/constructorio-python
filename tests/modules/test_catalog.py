@@ -95,7 +95,7 @@ def test_with_replace_no_files():
 
     with raises(
         HttpException,
-        match=r'at least one of "items", "variations", "item_groups" file(s)'
+        match=r'form-data should contain at least one of "items", "variations", "item_groups" file(s)' #pylint: disable=line-too-long
     ):
         catalog.replace_catalog(data)
 
@@ -167,7 +167,7 @@ def test_with_update_no_files():
 
     with raises(
         HttpException,
-        match=r'at least one of "items", "variations", "item_groups" file(s)'
+        match=r'form-data should contain at least one of "items", "variations", "item_groups" file(s)' #pylint: disable=line-too-long
     ):
         catalog.update_catalog(data)
 
@@ -239,7 +239,7 @@ def test_with_patch_no_files():
 
     with raises(
         HttpException,
-        match=r'at least one of "items", "variations", "item_groups" file(s)'
+        match=r'form-data should contain at least one of "items", "variations", "item_groups" file(s)' #pylint: disable=line-too-long
     ):
         catalog.patch_catalog(data)
 
