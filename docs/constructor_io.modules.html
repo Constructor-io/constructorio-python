@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>constructor_io.modules package &mdash; ConstructorIO Python 1.4.0 documentation</title>
+  <title>constructor_io.modules package &mdash; ConstructorIO Python 1.4.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
@@ -205,6 +205,7 @@
 <li><p><strong>parameters.section</strong> (<em>str</em>) – Section name for results</p></li>
 <li><p><strong>parameters.fmt_options</strong> (<em>dict</em>) – The format options used to refine result groups</p></li>
 <li><p><strong>parameters.hidden_fields</strong> (<em>list</em>) – Hidden metadata fields to return</p></li>
+<li><p><strong>parameters.hidden_facets</strong> (<em>list</em>) – Hidden facet fields to return</p></li>
 <li><p><strong>user_parameters</strong> (<em>dict</em>) – Parameters relevant to the user request</p></li>
 <li><p><strong>user_parameters.session_id</strong> (<em>int</em>) – Session ID, utilized to personalize results</p></li>
 <li><p><strong>user_parameters.client_id</strong> (<em>str</em>) – Client ID, utilized to personalize results</p></li>
@@ -238,6 +239,7 @@
 <li><p><strong>parameters.section</strong> (<em>str</em>) – Section name for results</p></li>
 <li><p><strong>parameters.fmt_options</strong> (<em>dict</em>) – The format options used to refine result groups</p></li>
 <li><p><strong>parameters.hidden_fields</strong> (<em>list</em>) – Hidden metadata fields to return</p></li>
+<li><p><strong>parameters.hidden_facets</strong> (<em>list</em>) – Hidden facet fields to return</p></li>
 <li><p><strong>user_parameters</strong> (<em>dict</em>) – Parameters relevant to the user request</p></li>
 <li><p><strong>user_parameters.session_id</strong> (<em>int</em>) – Session ID, utilized to personalize results</p></li>
 <li><p><strong>user_parameters.client_id</strong> (<em>str</em>) – Client ID, utilized to personalize results</p></li>
@@ -391,6 +393,7 @@
 <li><p><strong>parameters.section</strong> (<em>str</em>) – Section name for results</p></li>
 <li><p><strong>parameters.fmt_options</strong> (<em>dict</em>) – The format options used to refine result groups</p></li>
 <li><p><strong>parameters.hidden_fields</strong> (<em>list</em>) – Hidden metadata fields to return</p></li>
+<li><p><strong>parameters.hidden_facets</strong> (<em>list</em>) – Hidden facet fields to return</p></li>
 <li><p><strong>user_parameters</strong> (<em>dict</em>) – Parameters relevant to the user request</p></li>
 <li><p><strong>user_parameters.session_id</strong> (<em>int</em>) – Session ID, utilized to personalize results</p></li>
 <li><p><strong>user_parameters.client_id</strong> (<em>str</em>) – Client ID, utilized to personalize results</p></li>
@@ -400,6 +403,49 @@
 <li><p><strong>user_parameters.user_ip</strong> (<em>str</em>) – Origin user IP, from client</p></li>
 <li><p><strong>user_parameters.user_agent</strong> (<em>str</em>) – Origin user agent, from client</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-constructor_io.modules.tasks">
+<span id="constructor-io-modules-tasks-module"></span><h2>constructor_io.modules.tasks module<a class="headerlink" href="#module-constructor_io.modules.tasks" title="Permalink to this headline"></a></h2>
+<p>Tasks Module</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="constructor_io.modules.tasks.Tasks">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">constructor_io.modules.tasks.</span></span><span class="sig-name descname"><span class="pre">Tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#constructor_io.modules.tasks.Tasks" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Tasks Class</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="constructor_io.modules.tasks.Tasks.get_all_tasks">
+<span class="sig-name descname"><span class="pre">get_all_tasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#constructor_io.modules.tasks.Tasks.get_all_tasks" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve tasks from API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> (<em>dict</em>) – Additional parameters for task details</p></li>
+<li><p><strong>parameters.page</strong> (<em>int</em>) – The page number of the results</p></li>
+<li><p><strong>parameters.results_per_page</strong> (<em>int</em>) – The number of results per page to return</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="constructor_io.modules.tasks.Tasks.get_task">
+<span class="sig-name descname"><span class="pre">get_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#constructor_io.modules.tasks.Tasks.get_task" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve specific task from API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>task_id</strong> (<em>int</em>) – The id of the task to retrieve</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>dict</p>
