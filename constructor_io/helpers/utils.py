@@ -89,7 +89,10 @@ def create_shared_query_params(options, parameters, user_parameters):
             query_params['section'] = parameters.get('section')
 
         if parameters.get('hidden_fields'):
-            query_params['hidden_fields'] = parameters.get('hidden_fields')
+            query_params['fmt_options[hidden_fields]'] = parameters.get('hidden_fields')
+
+        if parameters.get('hidden_facets'):
+            query_params['fmt_options[hidden_facets]'] = parameters.get('hidden_facets')
 
         if parameters.get('fmt_options'):
             fmt_options = parameters.get('fmt_options')

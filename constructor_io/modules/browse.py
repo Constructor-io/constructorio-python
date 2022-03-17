@@ -53,6 +53,7 @@ class Browse:
         :param str parameters.section: Section name for results
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param list parameters.hidden_fields: Hidden metadata fields to return
+        :param list parameters.hidden_facets: Hidden facet fields to return
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -83,6 +84,7 @@ class Browse:
             user_parameters,
             self.__options
         )
+
         requests = self.__options.get('requests') or r
         response = requests.get(
             request_url,
@@ -123,6 +125,7 @@ class Browse:
         :param str parameters.section: Section name for results
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param list parameters.hidden_fields: Hidden metadata fields to return
+        :param list parameters.hidden_facets: Hidden facet fields to return
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results

@@ -211,7 +211,7 @@ def test_with_valid_query_and_hidden_fields():
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('sections'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('hidden_fields') == hidden_fields
+    assert response.get('request').get('fmt_options').get('hidden_fields') == hidden_fields
 
 def test_with_invalid_query():
     '''Should raise exception when invalid query is provided'''

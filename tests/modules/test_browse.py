@@ -307,8 +307,24 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_hidden_field
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('hidden_fields') == hidden_fields
+    assert response.get('request').get('fmt_options').get('hidden_fields') == hidden_fields
 
+def test_get_browse_results_with_valid_filter_name_filter_value_and_hidden_facets():
+    '''Should return a response with a valid filter_name, filter_value, section, and hiddenFacets''' # pylint: disable=line-too-long
+
+    hidden_facets = ['Brand', 'testFacet']
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results(
+        'Brand',
+        'XYZ',
+        {'section': SECTION, 'hidden_facets': hidden_facets}
+    )
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert response.get('request').get('fmt_options').get('hidden_facets') == hidden_facets
+    assert response.get('response').get('facets')[0].get('name') == hidden_facets[0]
 
 def test_get_browse_results_with_invalid_filter_name():
     '''Should raise exception when invalid filter_name is provided'''
@@ -941,8 +957,24 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_hidden_fields()
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
     assert isinstance(response.get('response').get('results'), list)
-    assert response.get('request').get('hidden_fields') == hidden_fields
+    assert response.get('request').get('fmt_options').get('hidden_fields') == hidden_fields
 
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_hidden_facets():
+    '''Should return a response with a valid ids, section, and hiddenFacets''' # pylint: disable=line-too-long
+
+    hidden_facets = ['Brand', 'XYZ']
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {'section': SECTION, 'hidden_facets': hidden_facets}
+    )
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert response.get('request').get('fmt_options').get('hidden_facets') == hidden_facets
+    assert response.get('response').get('facets')[0].get('name') == hidden_facets[0]
 
 def test_get_browse_results_for_item_ids_with_invalid_item_ids():
     '''Should raise exception when invalid item_ids is provided'''
