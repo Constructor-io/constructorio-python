@@ -81,7 +81,6 @@ class Recommendations:
             headers=create_request_headers(self.__options, user_parameters)
         )
 
-        print(response)
         if not response.ok:
             throw_http_exception_from_response(response)
 

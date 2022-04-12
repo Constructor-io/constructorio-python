@@ -18,8 +18,6 @@ def _create_browse_url(prefix, parameters, user_parameters, options, omit_timest
 
     query_params = create_shared_query_params(options, parameters, user_parameters)
 
-    print(parameters)
-
     if parameters:
         if parameters.get('item_ids'):
             query_params['ids'] = parameters.get('item_ids')
