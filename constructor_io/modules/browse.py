@@ -228,7 +228,6 @@ class Browse:
 
         if json_response:
             if json_response.get('groups') or json_response.get('groups') == []:
-
                 return json
 
         raise ConstructorException('get_browse_groups response data is malformed')
@@ -283,7 +282,6 @@ class Browse:
 
         if json_response:
             if json_response.get('facets') or json_response.get('facets') == []:
-
                 return json
 
         raise ConstructorException('get_browse_facets response data is malformed')
@@ -338,7 +336,6 @@ class Browse:
 
         if json_response:
             if json_response.get('facets') or json_response.get('facets') == []:
-
                 return json
 
         raise ConstructorException('get_browse_facet_options response data is malformed')
