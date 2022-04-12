@@ -18,9 +18,13 @@ def _create_browse_url(prefix, parameters, user_parameters, options, omit_timest
 
     query_params = create_shared_query_params(options, parameters, user_parameters)
 
+    print(parameters)
+
     if parameters:
         if parameters.get('item_ids'):
             query_params['ids'] = parameters.get('item_ids')
+        if parameters.get('facet_name'):
+            query_params['facet_name'] = parameters.get('facet_name')
 
     if not omit_timestamp:
         query_params['_dt'] = int(time()*1000.0)
@@ -285,3 +289,58 @@ class Browse:
                 return json
 
         raise ConstructorException('get_browse_facets response data is malformed')
+
+    def get_browse_facet_options(self, facet_name, parameters=None, user_parameters=None):
+        '''
+        Retrieve facet options for a given facet group from the API
+
+        :param str facet_name: Name of the facet whose options to return
+        :param dict parameters: Additional parameters to refine result set
+        :param dict parameters.fmt_options: The format options used to refine result groups
+        :param int parameters.fmt_options.show_hidden_facets: Include facets configured as hidden
+        :param int parameters.fmt_options.show_protected_facets: Include facets configured as protected # pylint: disable=line-too-long
+        :param dict user_parameters: Parameters relevant to the user request
+        :param int user_parameters.session_id: Session ID, utilized to personalize results
+        :param str user_parameters.client_id: Client ID, utilized to personalize results
+        :param str user_parameters.user_id: User ID, utilized to personalize results
+        :param str user_parameters.segments: User segments
+        :param dict user_parameters.test_cells: User test cells
+        :param str user_parameters.user_ip: Origin user IP, from client
+        :param str user_parameters.user_agent: Origin user agent, from client
+
+        :return: dict
+        '''
+        if not facet_name or not isinstance(facet_name, str):
+            raise ConstructorException('facet_name is a required parameter of type string')
+
+        if not parameters:
+            parameters = {}
+        if not user_parameters:
+            user_parameters = {}
+
+        url_prefix = 'browse/facet_options'
+        request_url = _create_browse_url(
+            url_prefix,
+            { **parameters, 'facet_name': facet_name},
+            user_parameters,
+            self.__options,
+            True
+        )
+        requests = self.__options.get('requests') or r
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options, user_parameters)
+        )
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+        json_response = json.get('response')
+
+        if json_response:
+            if json_response.get('facets') or json_response.get('facets') == []:
+
+                return json
+
+        raise ConstructorException('get_browse_facet_options response data is malformed')
