@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>constructor_io.modules package &mdash; ConstructorIO Python 1.4.1 documentation</title>
+  <title>constructor_io.modules package &mdash; ConstructorIO Python 1.4.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
@@ -131,6 +131,34 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">constructor_io.modules.browse.</span></span><span class="sig-name descname"><span class="pre">Browse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#constructor_io.modules.browse.Browse" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Browse Class</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="constructor_io.modules.browse.Browse.get_browse_facet_options">
+<span class="sig-name descname"><span class="pre">get_browse_facet_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">facet_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#constructor_io.modules.browse.Browse.get_browse_facet_options" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve facet options for a given facet group from the API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>facet_name</strong> (<em>str</em>) – Name of the facet whose options to return</p></li>
+<li><p><strong>parameters</strong> (<em>dict</em>) – Additional parameters to refine result set</p></li>
+<li><p><strong>parameters.fmt_options</strong> (<em>dict</em>) – The format options used to refine result groups</p></li>
+<li><p><strong>parameters.fmt_options.show_hidden_facets</strong> (<em>int</em>) – Include facets configured as hidden</p></li>
+<li><p><strong>parameters.fmt_options.show_protected_facets</strong> (<em>int</em>) – Include facets configured as protected # pylint: disable=line-too-long</p></li>
+<li><p><strong>user_parameters</strong> (<em>dict</em>) – Parameters relevant to the user request</p></li>
+<li><p><strong>user_parameters.session_id</strong> (<em>int</em>) – Session ID, utilized to personalize results</p></li>
+<li><p><strong>user_parameters.client_id</strong> (<em>str</em>) – Client ID, utilized to personalize results</p></li>
+<li><p><strong>user_parameters.user_id</strong> (<em>str</em>) – User ID, utilized to personalize results</p></li>
+<li><p><strong>user_parameters.segments</strong> (<em>str</em>) – User segments</p></li>
+<li><p><strong>user_parameters.test_cells</strong> (<em>dict</em>) – User test cells</p></li>
+<li><p><strong>user_parameters.user_ip</strong> (<em>str</em>) – Origin user IP, from client</p></li>
+<li><p><strong>user_parameters.user_agent</strong> (<em>str</em>) – Origin user agent, from client</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="constructor_io.modules.browse.Browse.get_browse_facets">
 <span class="sig-name descname"><span class="pre">get_browse_facets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#constructor_io.modules.browse.Browse.get_browse_facets" title="Permalink to this definition"></a></dt>
