@@ -18,6 +18,7 @@ VALID_SESSION_ID = 2
 VALID_OPTIONS = {'api_key': TEST_API_KEY}
 FILTER_NAME = 'group_id'
 FILTER_VALUE = 'Brands'
+FACET_NAME = 'Color'
 SECTION = 'Products'
 USER_ID = 'user-id'
 IDS = ['10001', '10002']
@@ -1084,3 +1085,83 @@ def test_get_browse_results_for_item_ids_with_no_api_key():
     with raises(ConstructorException, match=r'API key is a required parameter of type string'):
         browse = ConstructorIO({}).browse
         browse.get_browse_results_for_item_ids(IDS)
+
+
+def test_get_browse_facet_options_without_additional_arguments():
+    '''Should return a response with a facet name without additional arguments'''
+
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_facet_options(FACET_NAME)
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('facets'), list)
+    assert response.get('response').get('facets')[0].get('name') == FACET_NAME
+    assert isinstance(response.get('response').get('facets')[0].get('options'), list)
+
+
+def test_get_browse_facet_options_with_valid_fmt_options():
+    '''Should return a response with valid fmt_options'''
+
+    with mock.patch.object(requests, 'get', wraps=requests.get) as mocked_requests:
+        browse = ConstructorIO({ **VALID_OPTIONS, 'api_token': TEST_API_TOKEN }).browse
+        response = browse.get_browse_facet_options(
+            FACET_NAME,
+            {
+                'fmt_options': { 'show_hidden_facets': True,
+                'show_protected_facets': True }
+            }
+        )
+        request_url = mocked_requests.call_args.args[0]
+
+        assert isinstance(response.get('request'), dict)
+        assert isinstance(response.get('response'), dict)
+        assert isinstance(response.get('result_id'), str)
+        assert isinstance(response.get('response').get('facets'), list)
+        assert isinstance(response.get('request').get('fmt_options'), dict)
+        assert isinstance(response.get('request').get('fmt_options').get('show_hidden_facets'), bool) # pylint: disable=line-too-long
+        assert isinstance(response.get('request').get('fmt_options').get('show_protected_facets'), bool) # pylint: disable=line-too-long
+        assert re.search('%5Bshow_hidden_facets%5D=True', request_url)
+        assert re.search('%5Bshow_protected_facets%5D=True', request_url)
+
+
+def test_get_browse_facet_options_with_no_facet_name():
+    '''Should return a response with invalid facet name'''
+
+    with raises(ConstructorException, match=r'facet_name is a required parameter of type string'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_facet_options(
+            None,
+            { 'fmt_options': 123},
+        )
+
+
+def test_get_browse_facet_options_with_invalid_facet_name():
+    '''Should return a response with invalid facet name'''
+
+    with raises(ConstructorException, match=r'facet_name is a required parameter of type string'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_facet_options(
+            ['Brand'],
+            { 'fmt_options': 123},
+        )
+
+
+def test_get_browse_facet_options_with_invalid_fmt_options():
+    '''Should return a response with invalid fmt_options'''
+
+    with raises(ConstructorException, match=r'fmt_options must be a dictionary'):
+        browse = ConstructorIO(VALID_OPTIONS).browse
+        browse.get_browse_facet_options(
+            FACET_NAME,
+            { 'fmt_options': 123},
+        )
+
+
+def test_get_browse_facet_options_with_invalid_api_key():
+    '''Should return a response with invalid api_key'''
+
+    with raises(HttpException, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'): # pylint: disable=line-too-long
+        browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
+        browse.get_browse_facet_options(FACET_NAME)
