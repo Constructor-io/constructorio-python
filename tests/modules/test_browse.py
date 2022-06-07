@@ -556,6 +556,19 @@ def test_get_browse_groups_with_valid_fmt_options():
         assert re.search('fmt_options%5Bgroups_max_depth', request_url)
 
 
+def test_get_browse_groups_with_section():
+    '''Should return a response with a sections'''
+
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_groups({ 'section':  SECTION })
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('groups'), list)
+    assert isinstance(response.get('request').get('section'), str)
+
+
 def test_get_browse_groups_with_invalid_filters():
     '''Should return a response with invalid filters'''
 
@@ -642,6 +655,19 @@ def test_get_browse_facets_with_valid_fmt_options():
         assert re.search('%5Bshow_hidden_facets%5D=True', request_url)
         assert re.search('%5Bshow_protected_facets%5D=True', request_url)
 
+def test_get_browse_facets_with_section():
+    '''Should return a response with a section'''
+
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_facets({ 'section': SECTION })
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('facets'), list)
+    assert isinstance(response.get('response').get('total_num_results'), int)
+    assert response.get('request').get('section') == SECTION
+
 
 def test_get_browse_facets_with_invalid_page():
     '''Should return a response with invalid page'''
@@ -725,7 +751,7 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_segments():
     browse = ConstructorIO(VALID_OPTIONS).browse
     response = browse.get_browse_results_for_item_ids(
         IDS,
-        {},
+        { 'section': SECTION },
         {'segments': segments}
     )
 
@@ -734,6 +760,7 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_segments():
     assert isinstance(response.get('result_id'), str)
     assert isinstance(response.get('response').get('results'), list)
     assert response.get('request').get('us') == segments
+    assert response.get('request').get('section') == SECTION
 
 
 def test_get_browse_results_for_item_ids_with_valid_item_ids_and_user_id():
@@ -975,7 +1002,7 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_hidden_facets()
     assert isinstance(response.get('result_id'), str)
     assert isinstance(response.get('response').get('results'), list)
     assert response.get('request').get('fmt_options').get('hidden_facets') == hidden_facets
-    assert response.get('response').get('facets')[0].get('name') == hidden_facets[0]
+    assert response.get('response').get('facets')[1].get('name') == hidden_facets[0]
 
 def test_get_browse_results_for_item_ids_with_invalid_item_ids():
     '''Should raise exception when invalid item_ids is provided'''
@@ -1124,6 +1151,21 @@ def test_get_browse_facet_options_with_valid_fmt_options():
         assert isinstance(response.get('request').get('fmt_options').get('show_protected_facets'), bool) # pylint: disable=line-too-long
         assert re.search('%5Bshow_hidden_facets%5D=True', request_url)
         assert re.search('%5Bshow_protected_facets%5D=True', request_url)
+
+
+def test_get_browse_facet_options_with_section():
+    '''Should return a response with a facet name and section'''
+
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_facet_options(FACET_NAME, { 'section': SECTION })
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('facets'), list)
+    assert response.get('response').get('facets')[0].get('name') == FACET_NAME
+    assert isinstance(response.get('response').get('facets')[0].get('options'), list)
+    assert response.get('request').get('section') == SECTION
 
 
 def test_get_browse_facet_options_with_no_facet_name():

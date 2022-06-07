@@ -187,6 +187,7 @@ class Browse:
 
         :param dict parameters: Additional parameters to refine result set
         :param dict parameters.filters: Filters used to refine results
+        :param str parameters.section: Section name for results
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param int parameters.fmt_options.groups_max_depth: The maximum depth of the hierarchy group structure # pylint: disable=line-too-long
         :param dict user_parameters: Parameters relevant to the user request
@@ -240,6 +241,7 @@ class Browse:
         :param dict parameters: Additional parameters to refine result set
         :param dict parameters.page: The page number of the results
         :param dict parameters.results_per_page: The number of results per page to return
+        :param str parameters.section: Section name for results
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param int parameters.fmt_options.show_hidden_facets: Include facets configured as hidden
         :param int parameters.fmt_options.show_protected_facets: Include facets configured as protected # pylint: disable=line-too-long
@@ -292,6 +294,7 @@ class Browse:
 
         :param str facet_name: Name of the facet whose options to return
         :param dict parameters: Additional parameters to refine result set
+        :param str parameters.section: Section name for results
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param int parameters.fmt_options.show_hidden_facets: Include facets configured as hidden
         :param int parameters.fmt_options.show_protected_facets: Include facets configured as protected # pylint: disable=line-too-long
