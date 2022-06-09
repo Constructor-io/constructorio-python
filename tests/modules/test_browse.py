@@ -566,7 +566,7 @@ def test_get_browse_groups_with_section():
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
     assert isinstance(response.get('response').get('groups'), list)
-    assert isinstance(response.get('request').get('section'), str)
+    assert response.get('request').get('section') == SECTION
 
 
 def test_get_browse_groups_with_invalid_filters():
@@ -1002,7 +1002,17 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_hidden_facets()
     assert isinstance(response.get('result_id'), str)
     assert isinstance(response.get('response').get('results'), list)
     assert response.get('request').get('fmt_options').get('hidden_facets') == hidden_facets
-    assert response.get('response').get('facets')[1].get('name') == hidden_facets[0]
+    facets = response.get('response').get('facets')
+    brand_facet = None
+
+    try:
+        # Find the element in the list that has the name "Brand"
+        brand_facet = next(x for x in facets if x['name'] == hidden_facets[0])
+    except StopIteration:
+        # Element not found
+        pass
+
+    assert brand_facet != None
 
 def test_get_browse_results_for_item_ids_with_invalid_item_ids():
     '''Should raise exception when invalid item_ids is provided'''
