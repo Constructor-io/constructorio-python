@@ -230,7 +230,7 @@ def test_with_valid_query_and_variations_map():
                 },
             },
         'dtype': 'array',
-    };
+    }
     autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
     response = autocomplete.get_autocomplete_results('jacket', { 'variations_map': variations_map })
 

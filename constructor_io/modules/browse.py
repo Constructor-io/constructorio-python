@@ -41,6 +41,7 @@ class Browse:
 
 
     def get_browse_results(self, filter_name, filter_value, parameters=None, user_parameters=None):
+        # pylint: disable=line-too-long
         '''
         Retrieve browse results from API
 
@@ -68,6 +69,7 @@ class Browse:
 
         :return: dict
         '''
+        # pylint: enable=line-too-long
 
         if not filter_name or not isinstance(filter_name, str):
             raise ConstructorException('filter_name is a required parameter of type string')
@@ -115,6 +117,7 @@ class Browse:
 
 
     def get_browse_results_for_item_ids(self, item_ids, parameters=None, user_parameters=None):
+        # pylint: disable=line-too-long
         '''
         Retrieve browse results from API using item ID's
 
@@ -141,6 +144,7 @@ class Browse:
 
         :return: dict
         '''
+        # pylint: enable=line-too-long
 
         if not item_ids or not isinstance(item_ids, list):
             raise ConstructorException('item_ids is a required parameter of type list')

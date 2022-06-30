@@ -300,7 +300,7 @@ def test_with_valid_pod_id_and_variations_map():
                 },
             },
         'dtype': 'array',
-    };
+    }
     filters = { 'keywords': ['battery-powered'] }
     recommendations = ConstructorIO(VALID_OPTIONS).recommendations
     response = recommendations.get_recommendation_results(

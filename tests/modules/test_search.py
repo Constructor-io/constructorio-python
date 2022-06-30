@@ -265,7 +265,7 @@ def test_with_valid_query_and_hidden_facets():
         # Element not found
         pass
 
-    assert brand_facet != None
+    assert brand_facet is not None
 
 def test_with_valid_query_and_redirect_rule():
     '''Should return a redirect rule with a valid query and section'''
@@ -297,7 +297,7 @@ def test_with_valid_query_and_variations_map():
                 },
             },
         'dtype': 'array',
-    };
+    }
     search = ConstructorIO(VALID_OPTIONS).search
     response = search.get_search_results(
         'jacket',

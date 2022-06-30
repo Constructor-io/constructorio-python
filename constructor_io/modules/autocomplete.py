@@ -43,6 +43,7 @@ class Autocomplete:
         self.__options = options or {}
 
     def get_autocomplete_results(self, query, parameters=None, user_parameters=None):
+        # pylint: disable=line-too-long
         '''
         Retrieve autocomplete results from API
 
@@ -64,6 +65,7 @@ class Autocomplete:
 
         :return: dict
         '''
+        # pylint: enable=line-too-long
 
         if not parameters:
             parameters = {}

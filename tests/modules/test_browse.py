@@ -344,7 +344,7 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_variations_m
                 },
             },
         'dtype': 'array',
-    };
+    }
     browse = ConstructorIO(VALID_OPTIONS).browse
     response = browse.get_browse_results(
         'Brand',
@@ -1044,7 +1044,7 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_hidden_facets()
         # Element not found
         pass
 
-    assert brand_facet != None
+    assert brand_facet is not None
 
 def test_get_browse_results_for_item_ids_with_valid_item_ids_and_variations_map():
     '''Should return a response with a valid ids, section, and variations_map''' # pylint: disable=line-too-long
@@ -1063,7 +1063,7 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_variations_map(
                 },
             },
         'dtype': 'array',
-    };
+    }
     browse = ConstructorIO(VALID_OPTIONS).browse
     response = browse.get_browse_results_for_item_ids(
         IDS,
