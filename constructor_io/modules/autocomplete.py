@@ -52,6 +52,7 @@ class Autocomplete:
         :param dict parameters.filters: Filters used to refine search
         :param int parameters.results_per_section: Number of results to return per section
         :param list parameters.hidden_fields: Hidden metadata fields to return
+        :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.io/rest_api/variations_mapping for details
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results

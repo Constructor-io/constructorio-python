@@ -202,7 +202,7 @@ def test_with_valid_query_with_result_id():
             assert item.get('result_id') == response.get('result_id')
 
 def test_with_valid_query_and_hidden_fields():
-    '''Should return a response with a valid query and hiddenFields'''
+    '''Should return a response with a valid query and hidden_fields'''
 
     hidden_fields = ['hidden_field1', 'hidden_field2']
     autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
@@ -212,6 +212,34 @@ def test_with_valid_query_and_hidden_fields():
     assert isinstance(response.get('sections'), dict)
     assert isinstance(response.get('result_id'), str)
     assert response.get('request').get('fmt_options').get('hidden_fields') == hidden_fields
+
+def test_with_valid_query_and_variations_map():
+    '''Should return a response with a valid query and variations_map'''
+
+    variations_map = {
+        'group_by': [
+            {
+                'name': 'variation',
+                'field': 'data.variation_id',
+            },
+        ],
+        'values': {
+            'size': {
+                'aggregation': 'all',
+                'field': 'data.facets.size',
+                },
+            },
+        'dtype': 'array',
+    };
+    autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
+    response = autocomplete.get_autocomplete_results('jacket', { 'variations_map': variations_map })
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('sections'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert response.get('request').get('variations_map') == variations_map
+    assert response.get('sections').get('Products')[0].get('variations_map')[0].get('size') is not None
+    assert response.get('sections').get('Products')[0].get('variations_map')[0].get('variation') is not None
 
 def test_with_invalid_query():
     '''Should raise exception when invalid query is provided'''

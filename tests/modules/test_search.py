@@ -247,7 +247,7 @@ def test_with_valid_query_and_hidden_facets():
     hidden_facets = ['Brand', 'testFacet']
     search = ConstructorIO(VALID_OPTIONS).search
     response = search.get_search_results(
-        QUERY,
+        'Item1',
         { 'section': SECTION, 'hidden_facets': hidden_facets }
     )
 
@@ -255,7 +255,17 @@ def test_with_valid_query_and_hidden_facets():
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
     assert response.get('request').get('fmt_options').get('hidden_facets') == hidden_facets
-    assert response.get('response').get('facets')[0].get('name') == hidden_facets[0]
+    facets = response.get('response').get('facets')
+    brand_facet = None
+
+    try:
+        # Find the element in the list that has the name "Brand"
+        brand_facet = next(x for x in facets if x['name'] == hidden_facets[0])
+    except StopIteration:
+        # Element not found
+        pass
+
+    assert brand_facet != None
 
 def test_with_valid_query_and_redirect_rule():
     '''Should return a redirect rule with a valid query and section'''
@@ -269,6 +279,37 @@ def test_with_valid_query_and_redirect_rule():
     assert isinstance(response.get('result_id'), str)
     assert redirect_query in response.get('response').get('redirect').get('matched_terms')
     assert response.get('response').get('redirect').get('data').get('url') is not None
+
+def test_with_valid_query_and_variations_map():
+    '''Should return a response with a valid query, section, and variations_map'''
+
+    variations_map = {
+        'group_by': [
+            {
+                'name': 'variation',
+                'field': 'data.variation_id',
+            },
+        ],
+        'values': {
+            'size': {
+                'aggregation': 'all',
+                'field': 'data.facets.size',
+                },
+            },
+        'dtype': 'array',
+    };
+    search = ConstructorIO(VALID_OPTIONS).search
+    response = search.get_search_results(
+        'jacket',
+        { 'section': SECTION, 'variations_map': variations_map }
+    )
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert response.get('request').get('variations_map') == variations_map
+    assert response.get('response').get('results')[0].get('variations_map')[0].get('size') is not None
+    assert response.get('response').get('results')[0].get('variations_map')[0].get('variation') is not None
 
 def test_with_invalid_query():
     '''Should raise exception when invalid query is provided'''
