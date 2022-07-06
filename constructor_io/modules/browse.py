@@ -41,6 +41,7 @@ class Browse:
 
 
     def get_browse_results(self, filter_name, filter_value, parameters=None, user_parameters=None):
+        # pylint: disable=line-too-long
         '''
         Retrieve browse results from API
 
@@ -56,6 +57,7 @@ class Browse:
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param list parameters.hidden_fields: Hidden metadata fields to return
         :param list parameters.hidden_facets: Hidden facet fields to return
+        :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.io/rest_api/variations_mapping for details
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -67,6 +69,7 @@ class Browse:
 
         :return: dict
         '''
+        # pylint: enable=line-too-long
 
         if not filter_name or not isinstance(filter_name, str):
             raise ConstructorException('filter_name is a required parameter of type string')
@@ -114,6 +117,7 @@ class Browse:
 
 
     def get_browse_results_for_item_ids(self, item_ids, parameters=None, user_parameters=None):
+        # pylint: disable=line-too-long
         '''
         Retrieve browse results from API using item ID's
 
@@ -128,6 +132,7 @@ class Browse:
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param list parameters.hidden_fields: Hidden metadata fields to return
         :param list parameters.hidden_facets: Hidden facet fields to return
+        :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.io/rest_api/variations_mapping for details
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -139,6 +144,7 @@ class Browse:
 
         :return: dict
         '''
+        # pylint: enable=line-too-long
 
         if not item_ids or not isinstance(item_ids, list):
             raise ConstructorException('item_ids is a required parameter of type list')

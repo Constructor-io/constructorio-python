@@ -95,7 +95,7 @@ def test_get_task_with_invalid_api_key():
 
     with raises(
         HttpException,
-        match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.' # pylint: disable=line-too-long
+        match=r'You have supplied an invalid `key` or `autocomplete_key`. You can find your key at app.constructor.io/dashboard/accounts/api_integration.' # pylint: disable=line-too-long
     ):
         tasks = ConstructorIO({ 'api_key': 'invalidkey', 'api_token': TEST_API_TOKEN}).tasks
         tasks.get_task(1)

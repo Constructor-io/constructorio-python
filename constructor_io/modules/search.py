@@ -35,6 +35,7 @@ class Search:
         self.__options = options or {}
 
     def get_search_results(self, query, parameters=None, user_parameters=None):
+        # pylint: disable=line-too-long
         '''
         Retrieve search results from API
 
@@ -49,6 +50,7 @@ class Search:
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param list parameters.hidden_fields: Hidden metadata fields to return
         :param list parameters.hidden_facets: Hidden facet fields to return
+        :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.io/rest_api/variations_mapping for details
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -60,6 +62,7 @@ class Search:
 
         :return: dict
         '''
+        # pylint: enable=line-too-long
 
         if not parameters:
             parameters = {}

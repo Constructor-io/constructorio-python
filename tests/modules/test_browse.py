@@ -327,6 +327,38 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_hidden_facet
     assert response.get('request').get('fmt_options').get('hidden_facets') == hidden_facets
     assert response.get('response').get('facets')[0].get('name') == hidden_facets[0]
 
+def test_get_browse_results_with_valid_filter_name_filter_value_and_variations_map():
+    '''Should return a response with a valid filter_name, filter_value, section, and variations_map''' # pylint: disable=line-too-long
+
+    variations_map = {
+        'group_by': [
+            {
+                'name': 'variation',
+                'field': 'data.variation_id',
+            },
+        ],
+        'values': {
+            'size': {
+                'aggregation': 'all',
+                'field': 'data.facets.size',
+                },
+            },
+        'dtype': 'array',
+    }
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results(
+        'Brand',
+        'XYZ',
+        {'section': SECTION, 'variations_map': variations_map}
+    )
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert response.get('request').get('variations_map') == variations_map
+    assert response.get('response').get('results')[0].get('variations_map')[0].get('size') is not None
+    assert response.get('response').get('results')[0].get('variations_map')[0].get('variation') is not None
+
 def test_get_browse_results_with_invalid_filter_name():
     '''Should raise exception when invalid filter_name is provided'''
 
@@ -1012,7 +1044,39 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_hidden_facets()
         # Element not found
         pass
 
-    assert brand_facet != None
+    assert brand_facet is not None
+
+def test_get_browse_results_for_item_ids_with_valid_item_ids_and_variations_map():
+    '''Should return a response with a valid ids, section, and variations_map''' # pylint: disable=line-too-long
+
+    variations_map = {
+        'group_by': [
+            {
+                'name': 'variation',
+                'field': 'data.variation_id',
+            },
+        ],
+        'values': {
+            'size': {
+                'aggregation': 'all',
+                'field': 'data.facets.size',
+                },
+            },
+        'dtype': 'array',
+    }
+    browse = ConstructorIO(VALID_OPTIONS).browse
+    response = browse.get_browse_results_for_item_ids(
+        IDS,
+        {'section': SECTION, 'variations_map': variations_map}
+    )
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert isinstance(response.get('response').get('results'), list)
+    assert response.get('request').get('variations_map') == variations_map
+    assert response.get('response').get('results')[0].get('variations_map')[0].get('size') is not None
+    assert response.get('response').get('results')[0].get('variations_map')[0].get('variation') is not None
 
 def test_get_browse_results_for_item_ids_with_invalid_item_ids():
     '''Should raise exception when invalid item_ids is provided'''
