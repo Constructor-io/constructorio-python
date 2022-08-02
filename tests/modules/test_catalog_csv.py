@@ -1,5 +1,5 @@
 
-'''ConstructorIO Python Client - Catalog Tests'''
+'''ConstructorIO Python Client - CSV Catalog Tests'''
 
 from os import environ
 from time import sleep
