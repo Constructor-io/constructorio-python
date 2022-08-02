@@ -44,6 +44,28 @@ def _create_query_params_and_file_data(parameters):
 
     return query_params, file_data
 
+def _create_query_params_for_items(parameters):
+    # TODO: Add c param
+    '''Create query params for items API (includes variations)'''
+
+    query_params = {}
+
+    if parameters:
+        section = parameters.get('section')
+        notification_email = parameters.get('notification_email')
+        force = parameters.get('force')
+
+        if section:
+            query_params['section'] = section
+
+        if notification_email:
+            query_params['notification_email'] = notification_email
+
+        if force:
+            query_params['force'] = force
+
+    return query_params
+
 def _create_catalog_url(path, options, additional_query_params):
     '''Create catalog API url'''
 
@@ -58,6 +80,21 @@ def _create_catalog_url(path, options, additional_query_params):
     query_string = urlencode(query_params, doseq=True)
 
     return f'{options.get("service_url")}/v1/{quote(path)}?{query_string}'
+
+def _create_items_url(path, options, additional_query_params):
+    '''Create items API url'''
+
+    api_key = options.get('api_key')
+    query_params = {**additional_query_params}
+
+    if not path or not isinstance(path, str):
+        raise ConstructorException('path is a required parameter of type string')
+
+    query_params['key'] = api_key
+    query_params = clean_params(query_params)
+    query_string = urlencode(query_params, doseq=True)
+
+    return f'{options.get("service_url")}/v2/{quote(path)}?{query_string}'
 
 
 class Catalog:
@@ -153,6 +190,132 @@ class Catalog:
             auth=create_auth_header(self.__options),
             headers=create_request_headers(self.__options),
             files=file_data
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def add_or_update_items(self, parameters=None):
+        '''
+        Add multiple items to index whilst updating existing ones (limit of 1,000)
+
+        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing items
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('items', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.put(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'items': parameters.get('items') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def modify_items(self, parameters=None):
+        '''
+        Modify multiple items in the index (limit of 1,000)
+
+        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing items
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('items', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.patch(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'items': parameters.get('items') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def remove_items(self, parameters=None):
+        '''
+        Remove multiple items from the index (limit of 1,000)
+
+        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema (only IDs are required)
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing items
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('items', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+        items = list(map(lambda x: { 'id': x.get('id') }, parameters.get('items')))
+
+        print(items)
+        response = requests.delete(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'items': items }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def get_items(self, parameters=None):
+        '''
+        Retrieves multiple items from the index (limit of 1,000)
+
+        :param list parameters.ids: A list of item IDs to retrieve
+        :param str parameters.section: The section to update
+        :param int parameters.num_results_per_page: The number of items to return. Defaults to 100. Maximum value 100
+        :param int parameters.page: The page of results to return. Defaults to 1
+        '''
+
+        if not parameters:
+            parameters = {}
+
+        query_params = _create_query_params_for_items(parameters)
+
+        num_results_per_page = query_params.get('num_results_per_page')
+        page = query_params.get('page')
+
+        if num_results_per_page:
+            query_params['num_results_per_page'] = num_results_per_page
+
+        if page:
+            query_params['page'] = page
+
+        request_url = _create_items_url('items', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
         )
 
         if not response.ok:
