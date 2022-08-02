@@ -26,6 +26,11 @@ task_id = catalogResponse.get('task_id')
 def test_get_all_tasks_with_no_params():
     '''Should return a response with a valid total_count, tasks, status_counts'''
 
+    catalogResponse = catalog.replace_catalog({
+        'items': ITEMS,
+        'section': 'Products'
+    })
+    task_id_no_params_test = catalogResponse.get('task_id')
     tasks = ConstructorIO(VALID_OPTIONS).tasks
     response = tasks.get_all_tasks()
 
@@ -34,9 +39,9 @@ def test_get_all_tasks_with_no_params():
     assert isinstance(response.get('total_count'), int)
     assert len(response.get('tasks')) <= 20 and len(response.get('tasks')) >= 1
 
-    task = next(filter(lambda task: task.get('id') == task_id, response.get('tasks')), None)
+    task = next(filter(lambda task: task.get('id') == task_id_no_params_test, response.get('tasks')), None)
     assert isinstance(task, dict)
-    assert task.get('id') == task_id
+    assert task.get('id') == task_id_no_params_test
 
 def test_get_all_tasks_with_params():
     '''Should return a response with a valid total_count, tasks, status_counts'''

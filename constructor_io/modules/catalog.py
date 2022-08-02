@@ -270,7 +270,6 @@ class Catalog:
         requests = self.__options.get('requests') or r
         items = list(map(lambda x: { 'id': x.get('id') }, parameters.get('items')))
 
-        print(items)
         response = requests.delete(
             request_url,
             auth=create_auth_header(self.__options),
@@ -310,6 +309,131 @@ class Catalog:
             query_params['page'] = page
 
         request_url = _create_items_url('items', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def add_or_update_variations(self, parameters=None):
+        '''
+        Add multiple variations to index whilst updating existing ones (limit of 1,000)
+
+        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing variations
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('variations', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.put(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'variations': parameters.get('variations') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def modify_variations(self, parameters=None):
+        '''
+        Modify multiple variations in the index (limit of 1,000)
+
+        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing variations
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('variations', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.patch(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'variations': parameters.get('variations') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def remove_variations(self, parameters=None):
+        '''
+        Remove multiple variations from the index (limit of 1,000)
+
+        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema (only IDs are required)
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing variations
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('variations', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+        variations = list(map(lambda x: { 'id': x.get('id') }, parameters.get('variations')))
+
+        response = requests.delete(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'variations': variations }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def get_variations(self, parameters=None):
+        '''
+        Retrieves multiple variations from the index (limit of 1,000)
+
+        :param list parameters.ids: A list of item IDs to retrieve
+        :param str parameters.section: The section to update
+        :param int parameters.num_results_per_page: The number of variations to return. Defaults to 100. Maximum value 100
+        :param int parameters.page: The page of results to return. Defaults to 1
+        '''
+
+        if not parameters:
+            parameters = {}
+
+        query_params = _create_query_params_for_items(parameters)
+
+        num_results_per_page = query_params.get('num_results_per_page')
+        page = query_params.get('page')
+
+        if num_results_per_page:
+            query_params['num_results_per_page'] = num_results_per_page
+
+        if page:
+            query_params['page'] = page
+
+        request_url = _create_items_url('variations', self.__options, query_params)
         requests = self.__options.get('requests') or r
 
         response = requests.get(
