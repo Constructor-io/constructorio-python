@@ -63,6 +63,17 @@ def test_with_add_or_update_items_using_all_parameters():
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
+def test_with_add_or_update_items_no_items():
+    '''Should raise an HTTP error'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+
+    with raises(
+        HttpException,
+        match=r'items must be a list'
+    ):
+        catalog.add_or_update_items({})
+
 def test_with_modify_items():
     '''Should modify items'''
 
@@ -115,6 +126,17 @@ def test_with_modify_items_using_all_parameters():
 
     assert isinstance(response_new.get('task_id'), int)
     assert isinstance(response_new.get('task_status_path'), str)
+
+def test_with_modify_items_no_items():
+    '''Should raise an HTTP error'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+
+    with raises(
+        HttpException,
+        match=r'items must be a list'
+    ):
+        catalog.modify_items({})
 
 def test_with_remove_items():
     '''Should remove items'''
@@ -253,6 +275,17 @@ def test_with_add_or_update_variations_using_all_parameters():
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
+def test_with_add_or_update_variations_no_variations():
+    '''Should raise an HTTP error'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+
+    with raises(
+        HttpException,
+        match=r'variations must be a list'
+    ):
+        catalog.add_or_update_variations({})
+
 def test_with_modify_variations():
     '''Should modify variations'''
 
@@ -331,6 +364,17 @@ def test_with_modify_variations_using_all_parameters():
 
     assert isinstance(response_new.get('task_id'), int)
     assert isinstance(response_new.get('task_status_path'), str)
+
+def test_with_modify_variations_no_variations():
+    '''Should raise an HTTP error'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+
+    with raises(
+        HttpException,
+        match=r'variations must be a list'
+    ):
+        catalog.modify_variations({})
 
 def test_with_remove_variations():
     '''Should remove variations'''

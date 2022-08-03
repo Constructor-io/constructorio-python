@@ -266,13 +266,14 @@ class Catalog:
         query_params = _create_query_params_for_items(parameters)
         request_url = _create_items_url('items', self.__options, query_params)
         requests = self.__options.get('requests') or r
-        items = list(map(lambda x: { 'id': x.get('id') }, parameters.get('items')))
+        items = parameters.get('items') or []
+        items_with_only_ids = list(map(lambda x: { 'id': x.get('id') }, items))
 
         response = requests.delete(
             request_url,
             auth=create_auth_header(self.__options),
             headers=create_request_headers(self.__options),
-            json={ 'items': items }
+            json={ 'items': items_with_only_ids }
         )
 
         if not response.ok:
@@ -391,13 +392,14 @@ class Catalog:
         query_params = _create_query_params_for_items(parameters)
         request_url = _create_items_url('variations', self.__options, query_params)
         requests = self.__options.get('requests') or r
-        variations = list(map(lambda x: { 'id': x.get('id') }, parameters.get('variations')))
+        variations = parameters.get('variations') or []
+        variations_with_only_ids = list(map(lambda x: { 'id': x.get('id') }, variations))
 
         response = requests.delete(
             request_url,
             auth=create_auth_header(self.__options),
             headers=create_request_headers(self.__options),
-            json={ 'variations': variations }
+            json={ 'variations': variations_with_only_ids }
         )
 
         if not response.ok:
