@@ -105,7 +105,6 @@ class Catalog:
         self.__options = options or {}
 
     def replace_catalog(self, parameters=None):
-        #pylint: disable=line-too-long
         '''
         Send full catalog files to replace the current catalog
 
@@ -137,7 +136,6 @@ class Catalog:
         return json
 
     def update_catalog(self, parameters=None):
-        #pylint: disable=line-too-long
         '''
         Send full catalog files to update the current catalog
 
@@ -169,7 +167,6 @@ class Catalog:
         return json
 
     def patch_catalog(self, parameters=None):
-        #pylint: disable=line-too-long
         '''
         Send full catalog files to update the current catalog
 

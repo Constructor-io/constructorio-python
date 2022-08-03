@@ -35,7 +35,6 @@ class Search:
         self.__options = options or {}
 
     def get_search_results(self, query, parameters=None, user_parameters=None):
-        # pylint: disable=line-too-long
         '''
         Retrieve search results from API
 
@@ -62,7 +61,6 @@ class Search:
 
         :return: dict
         '''
-        # pylint: enable=line-too-long
 
         if not parameters:
             parameters = {}
