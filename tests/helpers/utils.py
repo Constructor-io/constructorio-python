@@ -1,7 +1,10 @@
+'''Test Utils'''
+
 import uuid
 
 
 def create_mock_item():
+    '''Creates a mock item to be used in Items API tests'''
     item_id = str(uuid.uuid1())
     name = 'Product ' + item_id
     url = 'https://constructor.io/products/' + item_id
@@ -25,6 +28,7 @@ def create_mock_item():
     return item
 
 def create_mock_variation(item_id=None):
+    '''Creates a mock variation to be used in Items API tests'''
     variation_id = str(uuid.uuid1())
     name = 'Variation ' + variation_id
     url = 'https://constructor.io/products/' + variation_id

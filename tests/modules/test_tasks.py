@@ -17,20 +17,20 @@ ITEMS = requests.get(f'{CATALOG_EXAMPLES_BASE_URL}items.csv').content
 
 #make a replace catalog request and get task_id to use in tests
 catalog = ConstructorIO(VALID_OPTIONS).catalog
-catalogResponse = catalog.replace_catalog({
+catalog_response = catalog.replace_catalog({
     'items': ITEMS,
     'section': 'Products'
 })
-task_id = catalogResponse.get('task_id')
+task_id = catalog_response.get('task_id')
 
 def test_get_all_tasks_with_no_params():
     '''Should return a response with a valid total_count, tasks, status_counts'''
 
-    catalogResponse = catalog.replace_catalog({
+    catalog_response_no_params_test = catalog.replace_catalog({
         'items': ITEMS,
         'section': 'Products'
     })
-    task_id_no_params_test = catalogResponse.get('task_id')
+    task_id_no_params_test = catalog_response_no_params_test.get('task_id')
     tasks = ConstructorIO(VALID_OPTIONS).tasks
     response = tasks.get_all_tasks()
 

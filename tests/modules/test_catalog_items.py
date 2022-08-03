@@ -4,7 +4,6 @@ from os import environ
 from time import sleep
 
 import pytest
-import requests
 from pytest import raises
 
 from constructor_io.constructor_io import ConstructorIO
@@ -74,7 +73,7 @@ def test_with_modify_items():
         'items': items_old,
     }
 
-    response_old = catalog.add_or_update_items(parameters_old)
+    catalog.add_or_update_items(parameters_old)
 
     item_new = item_old
     item_new['name'] = 'Updated Item Name'
@@ -99,7 +98,7 @@ def test_with_modify_items_using_all_parameters():
         'items': items_old,
     }
 
-    response_old = catalog.add_or_update_items(parameters_old)
+    catalog.add_or_update_items(parameters_old)
 
     item_new = item_old
     item_new['name'] = 'Updated Item Name'
@@ -135,7 +134,7 @@ def test_with_remove_items():
 
     # Remove duplicates from items list
     unique_items = []
-    [unique_items.append(x) for x in items if x not in unique_items]
+    [unique_items.append(x) for x in items if x not in unique_items] # pylint: disable=expression-not-assigned
 
     parameters = {
         'items': unique_items,
@@ -205,7 +204,7 @@ def test_with_get_items_using_all_parameters():
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.get_items({ 
+    response = catalog.get_items({
         'section': 'Products',
         'num_results_per_page': 2,
         'page': 2,
@@ -264,7 +263,7 @@ def test_with_modify_variations():
         'variations': variations_old,
     }
 
-    response_old = catalog.add_or_update_variations(parameters_old)
+    catalog.add_or_update_variations(parameters_old)
 
     variation_new = variation_old
     variation_new['name'] = 'Updated variation Name'
@@ -289,7 +288,7 @@ def test_with_modify_variations_without_item_id():
         'variations': variations_old,
     }
 
-    response_old = catalog.add_or_update_variations(parameters_old)
+    catalog.add_or_update_variations(parameters_old)
 
     variation_new = variation_old
     variation_new['name'] = 'Updated variation Name'
@@ -315,7 +314,7 @@ def test_with_modify_variations_using_all_parameters():
         'variations': variations_old,
     }
 
-    response_old = catalog.add_or_update_variations(parameters_old)
+    catalog.add_or_update_variations(parameters_old)
 
     variation_new = variation_old
     variation_new['name'] = 'Updated variation Name'
@@ -350,7 +349,7 @@ def test_with_remove_variations():
 
     # Remove duplicates from the variations list
     unique_variations = []
-    [unique_variations.append(x) for x in variations if x not in unique_variations]
+    [unique_variations.append(x) for x in variations if x not in unique_variations] # pylint: disable=expression-not-assigned
 
     parameters = {
         'variations': unique_variations,
@@ -420,7 +419,7 @@ def test_with_get_variations_using_all_parameters():
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.get_variations({ 
+    response = catalog.get_variations({
         'section': 'Products',
         'num_results_per_page': 2,
         'page': 2,
