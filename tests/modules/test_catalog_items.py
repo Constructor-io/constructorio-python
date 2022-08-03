@@ -17,7 +17,6 @@ VALID_OPTIONS = { 'api_key': TEST_API_KEY, 'api_token': TEST_API_TOKEN }
 SECTION = 'Products'
 items_to_clean_up = []
 variations_to_clean_up = []
-# TODO: Formatting
 
 @pytest.fixture(autouse=True)
 def slow_down_tests():
@@ -29,11 +28,11 @@ def slow_down_tests():
 def test_with_add_or_update_items():
     '''Should add or update items'''
 
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
     items = [
         create_mock_item(),
         create_mock_item(),
     ]
-    catalog = ConstructorIO(VALID_OPTIONS).catalog
     parameters = {
         'items': items,
     }
@@ -47,11 +46,11 @@ def test_with_add_or_update_items():
 def test_with_add_or_update_items_using_all_parameters():
     '''Should add or update items using all parameters'''
 
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
     items = [
         create_mock_item(),
         create_mock_item(),
     ]
-    catalog = ConstructorIO(VALID_OPTIONS).catalog
     parameters = {
         'items': items,
         'section': 'Products',
@@ -69,7 +68,6 @@ def test_with_modify_items():
     '''Should modify items'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
-
     item_old = create_mock_item()
     items_old = [ item_old ]
     parameters_old = {
@@ -95,7 +93,6 @@ def test_with_modify_items_using_all_parameters():
     '''Should modify items using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
-
     item_old = create_mock_item()
     items_old = [ item_old ]
     parameters_old = {
@@ -124,7 +121,6 @@ def test_with_remove_items():
     '''Should remove items'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
-
     items = [
         create_mock_item(),
         create_mock_item(),
@@ -136,6 +132,8 @@ def test_with_remove_items():
     catalog.add_or_update_items(parameters_for_add)
 
     items.extend(items_to_clean_up)
+
+    # Remove duplicates from items list
     unique_items = []
     [unique_items.append(x) for x in items if x not in unique_items]
 
@@ -152,12 +150,10 @@ def test_with_remove_items_using_all_parameters():
     '''Should remove items using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
-
     items = [
         create_mock_item(),
         create_mock_item(),
     ]
-
     parameters = {
         'items': items,
         'section': 'Products',
@@ -166,7 +162,6 @@ def test_with_remove_items_using_all_parameters():
     }
 
     catalog.add_or_update_items(parameters)
-
     response = catalog.remove_items(parameters)
 
     assert isinstance(response.get('task_id'), int)
@@ -223,11 +218,11 @@ def test_with_get_items_using_all_parameters():
 def test_with_add_or_update_variations():
     '''Should add or update variations'''
 
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
     variations = [
         create_mock_variation('random-id'),
         create_mock_variation('random-id'),
     ]
-    catalog = ConstructorIO(VALID_OPTIONS).catalog
     parameters = {
         'variations': variations,
     }
@@ -241,11 +236,11 @@ def test_with_add_or_update_variations():
 def test_with_add_or_update_variations_using_all_parameters():
     '''Should add or update variations using all parameters'''
 
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
     variations = [
         create_mock_variation('random-id'),
         create_mock_variation('random-id'),
     ]
-    catalog = ConstructorIO(VALID_OPTIONS).catalog
     parameters = {
         'variations': variations,
         'section': 'Products',
@@ -263,7 +258,6 @@ def test_with_modify_variations():
     '''Should modify variations'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
-
     variation_old = create_mock_variation('random-id')
     variations_old = [ variation_old ]
     parameters_old = {
@@ -289,7 +283,6 @@ def test_with_modify_variations_without_item_id():
     '''Should modify variations'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
-
     variation_old = create_mock_variation('random-id')
     variations_old = [ variation_old ]
     parameters_old = {
@@ -316,7 +309,6 @@ def test_with_modify_variations_using_all_parameters():
     '''Should modify variations using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
-
     variation_old = create_mock_variation('random-id')
     variations_old = [ variation_old ]
     parameters_old = {
@@ -345,7 +337,6 @@ def test_with_remove_variations():
     '''Should remove variations'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
-
     variations = [
         create_mock_variation('random-id'),
         create_mock_variation('random-id'),
@@ -355,16 +346,16 @@ def test_with_remove_variations():
     }
 
     catalog.add_or_update_variations(parameters_for_add)
-
     variations.extend(variations_to_clean_up)
 
+    # Remove duplicates from the variations list
     unique_variations = []
     [unique_variations.append(x) for x in variations if x not in unique_variations]
-
 
     parameters = {
         'variations': unique_variations,
     }
+
     response = catalog.remove_variations(parameters)
 
     assert isinstance(response.get('task_id'), int)
@@ -374,12 +365,10 @@ def test_with_remove_variations_using_all_parameters():
     '''Should remove variations using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
-
     variations = [
         create_mock_variation('random-id'),
         create_mock_variation('random-id'),
     ]
-
     parameters = {
         'variations': variations,
         'section': 'Products',
@@ -388,7 +377,6 @@ def test_with_remove_variations_using_all_parameters():
     }
 
     catalog.add_or_update_variations(parameters)
-
     response = catalog.remove_variations(parameters)
 
     assert isinstance(response.get('task_id'), int)

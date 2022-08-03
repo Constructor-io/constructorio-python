@@ -45,7 +45,6 @@ def _create_query_params_and_file_data(parameters):
     return query_params, file_data
 
 def _create_query_params_for_items(parameters):
-    # TODO: Add c param
     '''Create query params for items API (includes variations)'''
 
     query_params = {}
@@ -85,12 +84,14 @@ def _create_items_url(path, options, additional_query_params):
     '''Create items API url'''
 
     api_key = options.get('api_key')
+    version = options.get('version')
     query_params = {**additional_query_params}
 
     if not path or not isinstance(path, str):
         raise ConstructorException('path is a required parameter of type string')
 
     query_params['key'] = api_key
+    query_params['c'] = version
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
