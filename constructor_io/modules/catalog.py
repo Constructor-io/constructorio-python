@@ -197,9 +197,9 @@ class Catalog:
 
         return json
 
-    def add_or_update_items(self, parameters=None):
+    def create_or_replace_items(self, parameters=None):
         '''
-        Add multiple items to index whilst updating existing ones (limit of 1,000)
+        Add multiple items to index whilst replacing existing ones (limit of 1,000)
 
         :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema
         :param str parameters.section: The section to update
@@ -225,9 +225,9 @@ class Catalog:
 
         return json
 
-    def modify_items(self, parameters=None):
+    def update_items(self, parameters=None):
         '''
-        Modify multiple items in the index (limit of 1,000)
+        Update multiple items in the index (limit of 1,000)
 
         :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema
         :param str parameters.section: The section to update
@@ -253,9 +253,9 @@ class Catalog:
 
         return json
 
-    def remove_items(self, parameters=None):
+    def delete_items(self, parameters=None):
         '''
-        Remove multiple items from the index (limit of 1,000)
+        Delete multiple items from the index (limit of 1,000)
 
         :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema (only IDs are required)
         :param str parameters.section: The section to update
@@ -283,7 +283,7 @@ class Catalog:
 
         return json
 
-    def get_items(self, parameters=None):
+    def retrieve_items(self, parameters=None):
         '''
         Retrieves multiple items from the index (limit of 1,000)
 
@@ -323,9 +323,9 @@ class Catalog:
 
         return json
 
-    def add_or_update_variations(self, parameters=None):
+    def create_or_replace_variations(self, parameters=None):
         '''
-        Add multiple variations to index whilst updating existing ones (limit of 1,000)
+        Add multiple variations to index whilst replacing existing ones (limit of 1,000)
 
         :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema
         :param str parameters.section: The section to update
@@ -351,9 +351,9 @@ class Catalog:
 
         return json
 
-    def modify_variations(self, parameters=None):
+    def update_variations(self, parameters=None):
         '''
-        Modify multiple variations in the index (limit of 1,000)
+        Update multiple variations in the index (limit of 1,000)
 
         :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema
         :param str parameters.section: The section to update
@@ -379,9 +379,9 @@ class Catalog:
 
         return json
 
-    def remove_variations(self, parameters=None):
+    def delete_variations(self, parameters=None):
         '''
-        Remove multiple variations from the index (limit of 1,000)
+        Delete multiple variations from the index (limit of 1,000)
 
         :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema (only IDs are required)
         :param str parameters.section: The section to update
@@ -409,7 +409,7 @@ class Catalog:
 
         return json
 
-    def get_variations(self, parameters=None):
+    def retrieve_variations(self, parameters=None):
         '''
         Retrieves multiple variations from the index (limit of 1,000)
 

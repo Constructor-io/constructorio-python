@@ -24,8 +24,8 @@ def slow_down_tests():
     yield
     sleep(1)
 
-def test_with_add_or_update_items():
-    '''Should add or update items'''
+def test_with_create_or_replace_items():
+    '''Should create or replace items'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     items = [
@@ -36,14 +36,14 @@ def test_with_add_or_update_items():
         'items': items,
     }
 
-    response = catalog.add_or_update_items(parameters)
+    response = catalog.create_or_replace_items(parameters)
     items_to_clean_up.extend(items)
 
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
-def test_with_add_or_update_items_using_all_parameters():
-    '''Should add or update items using all parameters'''
+def test_with_create_or_replace_items_using_all_parameters():
+    '''Should create or replace items using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     items = [
@@ -57,13 +57,13 @@ def test_with_add_or_update_items_using_all_parameters():
         'force': True,
     }
 
-    response = catalog.add_or_update_items(parameters)
+    response = catalog.create_or_replace_items(parameters)
     items_to_clean_up.extend(items)
 
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
-def test_with_add_or_update_items_no_items():
+def test_with_create_or_replace_items_no_items():
     '''Should raise an HTTP error'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
@@ -72,10 +72,10 @@ def test_with_add_or_update_items_no_items():
         HttpException,
         match=r'items must be a list'
     ):
-        catalog.add_or_update_items({})
+        catalog.create_or_replace_items({})
 
-def test_with_modify_items():
-    '''Should modify items'''
+def test_with_update_items():
+    '''Should update items'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     item_old = create_mock_item()
@@ -84,7 +84,7 @@ def test_with_modify_items():
         'items': items_old,
     }
 
-    catalog.add_or_update_items(parameters_old)
+    catalog.create_or_replace_items(parameters_old)
 
     item_new = item_old
     item_new['name'] = 'Updated Item Name'
@@ -93,14 +93,14 @@ def test_with_modify_items():
         'items': items_new,
     }
 
-    response_new = catalog.modify_items(parameters_new)
+    response_new = catalog.update_items(parameters_new)
     items_to_clean_up.extend(items_new)
 
     assert isinstance(response_new.get('task_id'), int)
     assert isinstance(response_new.get('task_status_path'), str)
 
-def test_with_modify_items_using_all_parameters():
-    '''Should modify items using all parameters'''
+def test_with_update_items_using_all_parameters():
+    '''Should update items using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     item_old = create_mock_item()
@@ -109,7 +109,7 @@ def test_with_modify_items_using_all_parameters():
         'items': items_old,
     }
 
-    catalog.add_or_update_items(parameters_old)
+    catalog.create_or_replace_items(parameters_old)
 
     item_new = item_old
     item_new['name'] = 'Updated Item Name'
@@ -121,13 +121,13 @@ def test_with_modify_items_using_all_parameters():
         'force': True,
     }
 
-    response_new = catalog.modify_items(parameters_new)
+    response_new = catalog.update_items(parameters_new)
     items_to_clean_up.extend(items_new)
 
     assert isinstance(response_new.get('task_id'), int)
     assert isinstance(response_new.get('task_status_path'), str)
 
-def test_with_modify_items_no_items():
+def test_with_update_items_no_items():
     '''Should raise an HTTP error'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
@@ -136,10 +136,10 @@ def test_with_modify_items_no_items():
         HttpException,
         match=r'items must be a list'
     ):
-        catalog.modify_items({})
+        catalog.update_items({})
 
-def test_with_remove_items():
-    '''Should remove items'''
+def test_with_delete_items():
+    '''Should delete items'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     items = [
@@ -150,7 +150,7 @@ def test_with_remove_items():
         'items': items,
     }
 
-    catalog.add_or_update_items(parameters_for_add)
+    catalog.create_or_replace_items(parameters_for_add)
 
     items.extend(items_to_clean_up)
 
@@ -162,13 +162,13 @@ def test_with_remove_items():
         'items': unique_items,
     }
 
-    response = catalog.remove_items(parameters)
+    response = catalog.delete_items(parameters)
 
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
-def test_with_remove_items_using_all_parameters():
-    '''Should remove items using all parameters'''
+def test_with_delete_items_using_all_parameters():
+    '''Should delete items using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     items = [
@@ -182,51 +182,51 @@ def test_with_remove_items_using_all_parameters():
         'force': True,
     }
 
-    catalog.add_or_update_items(parameters)
-    response = catalog.remove_items(parameters)
+    catalog.create_or_replace_items(parameters)
+    response = catalog.delete_items(parameters)
 
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
-def test_with_get_items():
-    '''Should get items'''
+def test_with_retrieve_items():
+    '''Should retrieve items'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.get_items()
+    response = catalog.retrieve_items()
 
     assert isinstance(response.get('items'), list)
     assert isinstance(response.get('total_count'), int)
     assert response.get('total_count') >= 1
 
-def test_with_get_items_using_single_id():
-    '''Should get items using single id'''
+def test_with_retrieve_items_using_single_id():
+    '''Should retrieve items using single id'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.get_items({ 'ids': ['10001'] })
+    response = catalog.retrieve_items({ 'ids': ['10001'] })
 
     assert isinstance(response.get('items'), list)
     assert isinstance(response.get('total_count'), int)
     assert response.get('total_count') >= 1
 
-def test_with_get_items_using_multiple_ids():
-    '''Should get items using multiple ids'''
+def test_with_retrieve_items_using_multiple_ids():
+    '''Should retrieve items using multiple ids'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.get_items({ 'ids': ['10001', '10002'] })
+    response = catalog.retrieve_items({ 'ids': ['10001', '10002'] })
 
     assert isinstance(response.get('items'), list)
     assert isinstance(response.get('total_count'), int)
     assert response.get('total_count') >= 1
 
-def test_with_get_items_using_all_parameters():
-    '''Should get items using all parameters'''
+def test_with_retrieve_items_using_all_parameters():
+    '''Should retrieve items using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.get_items({
+    response = catalog.retrieve_items({
         'section': 'Products',
         'num_results_per_page': 2,
         'page': 2,
@@ -236,8 +236,8 @@ def test_with_get_items_using_all_parameters():
     assert isinstance(response.get('total_count'), int)
     assert response.get('total_count') >= 1
 
-def test_with_add_or_update_variations():
-    '''Should add or update variations'''
+def test_with_create_or_replace_variations():
+    '''Should create or replace variations'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     variations = [
@@ -248,14 +248,14 @@ def test_with_add_or_update_variations():
         'variations': variations,
     }
 
-    response = catalog.add_or_update_variations(parameters)
+    response = catalog.create_or_replace_variations(parameters)
     variations_to_clean_up.extend(variations)
 
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
-def test_with_add_or_update_variations_using_all_parameters():
-    '''Should add or update variations using all parameters'''
+def test_with_create_or_replace_variations_using_all_parameters():
+    '''Should create or replace variations using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     variations = [
@@ -269,13 +269,13 @@ def test_with_add_or_update_variations_using_all_parameters():
         'force': True,
     }
 
-    response = catalog.add_or_update_variations(parameters)
+    response = catalog.create_or_replace_variations(parameters)
     variations_to_clean_up.extend(variations)
 
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
-def test_with_add_or_update_variations_no_variations():
+def test_with_create_or_replace_variations_no_variations():
     '''Should raise an HTTP error'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
@@ -284,10 +284,10 @@ def test_with_add_or_update_variations_no_variations():
         HttpException,
         match=r'variations must be a list'
     ):
-        catalog.add_or_update_variations({})
+        catalog.create_or_replace_variations({})
 
-def test_with_modify_variations():
-    '''Should modify variations'''
+def test_with_update_variations():
+    '''Should update variations'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     variation_old = create_mock_variation('random-id')
@@ -296,7 +296,7 @@ def test_with_modify_variations():
         'variations': variations_old,
     }
 
-    catalog.add_or_update_variations(parameters_old)
+    catalog.create_or_replace_variations(parameters_old)
 
     variation_new = variation_old
     variation_new['name'] = 'Updated variation Name'
@@ -305,14 +305,14 @@ def test_with_modify_variations():
         'variations': variations_new,
     }
 
-    response_new = catalog.modify_variations(parameters_new)
+    response_new = catalog.update_variations(parameters_new)
     variations_to_clean_up.extend(variations_new)
 
     assert isinstance(response_new.get('task_id'), int)
     assert isinstance(response_new.get('task_status_path'), str)
 
-def test_with_modify_variations_without_item_id():
-    '''Should modify variations'''
+def test_with_update_variations_without_item_id():
+    '''Should update variations'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     variation_old = create_mock_variation('random-id')
@@ -321,7 +321,7 @@ def test_with_modify_variations_without_item_id():
         'variations': variations_old,
     }
 
-    catalog.add_or_update_variations(parameters_old)
+    catalog.create_or_replace_variations(parameters_old)
 
     variation_new = variation_old
     variation_new['name'] = 'Updated variation Name'
@@ -331,14 +331,14 @@ def test_with_modify_variations_without_item_id():
         'variations': variations_new,
     }
 
-    response_new = catalog.modify_variations(parameters_new)
+    response_new = catalog.update_variations(parameters_new)
     variations_to_clean_up.extend(variations_new)
 
     assert isinstance(response_new.get('task_id'), int)
     assert isinstance(response_new.get('task_status_path'), str)
 
-def test_with_modify_variations_using_all_parameters():
-    '''Should modify variations using all parameters'''
+def test_with_update_variations_using_all_parameters():
+    '''Should update variations using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     variation_old = create_mock_variation('random-id')
@@ -347,7 +347,7 @@ def test_with_modify_variations_using_all_parameters():
         'variations': variations_old,
     }
 
-    catalog.add_or_update_variations(parameters_old)
+    catalog.create_or_replace_variations(parameters_old)
 
     variation_new = variation_old
     variation_new['name'] = 'Updated variation Name'
@@ -359,13 +359,13 @@ def test_with_modify_variations_using_all_parameters():
         'force': True,
     }
 
-    response_new = catalog.modify_variations(parameters_new)
+    response_new = catalog.update_variations(parameters_new)
     variations_to_clean_up.extend(variations_new)
 
     assert isinstance(response_new.get('task_id'), int)
     assert isinstance(response_new.get('task_status_path'), str)
 
-def test_with_modify_variations_no_variations():
+def test_with_update_variations_no_variations():
     '''Should raise an HTTP error'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
@@ -374,10 +374,10 @@ def test_with_modify_variations_no_variations():
         HttpException,
         match=r'variations must be a list'
     ):
-        catalog.modify_variations({})
+        catalog.update_variations({})
 
-def test_with_remove_variations():
-    '''Should remove variations'''
+def test_with_delete_variations():
+    '''Should delete variations'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     variations = [
@@ -388,7 +388,7 @@ def test_with_remove_variations():
         'variations': variations,
     }
 
-    catalog.add_or_update_variations(parameters_for_add)
+    catalog.create_or_replace_variations(parameters_for_add)
     variations.extend(variations_to_clean_up)
 
     # Remove duplicates from the variations list
@@ -399,13 +399,13 @@ def test_with_remove_variations():
         'variations': unique_variations,
     }
 
-    response = catalog.remove_variations(parameters)
+    response = catalog.delete_variations(parameters)
 
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
-def test_with_remove_variations_using_all_parameters():
-    '''Should remove variations using all parameters'''
+def test_with_delete_variations_using_all_parameters():
+    '''Should delete variations using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
     variations = [
@@ -419,51 +419,51 @@ def test_with_remove_variations_using_all_parameters():
         'force': True,
     }
 
-    catalog.add_or_update_variations(parameters)
-    response = catalog.remove_variations(parameters)
+    catalog.create_or_replace_variations(parameters)
+    response = catalog.delete_variations(parameters)
 
     assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
-def test_with_get_variations():
-    '''Should get variations'''
+def test_with_retrieve_variations():
+    '''Should retrieve variations'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.get_variations()
+    response = catalog.retrieve_variations()
 
     assert isinstance(response.get('variations'), list)
     assert isinstance(response.get('total_count'), int)
     assert response.get('total_count') >= 1
 
-def test_with_get_variations_using_single_id():
-    '''Should get variations using single id'''
+def test_with_retrieve_variations_using_single_id():
+    '''Should retrieve variations using single id'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.get_variations({ 'ids': ['10001'] })
+    response = catalog.retrieve_variations({ 'ids': ['10001'] })
 
     assert isinstance(response.get('variations'), list)
     assert isinstance(response.get('total_count'), int)
     assert response.get('total_count') >= 1
 
-def test_with_get_variations_using_multiple_ids():
-    '''Should get variations using multiple ids'''
+def test_with_retrieve_variations_using_multiple_ids():
+    '''Should retrieve variations using multiple ids'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.get_variations({ 'ids': ['10001', '10002'] })
+    response = catalog.retrieve_variations({ 'ids': ['10001', '10002'] })
 
     assert isinstance(response.get('variations'), list)
     assert isinstance(response.get('total_count'), int)
     assert response.get('total_count') >= 1
 
-def test_with_get_variations_using_all_parameters():
-    '''Should get variations using all parameters'''
+def test_with_retrieve_variations_using_all_parameters():
+    '''Should retrieve variations using all parameters'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.get_variations({
+    response = catalog.retrieve_variations({
         'section': 'Products',
         'num_results_per_page': 2,
         'page': 2,
