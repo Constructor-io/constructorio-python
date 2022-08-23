@@ -13,6 +13,7 @@ help:
 docs: Makefile
 	@$(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 	cp -a $(BUILDDIR)/html/. "$(DOCSDIR)$(PACKAGE_VERSION)/"
+	# Find the url='./x.x.x' pattern in docs/index.html file and replace it with the current package version
 	sed -i "" "s/url=\'\.\/[^']*\'/url=\'\.\/$(PACKAGE_VERSION)\'/" docs/index.html  
 	rm -r $(BUILDDIR)
 
