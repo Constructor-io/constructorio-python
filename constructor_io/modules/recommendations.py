@@ -66,7 +66,7 @@ class Recommendations:
         :param str user_parameters.user_agent: Origin user agent, from client
 
         :return: dict
-        ''' # pylint: disable=line-too-long
+        '''
 
         if not parameters:
             parameters = {}

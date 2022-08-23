@@ -44,6 +44,27 @@ def _create_query_params_and_file_data(parameters):
 
     return query_params, file_data
 
+def _create_query_params_for_items(parameters):
+    '''Create query params for items API (includes variations)'''
+
+    query_params = {}
+
+    if parameters:
+        section = parameters.get('section')
+        notification_email = parameters.get('notification_email')
+        force = parameters.get('force')
+
+        if section:
+            query_params['section'] = section
+
+        if notification_email:
+            query_params['notification_email'] = notification_email
+
+        if force:
+            query_params['force'] = force
+
+    return query_params
+
 def _create_catalog_url(path, options, additional_query_params):
     '''Create catalog API url'''
 
@@ -59,6 +80,23 @@ def _create_catalog_url(path, options, additional_query_params):
 
     return f'{options.get("service_url")}/v1/{quote(path)}?{query_string}'
 
+def _create_items_url(path, options, additional_query_params):
+    '''Create items API url'''
+
+    api_key = options.get('api_key')
+    version = options.get('version')
+    query_params = {**additional_query_params}
+
+    if not path or not isinstance(path, str):
+        raise ConstructorException('path is a required parameter of type string')
+
+    query_params['key'] = api_key
+    query_params['c'] = version
+    query_params = clean_params(query_params)
+    query_string = urlencode(query_params, doseq=True)
+
+    return f'{options.get("service_url")}/v2/{quote(path)}?{query_string}'
+
 
 class Catalog:
     '''Catalog Class'''
@@ -67,7 +105,6 @@ class Catalog:
         self.__options = options or {}
 
     def replace_catalog(self, parameters=None):
-        #pylint: disable=line-too-long
         '''
         Send full catalog files to replace the current catalog
 
@@ -99,7 +136,6 @@ class Catalog:
         return json
 
     def update_catalog(self, parameters=None):
-        #pylint: disable=line-too-long
         '''
         Send full catalog files to update the current catalog
 
@@ -131,7 +167,6 @@ class Catalog:
         return json
 
     def patch_catalog(self, parameters=None):
-        #pylint: disable=line-too-long
         '''
         Send full catalog files to update the current catalog
 
@@ -153,6 +188,258 @@ class Catalog:
             auth=create_auth_header(self.__options),
             headers=create_request_headers(self.__options),
             files=file_data
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def create_or_replace_items(self, parameters=None):
+        '''
+        Add multiple items to index whilst replacing existing ones (limit of 1,000)
+
+        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing items
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('items', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.put(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'items': parameters.get('items') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def update_items(self, parameters=None):
+        '''
+        Update multiple items in the index (limit of 1,000)
+
+        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing items
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('items', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.patch(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'items': parameters.get('items') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def delete_items(self, parameters=None):
+        '''
+        Delete multiple items from the index (limit of 1,000)
+
+        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema (only IDs are required)
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing items
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('items', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+        items = parameters.get('items') or []
+        items_with_only_ids = list(map(lambda x: { 'id': x.get('id') }, items))
+
+        response = requests.delete(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'items': items_with_only_ids }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def retrieve_items(self, parameters=None):
+        '''
+        Retrieves multiple items from the index (limit of 1,000)
+
+        :param list parameters.ids: A list of item IDs to retrieve
+        :param str parameters.section: The section to update
+        :param int parameters.num_results_per_page: The number of items to return. Defaults to 100. Maximum value 100
+        :param int parameters.page: The page of results to return. Defaults to 1
+        '''
+
+        if not parameters:
+            parameters = {}
+
+        query_params = _create_query_params_for_items(parameters)
+
+        num_results_per_page = query_params.get('num_results_per_page')
+        page = query_params.get('page')
+
+        if num_results_per_page:
+            query_params['num_results_per_page'] = num_results_per_page
+
+        if page:
+            query_params['page'] = page
+
+        request_url = _create_items_url('items', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def create_or_replace_variations(self, parameters=None):
+        '''
+        Add multiple variations to index whilst replacing existing ones (limit of 1,000)
+
+        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing variations
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('variations', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.put(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'variations': parameters.get('variations') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def update_variations(self, parameters=None):
+        '''
+        Update multiple variations in the index (limit of 1,000)
+
+        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing variations
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('variations', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.patch(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'variations': parameters.get('variations') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def delete_variations(self, parameters=None):
+        '''
+        Delete multiple variations from the index (limit of 1,000)
+
+        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema (only IDs are required)
+        :param str parameters.section: The section to update
+        :param str parameters.notification_email: An email address to receive an email notification if the task fails
+        :param bool parameters.force: Process the update even if it will invalidate a large number of existing variations
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_items_url('variations', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+        variations = parameters.get('variations') or []
+        variations_with_only_ids = list(map(lambda x: { 'id': x.get('id') }, variations))
+
+        response = requests.delete(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'variations': variations_with_only_ids }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def retrieve_variations(self, parameters=None):
+        '''
+        Retrieves multiple variations from the index (limit of 1,000)
+
+        :param list parameters.ids: A list of item IDs to retrieve
+        :param str parameters.section: The section to update
+        :param int parameters.num_results_per_page: The number of variations to return. Defaults to 100. Maximum value 100
+        :param int parameters.page: The page of results to return. Defaults to 1
+        '''
+
+        if not parameters:
+            parameters = {}
+
+        query_params = _create_query_params_for_items(parameters)
+
+        num_results_per_page = query_params.get('num_results_per_page')
+        page = query_params.get('page')
+
+        if num_results_per_page:
+            query_params['num_results_per_page'] = num_results_per_page
+
+        if page:
+            query_params['page'] = page
+
+        request_url = _create_items_url('variations', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
         )
 
         if not response.ok:

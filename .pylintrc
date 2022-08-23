@@ -1,6 +1,9 @@
 [FORMAT]
 max-line-length=120
 
+# Ignore docstrings
+ignore-long-lines=^\s*:.*$
+
 [SIMILARITIES]
 
 # Minimum lines number of a similarity.

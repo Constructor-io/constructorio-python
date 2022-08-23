@@ -30,7 +30,7 @@ def _create_browse_url(prefix, parameters, user_parameters, options, omit_timest
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/{prefix}?{query_string}' # pylint: disable=line-too-long
+    return f'{options.get("service_url")}/{prefix}?{query_string}'
 
 class Browse:
     '''Browse Class'''
@@ -41,7 +41,6 @@ class Browse:
 
 
     def get_browse_results(self, filter_name, filter_value, parameters=None, user_parameters=None):
-        # pylint: disable=line-too-long
         '''
         Retrieve browse results from API
 
@@ -69,7 +68,6 @@ class Browse:
 
         :return: dict
         '''
-        # pylint: enable=line-too-long
 
         if not filter_name or not isinstance(filter_name, str):
             raise ConstructorException('filter_name is a required parameter of type string')
@@ -117,7 +115,6 @@ class Browse:
 
 
     def get_browse_results_for_item_ids(self, item_ids, parameters=None, user_parameters=None):
-        # pylint: disable=line-too-long
         '''
         Retrieve browse results from API using item ID's
 
@@ -144,7 +141,6 @@ class Browse:
 
         :return: dict
         '''
-        # pylint: enable=line-too-long
 
         if not item_ids or not isinstance(item_ids, list):
             raise ConstructorException('item_ids is a required parameter of type list')
@@ -195,7 +191,7 @@ class Browse:
         :param dict parameters.filters: Filters used to refine results
         :param str parameters.section: Section name for results
         :param dict parameters.fmt_options: The format options used to refine result groups
-        :param int parameters.fmt_options.groups_max_depth: The maximum depth of the hierarchy group structure # pylint: disable=line-too-long
+        :param int parameters.fmt_options.groups_max_depth: The maximum depth of the hierarchy group structure
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -250,7 +246,7 @@ class Browse:
         :param str parameters.section: Section name for results
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param int parameters.fmt_options.show_hidden_facets: Include facets configured as hidden
-        :param int parameters.fmt_options.show_protected_facets: Include facets configured as protected # pylint: disable=line-too-long
+        :param int parameters.fmt_options.show_protected_facets: Include facets configured as protected
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -303,7 +299,7 @@ class Browse:
         :param str parameters.section: Section name for results
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param int parameters.fmt_options.show_hidden_facets: Include facets configured as hidden
-        :param int parameters.fmt_options.show_protected_facets: Include facets configured as protected # pylint: disable=line-too-long
+        :param int parameters.fmt_options.show_protected_facets: Include facets configured as protected
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
