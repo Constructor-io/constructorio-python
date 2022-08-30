@@ -53,7 +53,7 @@ class Recommendations:
         :param int parameters.num_results: The total number of results to return
         :param str|list parameters.item_ids: Item ID(s) to retrieve recommendations for (strategy specific)
         :param str parameters.term: The term to use to refine results (strategy specific)
-        :param dict parameters.filters: Filters used to refine recommendation results (strategy specific)
+        :param dict parameters.filters: Key / value mapping of filters used to refine results
         :param str parameters.section: The section to return results from
         :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.io/rest_api/variations_mapping for details
         :param dict user_parameters: Parameters relevant to the user request
