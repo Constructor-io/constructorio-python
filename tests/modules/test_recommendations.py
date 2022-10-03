@@ -283,6 +283,38 @@ def test_with_valid_pod_id_and_multiple_filters():
     assert response.get('request').get('filters').get('group_id') == filters['group_id'][0]
     assert response.get('request').get('filters').get('Brand') == filters['Brand']
 
+def test_with_valid_pod_id_and_variations_map():
+    '''Should return a response with a variations map'''
+
+    variations_map = {
+        'group_by': [
+            {
+                'name': 'variation',
+                'field': 'data.variation_id',
+            },
+        ],
+        'values': {
+            'size': {
+                'aggregation': 'all',
+                'field': 'data.facets.size',
+                },
+            },
+        'dtype': 'array',
+    }
+    filters = { 'keywords': ['battery-powered'] }
+    recommendations = ConstructorIO(VALID_OPTIONS).recommendations
+    response = recommendations.get_recommendation_results(
+        POD_ID_FILTERED_ITEMS_RECOMMENDATIONS,
+        { 'filters': filters, 'variations_map': variations_map },
+        { **CLIENT_SESSION_IDENTIFIERS },
+    )
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('response'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert response.get('request').get('filters').get('keywords') == filters['keywords'][0]
+    assert response.get('request').get('variations_map') == variations_map
+
 def test_with_invalid_api_key():
     '''Should raise exception when invalid api_key is provided'''
 

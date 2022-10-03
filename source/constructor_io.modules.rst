@@ -44,3 +44,11 @@ constructor\_io.modules.search module
    :undoc-members:
    :show-inheritance:
 
+constructor\_io.modules.tasks module
+-------------------------------------
+
+.. automodule:: constructor_io.modules.tasks
+   :members:
+   :undoc-members:
+   :show-inheritance:
+

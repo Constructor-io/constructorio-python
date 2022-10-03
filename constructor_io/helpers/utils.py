@@ -1,5 +1,6 @@
 '''Utility functions'''
 
+import json
 from re import sub
 from urllib.parse import parse_qs, quote, unquote
 
@@ -10,13 +11,13 @@ from constructor_io.helpers.exception import (ConstructorException,
 def throw_http_exception_from_response(response):
     '''Throw custom HTTP exception from an API response'''
 
-    json = response.json()
+    response_json = response.json()
     exception = HttpException(
-        json.get('message'),
-        json.get('status'),
-        json.get('status_text'),
-        json.get('url'),
-        json.get('headers'),
+        response_json.get('message'),
+        response_json.get('status'),
+        response_json.get('status_text'),
+        response_json.get('url'),
+        response_json.get('headers'),
     )
 
     raise exception
@@ -89,7 +90,10 @@ def create_shared_query_params(options, parameters, user_parameters):
             query_params['section'] = parameters.get('section')
 
         if parameters.get('hidden_fields'):
-            query_params['hidden_fields'] = parameters.get('hidden_fields')
+            query_params['fmt_options[hidden_fields]'] = parameters.get('hidden_fields')
+
+        if parameters.get('hidden_facets'):
+            query_params['fmt_options[hidden_facets]'] = parameters.get('hidden_facets')
 
         if parameters.get('fmt_options'):
             fmt_options = parameters.get('fmt_options')
@@ -98,6 +102,9 @@ def create_shared_query_params(options, parameters, user_parameters):
                     query_params[f'fmt_options[{key}]'] = value
             else:
                 raise ConstructorException('fmt_options must be a dictionary')
+
+        if parameters.get('variations_map'):
+            query_params['variations_map'] = json.dumps(parameters.get('variations_map'))
 
     if user_parameters.get('test_cells'):
         for key, value in user_parameters.get('test_cells').items():
