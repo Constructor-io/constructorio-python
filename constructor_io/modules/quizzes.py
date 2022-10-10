@@ -70,7 +70,6 @@ class Quizzes:
         :param str user_parameters.user_agent: Origin user agent, from client
         :return: dict
         '''
-        # TODO: Ask Quizzes team about segments and test cells
 
         if not parameters:
             parameters = {}
