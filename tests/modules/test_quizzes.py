@@ -83,6 +83,16 @@ def test_get_quiz_results_with_no_quiz_id():
         quizzes = ConstructorIO(VALID_OPTIONS).quizzes
         quizzes.get_quiz_results(None)
 
+def test_get_quiz_results_with_invalid_quiz_id():
+    '''Should raise an exception given invalid quiz_id'''
+
+    with raises(
+        HttpException,
+        match=r'The quiz you requested, "abcd" was not found, please specify a valid quiz id before trying again.' # pylint: disable=line-too-long
+    ):
+        quizzes = ConstructorIO({'api_key': 'notavalidkey', 'api_token': TEST_API_TOKEN}).quizzes
+        quizzes.get_quiz_results('abcd', {'a': VALID_QUIZ_ANS})
+
 def test_get_quiz_results_with_invalid_key():
     '''Should raise an exception given invalid index_key/api_key'''
 
@@ -93,8 +103,8 @@ def test_get_quiz_results_with_invalid_key():
         quizzes = ConstructorIO({'api_key': 'notavalidkey', 'api_token': TEST_API_TOKEN}).quizzes
         quizzes.get_quiz_results(QUIZ_ID, {'a': VALID_QUIZ_ANS})
 
-def test_get_quiz_results_with_no_answers():
-    '''Should raise an exception given an empty/nonexistent answers parameter'''
+def test_get_quiz_results_with_empty_answers():
+    '''Should raise an exception given an empty answers parameter'''
 
     with raises(
         ConstructorException,
@@ -102,3 +112,13 @@ def test_get_quiz_results_with_no_answers():
     ):
         quizzes = ConstructorIO(VALID_OPTIONS).quizzes
         quizzes.get_quiz_results(QUIZ_ID, {'a': []})
+
+def test_get_quiz_results_with_no_answers():
+    '''Should raise an exception given an nonexistent answers parameter'''
+
+    with raises(
+        ConstructorException,
+        match=r'a is a required parameter of type list'
+    ):
+        quizzes = ConstructorIO(VALID_OPTIONS).quizzes
+        quizzes.get_quiz_results(QUIZ_ID, { })
