@@ -95,7 +95,7 @@ class Quizzes:
             if json.get('version_id'):
                 return json
 
-        raise ConstructorException('get_next_quiz response data is malformed')
+        raise ConstructorException('get_next_question response data is malformed')
 
     def get_quiz_results(self, quiz_id, parameters=None, user_parameters=None):
         '''
