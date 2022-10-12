@@ -28,6 +28,14 @@ constructor\_io.modules.catalog module
    :undoc-members:
    :show-inheritance:
 
+constructor\_io.modules.quizzes module
+--------------------------------------
+
+.. automodule:: constructor_io.modules.quizzes
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 constructor\_io.modules.recommendations module
 ----------------------------------------------
 
