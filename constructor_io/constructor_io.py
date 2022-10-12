@@ -5,6 +5,7 @@ from constructor_io.helpers.exception import ConstructorException
 from constructor_io.modules.autocomplete import Autocomplete
 from constructor_io.modules.browse import Browse
 from constructor_io.modules.catalog import Catalog
+from constructor_io.modules.quizzes import Quizzes
 from constructor_io.modules.recommendations import Recommendations
 from constructor_io.modules.search import Search
 from constructor_io.modules.tasks import Tasks
@@ -12,6 +13,7 @@ from constructor_io.modules.tasks import Tasks
 
 class ConstructorIO:
     # pylint: disable=too-few-public-methods
+    # pylint: disable=too-many-instance-attributes
     '''
         ConstructorIO Python Client
 
@@ -49,6 +51,7 @@ class ConstructorIO:
         self.recommendations = Recommendations(self.__options)
         self.catalog = Catalog(self.__options)
         self.tasks = Tasks(self.__options)
+        self.quizzes = Quizzes(self.__options)
 
     def get_options(self):
         '''Get client options'''
