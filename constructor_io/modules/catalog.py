@@ -53,6 +53,12 @@ def _create_query_params_for_items(parameters):
         section = parameters.get('section')
         notification_email = parameters.get('notification_email')
         force = parameters.get('force')
+        num_results_per_page = parameters.get('num_results_per_page')
+        page = parameters.get('page')
+        ids = parameters.get('ids')
+
+        if ids:
+            query_params['id'] = ids
 
         if section:
             query_params['section'] = section
@@ -62,6 +68,12 @@ def _create_query_params_for_items(parameters):
 
         if force:
             query_params['force'] = force
+
+        if num_results_per_page:
+            query_params['num_results_per_page'] = num_results_per_page
+
+        if page:
+            query_params['page'] = page
 
     return query_params
 
@@ -288,8 +300,8 @@ class Catalog:
         Retrieves multiple items from the index (limit of 1,000)
 
         :param list parameters.ids: A list of item IDs to retrieve
-        :param str parameters.section: The section to update
-        :param int parameters.num_results_per_page: The number of items to return. Defaults to 100. Maximum value 100
+        :param str parameters.section: The section to retrieve from
+        :param int parameters.num_results_per_page: The number of items to return. Defaults to 100. Maximum value 1000
         :param int parameters.page: The page of results to return. Defaults to 1
         '''
 
@@ -297,15 +309,6 @@ class Catalog:
             parameters = {}
 
         query_params = _create_query_params_for_items(parameters)
-
-        num_results_per_page = query_params.get('num_results_per_page')
-        page = query_params.get('page')
-
-        if num_results_per_page:
-            query_params['num_results_per_page'] = num_results_per_page
-
-        if page:
-            query_params['page'] = page
 
         request_url = _create_items_url('items', self.__options, query_params)
         requests = self.__options.get('requests') or r
@@ -413,9 +416,10 @@ class Catalog:
         '''
         Retrieves multiple variations from the index (limit of 1,000)
 
-        :param list parameters.ids: A list of item IDs to retrieve
-        :param str parameters.section: The section to update
-        :param int parameters.num_results_per_page: The number of variations to return. Defaults to 100. Maximum value 100
+        :param list parameters.ids: A list of variation IDs to retrieve
+        :param str parameters.item_id: Item ID of variations to retrieve
+        :param str parameters.section: The section to retrieve from
+        :param int parameters.num_results_per_page: The number of variations to return. Defaults to 100. Maximum value 1000
         :param int parameters.page: The page of results to return. Defaults to 1
         '''
 
@@ -423,15 +427,10 @@ class Catalog:
             parameters = {}
 
         query_params = _create_query_params_for_items(parameters)
+        item_id = parameters.get('item_id')
 
-        num_results_per_page = query_params.get('num_results_per_page')
-        page = query_params.get('page')
-
-        if num_results_per_page:
-            query_params['num_results_per_page'] = num_results_per_page
-
-        if page:
-            query_params['page'] = page
+        if item_id:
+            query_params['item_id'] = item_id
 
         request_url = _create_items_url('variations', self.__options, query_params)
         requests = self.__options.get('requests') or r

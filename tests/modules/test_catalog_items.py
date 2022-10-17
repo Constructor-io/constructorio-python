@@ -208,7 +208,7 @@ def test_with_retrieve_items_using_single_id():
 
     assert isinstance(response.get('items'), list)
     assert isinstance(response.get('total_count'), int)
-    assert response.get('total_count') >= 1
+    assert response.get('total_count') == 1
 
 def test_with_retrieve_items_using_multiple_ids():
     '''Should retrieve items using multiple ids'''
@@ -219,7 +219,7 @@ def test_with_retrieve_items_using_multiple_ids():
 
     assert isinstance(response.get('items'), list)
     assert isinstance(response.get('total_count'), int)
-    assert response.get('total_count') >= 1
+    assert response.get('total_count') == 2
 
 def test_with_retrieve_items_using_all_parameters():
     '''Should retrieve items using all parameters'''
@@ -441,22 +441,33 @@ def test_with_retrieve_variations_using_single_id():
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.retrieve_variations({ 'ids': ['10001'] })
+    response = catalog.retrieve_variations({ 'ids': ['20001'] })
 
     assert isinstance(response.get('variations'), list)
     assert isinstance(response.get('total_count'), int)
-    assert response.get('total_count') >= 1
+    assert response.get('total_count') == 1
 
 def test_with_retrieve_variations_using_multiple_ids():
     '''Should retrieve variations using multiple ids'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
-    response = catalog.retrieve_variations({ 'ids': ['10001', '10002'] })
+    response = catalog.retrieve_variations({ 'ids': ['20001', 'M0E20000000E2ZJ'] })
 
     assert isinstance(response.get('variations'), list)
     assert isinstance(response.get('total_count'), int)
-    assert response.get('total_count') >= 1
+    assert response.get('total_count') == 2
+
+def test_with_retrieve_variations_using_item_id():
+    '''Should retrieve variations using item id'''
+
+    catalog = ConstructorIO(VALID_OPTIONS).catalog
+
+    response = catalog.retrieve_variations({ 'item_id': '10001' })
+
+    assert isinstance(response.get('variations'), list)
+    assert isinstance(response.get('total_count'), int)
+    assert response.get('total_count') == 1
 
 def test_with_retrieve_variations_using_all_parameters():
     '''Should retrieve variations using all parameters'''
