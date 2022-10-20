@@ -301,7 +301,7 @@ class Catalog:
 
         :param list parameters.ids: A list of item IDs to retrieve
         :param str parameters.section: The section to retrieve from
-        :param int parameters.num_results_per_page: The number of items to return. Defaults to 100. Maximum value 1000
+        :param int parameters.num_results_per_page: The number of items to return. Defaults to 100. Maximum value 100
         :param int parameters.page: The page of results to return. Defaults to 1
         '''
 
@@ -419,7 +419,7 @@ class Catalog:
         :param list parameters.ids: A list of variation IDs to retrieve
         :param str parameters.item_id: Item ID of variations to retrieve
         :param str parameters.section: The section to retrieve from
-        :param int parameters.num_results_per_page: The number of variations to return. Defaults to 100. Maximum value 1000
+        :param int parameters.num_results_per_page: The number of variations to return. Defaults to 100. Maximum value 100
         :param int parameters.page: The page of results to return. Defaults to 1
         '''
 
