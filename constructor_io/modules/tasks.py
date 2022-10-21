@@ -16,6 +16,17 @@ def _create_tasks_url(url_prefix, parameters, options, api_version='v1'):
 
     query_params = create_shared_query_params(options, parameters, {})
     query_params.pop('c')
+
+    if parameters:
+        if parameters.get('start_date'):
+            query_params['start_date'] = parameters.get('start_date')
+
+        if parameters.get('end_date'):
+            query_params['end_date'] = parameters.get('end_date')
+
+        if parameters.get('status'):
+            query_params['status'] = parameters.get('status')
+
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
@@ -34,6 +45,9 @@ class Tasks:
 
         :param dict parameters: Additional parameters for task details
         :param int parameters.page: The page number of the results
+        :param string parameters.start_date: The start date of results to return - YYYY-MM-DD
+        :param string parameters.end_date: The end date of results to return - YYYY-MM-DD
+        :param string parameters.status: The status of tasks to return - 'QUEUED', 'IN_PROGRESS', 'DONE', 'FAILED', 'CANCELED'
         :param int parameters.results_per_page: The number of results per page to return
         :return: dict
         '''
