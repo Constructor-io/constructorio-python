@@ -58,7 +58,7 @@ def test_get_all_tasks_with_params():
 def test_get_all_tasks_with_start_date_and_end_date():
     '''Should return a response when start_date and end_date are passed'''
 
-    cur_date = date.today();
+    cur_date = date.today()
     end_date = cur_date.strftime('%Y-%m-%d')
     start_date = (cur_date - timedelta(days=30)).strftime('%Y-%m-%d')
 
