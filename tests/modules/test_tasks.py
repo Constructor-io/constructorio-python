@@ -1,5 +1,6 @@
 '''ConstructorIO Python Client - Tasks Tests'''
 
+from datetime import date, timedelta
 from os import environ
 
 import requests
@@ -57,8 +58,12 @@ def test_get_all_tasks_with_params():
 def test_get_all_tasks_with_start_date_and_end_date():
     '''Should return a response when start_date and end_date are passed'''
 
+    curDate = date.today();
+    endDate = curDate.strftime('%Y-%m-%d')
+    startDate = (curDate - timedelta(days=30)).strftime('%Y-%m-%d')
+
     tasks = ConstructorIO(VALID_OPTIONS).tasks
-    response = tasks.get_all_tasks({ 'start_date': '2022-09-03', 'end_date': '2022-09-30' })
+    response = tasks.get_all_tasks({ 'start_date': startDate, 'end_date': endDate })
 
     assert isinstance(response.get('status_counts'), dict)
     assert isinstance(response.get('tasks'), list)
@@ -75,6 +80,17 @@ def test_get_all_tasks_with_status():
     assert isinstance(response.get('tasks'), list)
     assert isinstance(response.get('total_count'), int)
     assert response.get('tasks')[0].get('status') == 'DONE'
+    assert len(response.get('tasks')) <= 50 and len(response.get('tasks')) >= 1
+
+def test_get_all_tasks_with_type():
+    '''Should return a response when status is passed'''
+
+    tasks = ConstructorIO(VALID_OPTIONS).tasks
+    response = tasks.get_all_tasks({ 'type': 'ingestion' })
+
+    assert isinstance(response.get('status_counts'), dict)
+    assert isinstance(response.get('tasks'), list)
+    assert isinstance(response.get('total_count'), int)
     assert len(response.get('tasks')) <= 50 and len(response.get('tasks')) >= 1
 
 def test_get_all_tasks_with_invalid_api_key():

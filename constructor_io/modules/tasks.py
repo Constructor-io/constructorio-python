@@ -26,6 +26,9 @@ def _create_tasks_url(url_prefix, parameters, options, api_version='v1'):
 
         if parameters.get('status'):
             query_params['status'] = parameters.get('status')
+        
+        if parameters.get('type'):
+            query_params['type'] = parameters.get('type')
 
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
