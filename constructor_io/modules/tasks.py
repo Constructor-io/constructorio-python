@@ -26,7 +26,7 @@ def _create_tasks_url(url_prefix, parameters, options, api_version='v1'):
 
         if parameters.get('status'):
             query_params['status'] = parameters.get('status')
-        
+       
         if parameters.get('type'):
             query_params['type'] = parameters.get('type')
 
@@ -51,6 +51,7 @@ class Tasks:
         :param string parameters.start_date: The start date of results to return - YYYY-MM-DD
         :param string parameters.end_date: The end date of results to return - YYYY-MM-DD
         :param string parameters.status: The status of tasks to return - 'QUEUED', 'IN_PROGRESS', 'DONE', 'FAILED', 'CANCELED'
+        :param string parameters.type: The type of tasks to return - 'ingestion', 'user_data_request'
         :param int parameters.results_per_page: The number of results per page to return
         :return: dict
         '''
