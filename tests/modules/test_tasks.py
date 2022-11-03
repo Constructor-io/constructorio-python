@@ -58,12 +58,12 @@ def test_get_all_tasks_with_params():
 def test_get_all_tasks_with_start_date_and_end_date():
     '''Should return a response when start_date and end_date are passed'''
 
-    curDate = date.today();
-    endDate = curDate.strftime('%Y-%m-%d')
-    startDate = (curDate - timedelta(days=30)).strftime('%Y-%m-%d')
+    cur_date = date.today();
+    end_date = cur_date.strftime('%Y-%m-%d')
+    start_date = (cur_date - timedelta(days=30)).strftime('%Y-%m-%d')
 
     tasks = ConstructorIO(VALID_OPTIONS).tasks
-    response = tasks.get_all_tasks({ 'start_date': startDate, 'end_date': endDate })
+    response = tasks.get_all_tasks({ 'start_date': start_date, 'end_date': end_date })
 
     assert isinstance(response.get('status_counts'), dict)
     assert isinstance(response.get('tasks'), list)
