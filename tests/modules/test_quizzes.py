@@ -14,26 +14,26 @@ QUIZ_ID = 'test-quiz'
 VALID_QUIZ_ANS = [[1], [1, 2], ['seen']]
 VALID_OPTIONS = { 'api_key': TEST_API_KEY, 'api_token': TEST_API_TOKEN}
 
-def test_get_next_question_with_valid_parameters():
+def test_get_quiz_next_question_with_valid_parameters():
     '''Should return a response with a valid quiz_id'''
 
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
-    response = quizzes.get_next_question('test-quiz')
+    response = quizzes.get_quiz_next_question('test-quiz')
 
     assert isinstance(response.get('version_id'), str)
     assert isinstance(response.get('next_question'), dict)
 
-def test_get_next_question_with_answer_parameter():
+def test_get_quiz_next_question_with_answer_parameter():
     '''Should return a response with a valid quiz_id and answer parameter'''
 
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
-    response = quizzes.get_next_question('test-quiz', { 'a': VALID_QUIZ_ANS })
+    response = quizzes.get_quiz_next_question('test-quiz', { 'a': VALID_QUIZ_ANS })
 
     assert isinstance(response.get('version_id'), str)
     assert isinstance(response.get('next_question'), dict)
     assert response.get('next_question').get('id') == 4
 
-def test_get_next_question_with_no_quiz_id():
+def test_get_quiz_next_question_with_no_quiz_id():
     '''Should raise an exception with no quiz_id'''
 
     with raises(
@@ -41,9 +41,9 @@ def test_get_next_question_with_no_quiz_id():
         match=r'quiz_id is a required parameter of type str'
     ):
         quizzes = ConstructorIO(VALID_OPTIONS).quizzes
-        quizzes.get_next_question(None)
+        quizzes.get_quiz_next_question(None)
 
-def test_get_next_question_with_invalid_quiz_id():
+def test_get_quiz_next_question_with_invalid_quiz_id():
     '''Should raise an exception with invalid quiz_id'''
 
     with raises(
@@ -51,9 +51,9 @@ def test_get_next_question_with_invalid_quiz_id():
         match=r'The quiz you requested, "abcd" was not found, please specify a valid quiz id before trying again.' # pylint: disable=line-too-long
     ):
         quizzes = ConstructorIO(VALID_OPTIONS).quizzes
-        quizzes.get_next_question('abcd')
+        quizzes.get_quiz_next_question('abcd')
 
-def test_get_next_question_with_invalid_key():
+def test_get_quiz_next_question_with_invalid_key():
     '''Should raise an exception given invalid index_key/api_key'''
 
     with raises(
@@ -61,7 +61,7 @@ def test_get_next_question_with_invalid_key():
         match=r'The quiz you requested, "test-quiz" was not found, please specify a valid quiz id before trying again.' # pylint: disable=line-too-long
     ):
         quizzes = ConstructorIO({'api_key': 'notavalidkey', 'api_token': TEST_API_TOKEN}).quizzes
-        quizzes.get_next_question(QUIZ_ID, {'a': VALID_QUIZ_ANS})
+        quizzes.get_quiz_next_question(QUIZ_ID, {'a': VALID_QUIZ_ANS})
 
 def test_get_quiz_results_with_valid_parameters():
     '''Should return a response with a valid quiz_id, a(answers)'''

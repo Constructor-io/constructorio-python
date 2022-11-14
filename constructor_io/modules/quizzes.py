@@ -54,7 +54,7 @@ class Quizzes:
     def __init__(self, options):
         self.__options = options or {}
 
-    def get_next_question(self, quiz_id, parameters=None, user_parameters=None):
+    def get_quiz_next_question(self, quiz_id, parameters=None, user_parameters=None):
         '''
         Retrieve next question from API
 
@@ -94,7 +94,7 @@ class Quizzes:
             if json.get('version_id'):
                 return json
 
-        raise ConstructorException('get_next_question response data is malformed')
+        raise ConstructorException('get_quiz_next_question response data is malformed')
 
     def get_quiz_results(self, quiz_id, parameters=None, user_parameters=None):
         '''
