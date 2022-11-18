@@ -22,8 +22,8 @@ def _create_quizzes_url(quiz_id, parameters, user_parameters, options, path):
     if not quiz_id or not isinstance(quiz_id, str):
         raise ConstructorException('quiz_id is a required parameter of type str')
 
-    if path == 'finalize' and (not isinstance(parameters.get('a'), list) or len(parameters.get('a')) == 0): # pylint: disable=line-too-long
-        raise ConstructorException('a is a required parameter of type list')
+    if path == 'finalize' and (not isinstance(parameters.get('answers'), list) or len(parameters.get('answers')) == 0): # pylint: disable=line-too-long
+        raise ConstructorException('answers is a required parameter of type list')
 
     if parameters:
         if parameters.get('section'):
@@ -32,9 +32,9 @@ def _create_quizzes_url(quiz_id, parameters, user_parameters, options, path):
         if parameters.get('version_id'):
             query_params['version_id'] = parameters.get('version_id')
 
-        if parameters.get('a'):
+        if parameters.get('answers'):
             answers_param = []
-            answers = parameters.get('a')
+            answers = parameters.get('answers')
 
             for question_answer in answers:
                 answers_param.append(','.join(map(str, question_answer)))
@@ -54,13 +54,13 @@ class Quizzes:
     def __init__(self, options):
         self.__options = options or {}
 
-    def get_next_question(self, quiz_id, parameters=None, user_parameters=None):
+    def get_quiz_next_question(self, quiz_id, parameters=None, user_parameters=None):
         '''
         Retrieve next question from API
 
         :param str quiz_id: Quiz Id
         :param dict parameters: Additional parameters to determine next quiz
-        :param list parameters.a: 2d Array of quiz answers in the format [[1],[1,2]]
+        :param list parameters.answers: 2d Array of quiz answers in the format [[1],[1,2]]
         :param str parameters.section: Section for customer's product catalog
         :param str parameters.version_id: Specific version_id for the quiz
         :param dict user_parameters: Parameters relevant to the user request
@@ -94,7 +94,7 @@ class Quizzes:
             if json.get('version_id'):
                 return json
 
-        raise ConstructorException('get_next_question response data is malformed')
+        raise ConstructorException('get_quiz_next_question response data is malformed')
 
     def get_quiz_results(self, quiz_id, parameters=None, user_parameters=None):
         '''
@@ -102,7 +102,7 @@ class Quizzes:
 
         :param str quiz_id: Quiz Id
         :param dict parameters: Additional parameters to determine next quiz
-        :param list parameters.a: 2d Array of quiz answers in the format [[1],[1,2]]
+        :param list parameters.answers: 2d Array of quiz answers in the format [[1],[1,2]]
         :param str parameters.section: Section for customer's product catalog
         :param str parameters.version_id: Specific version_id for the quiz
         :param dict user_parameters: Parameters relevant to the user request
