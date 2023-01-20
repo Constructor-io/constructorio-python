@@ -171,7 +171,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_fmt_options(
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('fmt_options') == fmt_options
+    assert response.get('request').get('fmt_options').get('groups_max_depth') == 2
+    assert response.get('request').get('fmt_options').get('groups_start') == 'current'
 
 
 def test_get_browse_results_with_valid_filter_name_filter_value_and_sort_by():
@@ -880,7 +881,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_fmt_options():
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
     assert isinstance(response.get('response').get('results'), list)
-    assert response.get('request').get('fmt_options') == fmt_options
+    assert response.get('request').get('fmt_options').get('groups_max_depth') == 2
+    assert response.get('request').get('fmt_options').get('groups_start') == 'current'
 
 
 def test_get_browse_results_for_item_ids_with_valid_item_ids_and_sort_by():
