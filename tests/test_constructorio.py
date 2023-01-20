@@ -7,7 +7,7 @@ import pytest
 from constructor_io.constructor_io import ConstructorIO
 from constructor_io.helpers.exception import ConstructorException
 
-TEST_API_KEY = environ['TEST_API_KEY']
+TEST_API_KEY = environ['TEST_REQUEST_API_KEY']
 VALID_OPTIONS = { 'api_key': TEST_API_KEY }
 
 def test_with_valid_api_key():

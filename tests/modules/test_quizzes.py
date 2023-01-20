@@ -8,7 +8,7 @@ from constructor_io.constructor_io import ConstructorIO
 from constructor_io.helpers.exception import (ConstructorException,
                                               HttpException)
 
-TEST_API_KEY = environ['TEST_API_KEY']
+TEST_API_KEY = environ['TEST_REQUEST_API_KEY']
 TEST_API_TOKEN = environ['TEST_API_TOKEN']
 QUIZ_ID = 'test-quiz'
 VALID_QUIZ_ANS = [[1], [1, 2], ['seen']]
