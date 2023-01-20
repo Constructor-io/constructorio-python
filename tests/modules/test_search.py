@@ -357,7 +357,7 @@ def test_with_invalid_sort_by():
 def test_with_invalid_sort_order():
     '''Should raise exception when invalid sort_order parameter is provided'''
 
-    with raises(HttpException, match=r"sort_order: value is not a valid enumeration member; permitted: 'ascending', 'descending'"):
+    with raises(HttpException, match=r"sort_order: value is not a valid enumeration member; permitted: 'ascending', 'descending'"): # pylint: disable=line-too-long
         search = ConstructorIO(VALID_OPTIONS).search
         search.get_search_results(QUERY, { 'section': SECTION, 'sort_order': 123 })
 
