@@ -11,7 +11,7 @@ from constructor_io.constructor_io import ConstructorIO
 from constructor_io.helpers.exception import (ConstructorException,
                                               HttpException)
 
-TEST_API_KEY = environ['TEST_API_KEY']
+TEST_API_KEY = environ['TEST_REQUEST_API_KEY']
 TEST_API_TOKEN = environ['TEST_API_TOKEN']
 VALID_CLIENT_ID = '2b23dd74-5672-4379-878c-9182938d2710'
 VALID_SESSION_ID = 2
@@ -171,7 +171,8 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_fmt_options(
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('fmt_options') == fmt_options
+    assert response.get('request').get('fmt_options').get('groups_max_depth') == 2
+    assert response.get('request').get('fmt_options').get('groups_start') == 'current'
 
 
 def test_get_browse_results_with_valid_filter_name_filter_value_and_sort_by():
@@ -480,7 +481,7 @@ def test_get_browse_results_with_invalid_api_key():
 
     with raises(
             HttpException,
-            match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'  # pylint: disable=line-too-long
+            match=r'You have supplied an invalid `key` or `autocomplete_key`. You can find your key at app.constructor.io/dashboard/accounts/api_integration.'  # pylint: disable=line-too-long
     ):
         browse = ConstructorIO({
             **VALID_OPTIONS,
@@ -624,7 +625,7 @@ def test_get_browse_groups_with_invalid_fmt_options():
 def test_get_browse_groups_with_invalid_api_key():
     '''Should return a response with invalid api_key'''
 
-    with raises(HttpException, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'): # pylint: disable=line-too-long
+    with raises(HttpException, match=r'You have supplied an invalid `key` or `autocomplete_key`. You can find your key at app.constructor.io/dashboard/accounts/api_integration.'): # pylint: disable=line-too-long
         browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
         browse.get_browse_groups()
 
@@ -734,7 +735,7 @@ def test_get_browse_facets_with_invalid_fmt_options():
 def test_get_browse_facets_with_invalid_api_key():
     '''Should return a response with invalid api_key'''
 
-    with raises(HttpException, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'): # pylint: disable=line-too-long
+    with raises(HttpException, match=r'You have supplied an invalid `key` or `autocomplete_key`. You can find your key at app.constructor.io/dashboard/accounts/api_integration.'): # pylint: disable=line-too-long
         browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
         browse.get_browse_facets()
 
@@ -880,7 +881,8 @@ def test_get_browse_results_for_item_ids_with_valid_item_ids_and_fmt_options():
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
     assert isinstance(response.get('response').get('results'), list)
-    assert response.get('request').get('fmt_options') == fmt_options
+    assert response.get('request').get('fmt_options').get('groups_max_depth') == 2
+    assert response.get('request').get('fmt_options').get('groups_start') == 'current'
 
 
 def test_get_browse_results_for_item_ids_with_valid_item_ids_and_sort_by():
@@ -1168,7 +1170,7 @@ def test_get_browse_results_for_item_ids_with_invalid_api_key():
 
     with raises(
             HttpException,
-            match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'  # pylint: disable=line-too-long
+            match=r'You have supplied an invalid `key` or `autocomplete_key`. You can find your key at app.constructor.io/dashboard/accounts/api_integration.'  # pylint: disable=line-too-long
     ):
         browse = ConstructorIO({
             **VALID_OPTIONS,
@@ -1278,6 +1280,6 @@ def test_get_browse_facet_options_with_invalid_fmt_options():
 def test_get_browse_facet_options_with_invalid_api_key():
     '''Should return a response with invalid api_key'''
 
-    with raises(HttpException, match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.'): # pylint: disable=line-too-long
+    with raises(HttpException, match=r'You have supplied an invalid `key` or `autocomplete_key`. You can find your key at app.constructor.io/dashboard/accounts/api_integration.'): # pylint: disable=line-too-long
         browse = ConstructorIO({'api_key': 'fyzs7tfF8L161VoAXQ8u'}).browse
         browse.get_browse_facet_options(FACET_NAME)

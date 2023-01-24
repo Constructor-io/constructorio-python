@@ -11,7 +11,7 @@ from constructor_io.constructor_io import ConstructorIO
 from constructor_io.helpers.exception import (ConstructorException,
                                               HttpException)
 
-TEST_API_KEY = environ['TEST_API_KEY']
+TEST_API_KEY = environ['TEST_REQUEST_API_KEY']
 VALID_CLIENT_ID = '2b23dd74-5672-4379-878c-9182938d2710'
 VALID_SESSION_ID = 2
 VALID_OPTIONS = { 'api_key': TEST_API_KEY }
@@ -320,7 +320,7 @@ def test_with_invalid_api_key():
 
     with raises(
             HttpException,
-            match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.' # pylint: disable=line-too-long
+            match=r'You have supplied an invalid `key` or `autocomplete_key`. You can find your key at app.constructor.io/dashboard/accounts/api_integration.' # pylint: disable=line-too-long
     ):
         recommendations = ConstructorIO({
             **VALID_OPTIONS,

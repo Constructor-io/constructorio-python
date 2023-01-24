@@ -10,7 +10,7 @@ from constructor_io.constructor_io import ConstructorIO
 from constructor_io.helpers.exception import (ConstructorException,
                                               HttpException)
 
-TEST_API_KEY = environ['TEST_API_KEY']
+TEST_API_KEY = environ['TEST_CATALOG_API_KEY']
 TEST_API_TOKEN = environ['TEST_API_TOKEN']
 VALID_OPTIONS = { 'api_key': TEST_API_KEY, 'api_token': TEST_API_TOKEN}
 CATALOG_EXAMPLES_BASE_URL = 'https://raw.githubusercontent.com/Constructor-io/integration-examples/main/catalog/' #pylint: disable=line-too-long

@@ -11,7 +11,7 @@ from constructor_io.constructor_io import ConstructorIO
 from constructor_io.helpers.exception import (ConstructorException,
                                               HttpException)
 
-TEST_API_KEY = environ['TEST_API_KEY']
+TEST_API_KEY = environ['TEST_REQUEST_API_KEY']
 VALID_CLIENT_ID = '2b23dd74-5672-4379-878c-9182938d2710'
 VALID_SESSION_ID = 2
 VALID_OPTIONS = { 'api_key': TEST_API_KEY }
@@ -132,7 +132,8 @@ def test_with_valid_query_and_fmt_options():
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('fmt_options') == fmt_options
+    assert response.get('request').get('fmt_options').get('groups_max_depth') == 2
+    assert response.get('request').get('fmt_options').get('groups_start') == 'current'
 
 def test_with_valid_query_and_sort_by():
     '''Should return a response with a valid query, section, and sort_by'''
@@ -328,14 +329,14 @@ def test_with_no_query():
 def test_with_invalid_page():
     '''Should raise exception when invalid page parameter is provided'''
 
-    with raises(HttpException, match=r'page must be an integer'):
+    with raises(HttpException, match=r'page: value is not a valid integer'):
         search = ConstructorIO(VALID_OPTIONS).search
         search.get_search_results(QUERY, { 'section': SECTION, 'page': 'abc' })
 
 def test_with_invalid_results_per_page():
     '''Should raise exception when invalid results_per_page parameter is provided'''
 
-    with raises(HttpException, match=r'num_results_per_page must be an integer'):
+    with raises(HttpException, match=r'num_results_per_page: value is not a valid integer'):
         search = ConstructorIO(VALID_OPTIONS).search
         search.get_search_results(QUERY, { 'section': SECTION, 'results_per_page': 'abc' })
 
@@ -349,14 +350,14 @@ def test_with_invalid_filters():
 def test_with_invalid_sort_by():
     '''Should raise exception when invalid sort_by parameter is provided'''
 
-    with raises(HttpException, match=r'sort_by must be a string'):
+    with raises(HttpException, match=r'sort_by: str type expected'):
         search = ConstructorIO(VALID_OPTIONS).search
         search.get_search_results(QUERY, { 'section': SECTION, 'sort_by': ['foo', 'bar'] })
 
 def test_with_invalid_sort_order():
     '''Should raise exception when invalid sort_order parameter is provided'''
 
-    with raises(HttpException, match=r'Invalid value for parameter: "sort_order"'):
+    with raises(HttpException, match=r"sort_order: value is not a valid enumeration member; permitted: 'ascending', 'descending'"): # pylint: disable=line-too-long
         search = ConstructorIO(VALID_OPTIONS).search
         search.get_search_results(QUERY, { 'section': SECTION, 'sort_order': 123 })
 
@@ -372,7 +373,7 @@ def test_with_invalid_api_key():
 
     with raises(
             HttpException,
-            match=r'We have no record of this key. You can find your key at app.constructor.io/dashboard.' # pylint: disable=line-too-long
+            match=r'You have supplied an invalid `key` or `autocomplete_key`. You can find your key at app.constructor.io/dashboard/accounts/api_integration.' # pylint: disable=line-too-long
     ):
         search = ConstructorIO({
             **VALID_OPTIONS,

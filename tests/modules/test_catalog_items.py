@@ -10,7 +10,7 @@ from constructor_io.constructor_io import ConstructorIO
 from constructor_io.helpers.exception import HttpException
 from tests.helpers.utils import create_mock_item, create_mock_variation
 
-TEST_API_KEY = environ['TEST_API_KEY']
+TEST_API_KEY = environ['TEST_CATALOG_API_KEY']
 TEST_API_TOKEN = environ['TEST_API_TOKEN']
 VALID_OPTIONS = { 'api_key': TEST_API_KEY, 'api_token': TEST_API_TOKEN }
 SECTION = 'Products'
@@ -70,7 +70,7 @@ def test_with_create_or_replace_items_no_items():
 
     with raises(
         HttpException,
-        match=r'items must be a list'
+        match=r'items: none is not an allowed value'
     ):
         catalog.create_or_replace_items({})
 
@@ -134,7 +134,7 @@ def test_with_update_items_no_items():
 
     with raises(
         HttpException,
-        match=r'items must be a list'
+            match=r'items: none is not an allowed value'
     ):
         catalog.update_items({})
 
