@@ -70,7 +70,7 @@ def test_with_create_or_replace_items_no_items():
 
     with raises(
         HttpException,
-        match=r'items must be a list'
+        match=r'items: none is not an allowed value'
     ):
         catalog.create_or_replace_items({})
 
@@ -134,7 +134,7 @@ def test_with_update_items_no_items():
 
     with raises(
         HttpException,
-        match=r'items must be a list'
+            match=r'items: none is not an allowed value'
     ):
         catalog.update_items({})
 
