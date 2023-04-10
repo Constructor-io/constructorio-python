@@ -282,7 +282,7 @@ def test_with_create_or_replace_variations_no_variations():
 
     with raises(
         HttpException,
-        match=r'variations must be a list'
+        match=r'variations: none is not an allowed value'
     ):
         catalog.create_or_replace_variations({})
 
@@ -372,7 +372,7 @@ def test_with_update_variations_no_variations():
 
     with raises(
         HttpException,
-        match=r'variations must be a list'
+        match=r'variations: none is not an allowed value'
     ):
         catalog.update_variations({})
 
