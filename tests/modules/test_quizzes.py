@@ -71,13 +71,24 @@ def test_get_quiz_results_with_valid_parameters():
     '''Should return a response with a valid quiz_id, a(answers)'''
 
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
-    response = quizzes.get_quiz_results(QUIZ_ID, {'answers': VALID_QUIZ_ANS})
+    res = quizzes.get_quiz_results(QUIZ_ID, {'answers': VALID_QUIZ_ANS})
+    request = res.get('request')
+    response = res.get('response')
 
-    assert isinstance(response.get('quiz_id'), str)
-    assert isinstance(response.get('quiz_version_id'), str)
-    assert isinstance(response.get('quiz_session_id'), str)
-    assert isinstance(response.get('result'), dict)
-    assert isinstance(response.get('result').get('results_url'), str)
+    assert isinstance(res.get('quiz_id'), str)
+    assert isinstance(res.get('quiz_version_id'), str)
+    assert isinstance(res.get('quiz_session_id'), str)
+    assert isinstance(res.get('result_id'), str)
+    assert isinstance(request, dict)
+    assert isinstance(response, dict)
+    assert isinstance(response.get('total_num_results'), int)
+    assert isinstance(response.get('result_sources'), dict)
+    assert isinstance(response.get('results'), list)
+    assert isinstance(response.get('sort_options'), list)
+    assert isinstance(response.get('facets'), list)
+    assert isinstance(response.get('groups'), list)
+    assert isinstance(response.get('refined_content'), list)
+    assert isinstance(response.get('total_num_results'), int)
 
 def test_get_quiz_results_with_no_quiz_id():
     '''Should raise an exception with no quiz_id'''

@@ -22,7 +22,7 @@ def _create_quizzes_url(quiz_id, parameters, user_parameters, options, path):
     if not quiz_id or not isinstance(quiz_id, str):
         raise ConstructorException('quiz_id is a required parameter of type str')
 
-    if path == 'finalize' and (not isinstance(parameters.get('answers'), list) or len(parameters.get('answers')) == 0): # pylint: disable=line-too-long
+    if path == 'results' and (not isinstance(parameters.get('answers'), list) or len(parameters.get('answers')) == 0): # pylint: disable=line-too-long
         raise ConstructorException('answers is a required parameter of type list')
 
     if parameters:
@@ -123,7 +123,7 @@ class Quizzes:
         if not user_parameters:
             user_parameters = {}
 
-        request_url = _create_quizzes_url(quiz_id, parameters, user_parameters, self.__options, 'finalize') #pylint: disable=line-too-long
+        request_url = _create_quizzes_url(quiz_id, parameters, user_parameters, self.__options, 'results') #pylint: disable=line-too-long
         requests = self.__options.get('requests') or r
 
         response = requests.get(
