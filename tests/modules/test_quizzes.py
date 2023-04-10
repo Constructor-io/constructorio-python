@@ -20,7 +20,9 @@ def test_get_quiz_next_question_with_valid_parameters():
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
     response = quizzes.get_quiz_next_question('test-quiz')
 
-    assert isinstance(response.get('version_id'), str)
+    assert isinstance(response.get('quiz_id'), str)
+    assert isinstance(response.get('quiz_version_id'), str)
+    assert isinstance(response.get('quiz_session_id'), str)
     assert isinstance(response.get('next_question'), dict)
 
 def test_get_quiz_next_question_with_answer_parameter():
@@ -29,7 +31,9 @@ def test_get_quiz_next_question_with_answer_parameter():
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
     response = quizzes.get_quiz_next_question('test-quiz', { 'answers': VALID_QUIZ_ANS })
 
-    assert isinstance(response.get('version_id'), str)
+    assert isinstance(response.get('quiz_id'), str)
+    assert isinstance(response.get('quiz_version_id'), str)
+    assert isinstance(response.get('quiz_session_id'), str)
     assert isinstance(response.get('next_question'), dict)
     assert response.get('next_question').get('id') == 4
 
@@ -69,7 +73,9 @@ def test_get_quiz_results_with_valid_parameters():
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
     response = quizzes.get_quiz_results(QUIZ_ID, {'answers': VALID_QUIZ_ANS})
 
-    assert isinstance(response.get('version_id'), str)
+    assert isinstance(response.get('quiz_id'), str)
+    assert isinstance(response.get('quiz_version_id'), str)
+    assert isinstance(response.get('quiz_session_id'), str)
     assert isinstance(response.get('result'), dict)
     assert isinstance(response.get('result').get('results_url'), str)
 

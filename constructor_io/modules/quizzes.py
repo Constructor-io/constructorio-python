@@ -29,8 +29,11 @@ def _create_quizzes_url(quiz_id, parameters, user_parameters, options, path):
         if parameters.get('section'):
             query_params['section'] = parameters.get('section')
 
-        if parameters.get('version_id'):
-            query_params['version_id'] = parameters.get('version_id')
+        if parameters.get('quiz_version_id'):
+            query_params['quiz_version_id'] = parameters.get('quiz_version_id')
+
+        if parameters.get('quiz_session_id'):
+            query_params['quiz_session_id'] = parameters.get('quiz_session_id')
 
         if parameters.get('answers'):
             answers_param = []
@@ -62,7 +65,8 @@ class Quizzes:
         :param dict parameters: Additional parameters to determine next quiz
         :param list parameters.answers: 2d Array of quiz answers in the format [[1],[1,2]]
         :param str parameters.section: Section for customer's product catalog
-        :param str parameters.version_id: Specific version_id for the quiz
+        :param str parameters.quiz_version_id: Specific quiz_version_id for the quiz. Version ID will be returned with the first request and it should be passed with subsequent requests. More information can be found: https://docs.constructor.io/rest_api/quiz/using_quizzes/#quiz-versioning
+        :param str parameters.quiz_session_id: Specific quiz_session_id for the quiz. Session ID will be returned with the first request and it should be passed with subsequent requests. More information can be found: https://docs.constructor.io/rest_api/quiz/using_quizzes/#quiz-sessions
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -91,7 +95,7 @@ class Quizzes:
         json = response.json()
 
         if json:
-            if json.get('version_id'):
+            if json.get('quiz_version_id'):
                 return json
 
         raise ConstructorException('get_quiz_next_question response data is malformed')
@@ -104,7 +108,8 @@ class Quizzes:
         :param dict parameters: Additional parameters to determine next quiz
         :param list parameters.answers: 2d Array of quiz answers in the format [[1],[1,2]]
         :param str parameters.section: Section for customer's product catalog
-        :param str parameters.version_id: Specific version_id for the quiz
+        :param str parameters.quiz_version_id: Specific quiz_version_id for the quiz. Version ID will be returned with the first request and it should be passed with subsequent requests. More information can be found: https://docs.constructor.io/rest_api/quiz/using_quizzes/#quiz-versioning
+        :param str parameters.quiz_session_id: Specific quiz_session_id for the quiz. Session ID will be returned with the first request and it should be passed with subsequent requests. More information can be found: https://docs.constructor.io/rest_api/quiz/using_quizzes/#quiz-sessions
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -133,7 +138,7 @@ class Quizzes:
         json = response.json()
 
         if json:
-            if json.get('version_id'):
+            if json.get('quiz_version_id'):
                 return json
 
         raise ConstructorException('get_quiz_results response data is malformed')
