@@ -32,7 +32,7 @@ def test_get_quiz_next_question_should_repond_with_matching_parameters():
 
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
     response = quizzes.get_quiz_next_question(QUIZ_ID, {
-        'quiz_version_id': QUIZ_VERSION_ID, 
+        'quiz_version_id': QUIZ_VERSION_ID,
         'quiz_session_id': QUIZ_SESSION_ID
         })
 
@@ -110,8 +110,8 @@ def test_get_quiz_results_should_repond_with_matching_parameters():
 
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
     res = quizzes.get_quiz_results(QUIZ_ID, {
-        'answers': VALID_QUIZ_ANS, 
-        'quiz_version_id': QUIZ_VERSION_ID, 
+        'answers': VALID_QUIZ_ANS,
+        'quiz_version_id': QUIZ_VERSION_ID,
         'quiz_session_id': QUIZ_SESSION_ID})
 
     assert res.get('quiz_id') == QUIZ_ID
