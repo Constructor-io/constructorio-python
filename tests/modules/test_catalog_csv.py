@@ -38,7 +38,7 @@ def test_with_replace_items():
 
     response = catalog.replace_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_replace_variations():
@@ -52,7 +52,7 @@ def test_with_replace_variations():
 
     response = catalog.replace_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_replace_item_groups():
@@ -66,7 +66,7 @@ def test_with_replace_item_groups():
 
     response = catalog.replace_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_replace_items_variations_item_groups():
@@ -82,7 +82,7 @@ def test_with_replace_items_variations_item_groups():
 
     response = catalog.replace_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_replace_no_files():
@@ -95,7 +95,7 @@ def test_with_replace_no_files():
 
     with raises(
         HttpException,
-        match=r"Something unexpected went wrong here. We're looking into it. Sorry for the inconvenience!"
+        match=r'form-data should contain at least one of "items", "variations", "item_groups'
     ):
         catalog.replace_catalog(data)
 
@@ -110,7 +110,7 @@ def test_with_update_items():
 
     response = catalog.update_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_update_variations():
@@ -124,7 +124,7 @@ def test_with_update_variations():
 
     response = catalog.update_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_update_item_groups():
@@ -138,7 +138,7 @@ def test_with_update_item_groups():
 
     response = catalog.update_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_update_items_variations_item_groups():
@@ -154,7 +154,7 @@ def test_with_update_items_variations_item_groups():
 
     response = catalog.update_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_update_no_files():
@@ -167,7 +167,7 @@ def test_with_update_no_files():
 
     with raises(
         HttpException,
-        match=r"Something unexpected went wrong here. We're looking into it. Sorry for the inconvenience!"
+        match=r'form-data should contain at least one of "items", "variations", "item_groups'
     ):
         catalog.update_catalog(data)
 
@@ -182,7 +182,7 @@ def test_with_patch_items():
 
     response = catalog.patch_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_patch_variations():
@@ -196,7 +196,7 @@ def test_with_patch_variations():
 
     response = catalog.patch_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_patch_item_groups():
@@ -210,7 +210,7 @@ def test_with_patch_item_groups():
 
     response = catalog.patch_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_patch_items_variations_item_groups():
@@ -226,7 +226,7 @@ def test_with_patch_items_variations_item_groups():
 
     response = catalog.patch_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_patch_no_files():
@@ -239,7 +239,7 @@ def test_with_patch_no_files():
 
     with raises(
         HttpException,
-        match=r"Something unexpected went wrong here. We're looking into it. Sorry for the inconvenience!"
+        match=r'form-data should contain at least one of "items", "variations", "item_groups'
     ):
         catalog.patch_catalog(data)
 
@@ -255,7 +255,7 @@ def test_with_force_replace_items():
 
     response = catalog.replace_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
 
 def test_with_notification_email():
@@ -270,5 +270,5 @@ def test_with_notification_email():
 
     response = catalog.replace_catalog(data)
 
-    assert isinstance(response.get('task_id'), str)
+    assert isinstance(response.get('task_id'), int)
     assert isinstance(response.get('task_status_path'), str)
