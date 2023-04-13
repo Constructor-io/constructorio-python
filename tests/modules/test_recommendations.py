@@ -264,7 +264,7 @@ def test_with_valid_pod_id_and_filters():
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('filters').get('keywords') == filters['keywords'][0]
+    assert response.get('request').get('filters').get('keywords') == filters['keywords']
 
 def test_with_valid_pod_id_and_multiple_filters():
     '''Should return a response with valid filters for filtered items strategy pod'''
@@ -280,7 +280,7 @@ def test_with_valid_pod_id_and_multiple_filters():
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('filters').get('group_id') == filters['group_id'][0]
+    assert response.get('request').get('filters').get('group_id') == filters['group_id']
     assert response.get('request').get('filters').get('Brand') == filters['Brand']
 
 def test_with_valid_pod_id_and_variations_map():
@@ -312,7 +312,7 @@ def test_with_valid_pod_id_and_variations_map():
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('filters').get('keywords') == filters['keywords'][0]
+    assert response.get('request').get('filters').get('keywords') == filters['keywords']
     assert response.get('request').get('variations_map') == variations_map
 
 def test_with_invalid_api_key():
@@ -360,7 +360,7 @@ def test_with_no_pod_id():
 def test_with_invalid_num_results():
     '''Should raise exception when invalid num_results is provided'''
 
-    with raises(ConstructorException, match=r'num_results must be an integer'):
+    with raises(ConstructorException, match=r'num_results: value is not a valid integer'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
         recommendations.get_recommendation_results(
             POD_ID,
@@ -382,7 +382,7 @@ def test_with_invalid_filters():
 def test_with_invalid_item_ids():
     '''Should raise exception when invalid item_ids is provided'''
 
-    with raises(ConstructorException, match=r'item_id is a required field of type string'):
+    with raises(ConstructorException, match=r'item_id: field required'):
         recommendations = ConstructorIO(VALID_OPTIONS).recommendations
         recommendations.get_recommendation_results(
             POD_ID_ALTERNATIVE_RECOMMENDATIONS,
