@@ -9,7 +9,7 @@ requests = "*"
 [dev-packages]
 isort = "*"
 pylint = "*"
-pytest = "*"
+pytest = ">=7.3.0"
 pytest-cov = "*"
 pre-commit = "*"
 sphinx = "*"
