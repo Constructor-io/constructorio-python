@@ -22,15 +22,18 @@ def _create_quizzes_url(quiz_id, parameters, user_parameters, options, path):
     if not quiz_id or not isinstance(quiz_id, str):
         raise ConstructorException('quiz_id is a required parameter of type str')
 
-    if path == 'finalize' and (not isinstance(parameters.get('answers'), list) or len(parameters.get('answers')) == 0): # pylint: disable=line-too-long
+    if path == 'results' and (not isinstance(parameters.get('answers'), list) or len(parameters.get('answers')) == 0): # pylint: disable=line-too-long
         raise ConstructorException('answers is a required parameter of type list')
 
     if parameters:
         if parameters.get('section'):
             query_params['section'] = parameters.get('section')
 
-        if parameters.get('version_id'):
-            query_params['version_id'] = parameters.get('version_id')
+        if parameters.get('quiz_version_id'):
+            query_params['quiz_version_id'] = parameters.get('quiz_version_id')
+
+        if parameters.get('quiz_session_id'):
+            query_params['quiz_session_id'] = parameters.get('quiz_session_id')
 
         if parameters.get('answers'):
             answers_param = []
@@ -62,7 +65,8 @@ class Quizzes:
         :param dict parameters: Additional parameters to determine next quiz
         :param list parameters.answers: 2d Array of quiz answers in the format [[1],[1,2]]
         :param str parameters.section: Section for customer's product catalog
-        :param str parameters.version_id: Specific version_id for the quiz
+        :param str parameters.quiz_version_id: Specific quiz_version_id for the quiz. Version ID will be returned with the first request and it should be passed with subsequent requests. More information can be found: https://docs.constructor.io/rest_api/quiz/using_quizzes/#quiz-versioning
+        :param str parameters.quiz_session_id: Specific quiz_session_id for the quiz. Session ID will be returned with the first request and it should be passed with subsequent requests. More information can be found: https://docs.constructor.io/rest_api/quiz/using_quizzes/#quiz-sessions
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -91,7 +95,7 @@ class Quizzes:
         json = response.json()
 
         if json:
-            if json.get('version_id'):
+            if json.get('quiz_version_id'):
                 return json
 
         raise ConstructorException('get_quiz_next_question response data is malformed')
@@ -104,7 +108,8 @@ class Quizzes:
         :param dict parameters: Additional parameters to determine next quiz
         :param list parameters.answers: 2d Array of quiz answers in the format [[1],[1,2]]
         :param str parameters.section: Section for customer's product catalog
-        :param str parameters.version_id: Specific version_id for the quiz
+        :param str parameters.quiz_version_id: Specific quiz_version_id for the quiz. Version ID will be returned with the first request and it should be passed with subsequent requests. More information can be found: https://docs.constructor.io/rest_api/quiz/using_quizzes/#quiz-versioning
+        :param str parameters.quiz_session_id: Specific quiz_session_id for the quiz. Session ID will be returned with the first request and it should be passed with subsequent requests. More information can be found: https://docs.constructor.io/rest_api/quiz/using_quizzes/#quiz-sessions
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -118,7 +123,7 @@ class Quizzes:
         if not user_parameters:
             user_parameters = {}
 
-        request_url = _create_quizzes_url(quiz_id, parameters, user_parameters, self.__options, 'finalize') #pylint: disable=line-too-long
+        request_url = _create_quizzes_url(quiz_id, parameters, user_parameters, self.__options, 'results') #pylint: disable=line-too-long
         requests = self.__options.get('requests') or r
 
         response = requests.get(
@@ -133,7 +138,7 @@ class Quizzes:
         json = response.json()
 
         if json:
-            if json.get('version_id'):
+            if json.get('quiz_version_id'):
                 return json
 
         raise ConstructorException('get_quiz_results response data is malformed')
