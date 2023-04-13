@@ -27,7 +27,7 @@ def test_get_quiz_next_question_with_valid_parameters():
     assert isinstance(response.get('quiz_session_id'), str)
     assert isinstance(response.get('next_question'), dict)
 
-def test_get_quiz_next_question_should_repond_with_matching_parameters():
+def test_get_quiz_next_question_should_respond_with_matching_parameters():
     '''Should return a response with a matching quiz_id, quiz_version_id, quiz_session_id'''
 
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
@@ -105,7 +105,7 @@ def test_get_quiz_results_with_valid_parameters():
     assert isinstance(response.get('refined_content'), list)
     assert isinstance(response.get('total_num_results'), int)
 
-def test_get_quiz_results_should_repond_with_matching_parameters():
+def test_get_quiz_results_should_respond_with_matching_parameters():
     '''Should return a response with a matching quiz_id, quiz_version_id, quiz_session_id'''
 
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
