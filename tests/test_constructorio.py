@@ -47,7 +47,7 @@ def test_with_valid_api_key_and_options():
     assert options.get('security_token') == security_token
 
 def test_with_valid_api_key_and_default_version():
-    '''Should return an instance with custom options when valid API key is provided'''
+    '''Should return an instance with the default version string'''
 
     client = ConstructorIO({
         **VALID_OPTIONS,
