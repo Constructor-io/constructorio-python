@@ -46,6 +46,22 @@ def test_with_valid_api_key_and_options():
     assert options.get('api_token') == api_token
     assert options.get('security_token') == security_token
 
+def test_with_valid_api_key_and_default_version():
+    '''Should return an instance with custom options when valid API key is provided'''
+
+    client = ConstructorIO({
+        **VALID_OPTIONS,
+    })
+    options = client.get_options()
+    version = options.get('version')
+
+    assert isinstance(client, ConstructorIO)
+    assert version is not None
+
+    # Check version exists before using startswith to satisfy linting
+    if version:
+        assert version.startswith('ciopython-')
+
 def test_with_invalid_api_key():
     '''Should throw an error when invalid API key is provided'''
 

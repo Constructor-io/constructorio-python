@@ -32,6 +32,7 @@ class ConstructorIO:
         version = options.get('version')
         service_url = options.get('service_url')
         requests = options.get('requests')
+        package_version_with_prefix = "ciopython-" + __version__
 
         if not api_key or not isinstance(api_key, str):
             raise ConstructorException('API key is a required parameter of type string')
@@ -40,7 +41,7 @@ class ConstructorIO:
             'api_key': api_key,
             'api_token': api_token,
             'security_token': security_token,
-            'version': version or __version__,
+            'version': version or package_version_with_prefix,
             'service_url': service_url or 'https://ac.cnstrc.com',
             'requests': requests,
         }
