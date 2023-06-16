@@ -93,6 +93,18 @@ def test_get_all_tasks_with_type():
     assert isinstance(response.get('total_count'), int)
     assert len(response.get('tasks')) <= 50 and len(response.get('tasks')) >= 1
 
+def test_get_all_tasks_with_zero_tasks():
+    '''Should return a valid response when there are zero tasks'''
+
+    past_end_date = '2000-01-01'
+    tasks = ConstructorIO(VALID_OPTIONS).tasks
+    response = tasks.get_all_tasks({ 'end_date': past_end_date })
+
+    assert isinstance(response.get('status_counts'), dict)
+    assert isinstance(response.get('tasks'), list)
+    assert isinstance(response.get('total_count'), int)
+    assert len(response.get('tasks')) == 0
+
 def test_get_all_tasks_with_invalid_api_key():
     '''Should raise exception when invalid api_key is provided'''
 
