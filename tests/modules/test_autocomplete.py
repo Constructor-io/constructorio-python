@@ -258,7 +258,7 @@ def test_with_no_query():
 def test_with_invalid_num_results():
     '''Should raise exception when invalid num_results parameter is provided'''
 
-    with raises(HttpException, match=r'num_results must be an integer'):
+    with raises(HttpException, match=r'num_results: value is not a valid integer'):
         autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
         autocomplete.get_autocomplete_results(QUERY, { 'num_results': 'abc' })
 
