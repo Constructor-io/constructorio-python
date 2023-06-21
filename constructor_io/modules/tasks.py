@@ -75,7 +75,7 @@ class Tasks:
         json = response.json()
 
         if json:
-            if json.get('total_count'):
+            if json.get('total_count') is not None:
                 return json
 
         raise ConstructorException('get_all_tasks response data is malformed')
