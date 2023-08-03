@@ -443,7 +443,10 @@ def test_get_browse_results_with_invalid_sort_by():
 def test_get_browse_results_with_invalid_sort_order():
     '''Should raise exception when invalid sort_order parameter is provided'''
 
-    with raises(HttpException, match=r"sort_order: value is not a valid enumeration member; permitted: 'ascending', 'descending'"):
+    with raises(
+        HttpException,
+        match=r"sort_order: value is not a valid enumeration member; permitted: 'ascending', 'descending'"
+        ):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -1135,7 +1138,10 @@ def test_get_browse_results_for_item_ids_with_invalid_sort_by():
 def test_get_browse_results_for_item_ids_with_invalid_sort_order():
     '''Should raise exception when invalid sort_order parameter is provided'''
 
-    with raises(HttpException, match=r"sort_order: value is not a valid enumeration member; permitted: 'ascending', 'descending'"):
+    with raises(
+        HttpException,
+        match=r"sort_order: value is not a valid enumeration member; permitted: 'ascending', 'descending'"
+        ):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
