@@ -395,7 +395,7 @@ def test_get_browse_results_with_no_filter_value():
 def test_get_browse_results_with_invalid_page():
     '''Should raise exception when invalid page parameter is provided'''
 
-    with raises(HttpException, match=r'page must be an integer'):
+    with raises(HttpException, match=r'page: value is not a valid integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -407,7 +407,7 @@ def test_get_browse_results_with_invalid_page():
 def test_get_browse_results_with_invalid_results_per_page():
     '''Should raise exception when invalid results_per_page parameter is provided'''
 
-    with raises(HttpException, match=r'num_results_per_page must be an integer'):
+    with raises(HttpException, match=r'num_results_per_page: value is not a valid integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -431,7 +431,7 @@ def test_get_browse_results_with_invalid_filters():
 def test_get_browse_results_with_invalid_sort_by():
     '''Should raise exception when invalid sort_by parameter is provided'''
 
-    with raises(HttpException, match=r'sort_by must be a string'):
+    with raises(HttpException, match=r'sort_by: str type expected'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -443,7 +443,10 @@ def test_get_browse_results_with_invalid_sort_by():
 def test_get_browse_results_with_invalid_sort_order():
     '''Should raise exception when invalid sort_order parameter is provided'''
 
-    with raises(HttpException, match=r'Invalid value for parameter: "sort_order"'):
+    with raises(
+        HttpException,
+        match=r"sort_order: value is not a valid enumeration member; permitted: 'ascending', 'descending'"
+        ):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results(
             FILTER_NAME,
@@ -1091,7 +1094,7 @@ def test_get_browse_results_for_item_ids_with_invalid_item_ids():
 def test_get_browse_results_for_item_ids_with_invalid_page():
     '''Should raise exception when invalid page parameter is provided'''
 
-    with raises(HttpException, match=r'page must be an integer'):
+    with raises(HttpException, match=r'page: value is not a valid integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
@@ -1102,7 +1105,7 @@ def test_get_browse_results_for_item_ids_with_invalid_page():
 def test_get_browse_results_for_item_ids_with_invalid_results_per_page():
     '''Should raise exception when invalid results_per_page parameter is provided'''
 
-    with raises(HttpException, match=r'num_results_per_page must be an integer'):
+    with raises(HttpException, match=r'num_results_per_page: value is not a valid integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
@@ -1124,7 +1127,7 @@ def test_get_browse_results_for_item_ids_with_invalid_filters():
 def test_get_browse_results_for_item_ids_with_invalid_sort_by():
     '''Should raise exception when invalid sort_by parameter is provided'''
 
-    with raises(HttpException, match=r'sort_by must be a string'):
+    with raises(HttpException, match=r'sort_by: str type expected'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,
@@ -1135,7 +1138,10 @@ def test_get_browse_results_for_item_ids_with_invalid_sort_by():
 def test_get_browse_results_for_item_ids_with_invalid_sort_order():
     '''Should raise exception when invalid sort_order parameter is provided'''
 
-    with raises(HttpException, match=r'Invalid value for parameter: "sort_order"'):
+    with raises(
+        HttpException,
+        match=r"sort_order: value is not a valid enumeration member; permitted: 'ascending', 'descending'"
+        ):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_results_for_item_ids(
             IDS,

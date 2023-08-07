@@ -11,14 +11,15 @@ from pytest import raises
 from constructor_io.constructor_io import ConstructorIO
 from constructor_io.helpers.exception import HttpException
 
+TIMEOUT = 60
 TEST_API_KEY = environ['TEST_CATALOG_API_KEY']
 TEST_API_TOKEN = environ['TEST_API_TOKEN']
 VALID_OPTIONS = { 'api_key': TEST_API_KEY, 'api_token': TEST_API_TOKEN }
 SECTION = 'Products'
 CATALOG_EXAMPLES_BASE_URL = 'https://raw.githubusercontent.com/Constructor-io/integration-examples/main/catalog/' #pylint: disable=line-too-long
-ITEMS = requests.get(f'{CATALOG_EXAMPLES_BASE_URL}items.csv').content
-VARIATIONS = requests.get(f'{CATALOG_EXAMPLES_BASE_URL}variations.csv').content
-ITEM_GROUPS = requests.get(f'{CATALOG_EXAMPLES_BASE_URL}item_groups.csv').content
+ITEMS = requests.get(f'{CATALOG_EXAMPLES_BASE_URL}items.csv', timeout=TIMEOUT).content
+VARIATIONS = requests.get(f'{CATALOG_EXAMPLES_BASE_URL}variations.csv', timeout=TIMEOUT).content
+ITEM_GROUPS = requests.get(f'{CATALOG_EXAMPLES_BASE_URL}item_groups.csv', timeout=TIMEOUT).content
 
 @pytest.fixture(autouse=True)
 def slow_down_tests():
