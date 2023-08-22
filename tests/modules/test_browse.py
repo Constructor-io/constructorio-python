@@ -708,7 +708,7 @@ def test_get_browse_facets_with_section():
 def test_get_browse_facets_with_invalid_page():
     '''Should return a response with invalid page'''
 
-    with raises(HttpException, match=r'page must be an integer'):
+    with raises(HttpException, match=r'page: value is not a valid integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_facets(
             { 'page': 'abc'},
@@ -718,7 +718,7 @@ def test_get_browse_facets_with_invalid_page():
 def test_get_browse_facets_with_invalid_results_per_page():
     '''Should return a response with invalid results_per_page'''
 
-    with raises(HttpException, match=r'results_per_page must be an integer'):
+    with raises(HttpException, match=r'num_results_per_page: value is not a valid integer'):
         browse = ConstructorIO(VALID_OPTIONS).browse
         browse.get_browse_facets(
             { 'results_per_page': 'abc'},
