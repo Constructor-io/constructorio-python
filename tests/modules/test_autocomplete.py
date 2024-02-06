@@ -126,7 +126,6 @@ def test_with_valid_query_and_filters():
     assert isinstance(response.get('sections'), dict)
     assert isinstance(response.get('result_id'), str)
     assert response.get('request').get('filters') == expected_filters
-    print(response)
 
 def test_with_valid_query_and_multiple_filters():
     '''Should return a response with a valid query and multiple filters'''
