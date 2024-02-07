@@ -117,11 +117,15 @@ def test_with_valid_query_and_filters():
     filters = { 'keywords': ['battery-powered'] }
     autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
     response = autocomplete.get_autocomplete_results(QUERY, { 'filters': filters })
+    expected_filters = filters.copy()
+    expected_filters['Content'] = filters
+    expected_filters['Search Suggestions'] = filters
+    expected_filters['Products'] = filters
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('sections'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('filters') == filters
+    assert response.get('request').get('filters') == expected_filters
 
 def test_with_valid_query_and_multiple_filters():
     '''Should return a response with a valid query and multiple filters'''
@@ -129,11 +133,15 @@ def test_with_valid_query_and_multiple_filters():
     filters = { 'group_id': ['All'], 'Brand': ['XYZ'] }
     autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
     response = autocomplete.get_autocomplete_results(QUERY, { 'filters': filters })
+    expected_filters = filters.copy()
+    expected_filters['Content'] = filters
+    expected_filters['Search Suggestions'] = filters
+    expected_filters['Products'] = filters
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('sections'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('filters') == filters
+    assert response.get('request').get('filters') == expected_filters
     assert len(response.get('sections').get('Products')) >= 1
 
 def test_with_valid_query_and_user_ip():
