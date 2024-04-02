@@ -130,14 +130,14 @@ def test_with_valid_query_and_filters():
 def test_with_valid_query_and_filters_by_section():
     '''Should return a response with a valid query and filters'''
 
-    filtersBySection = { 'Search Suggestions': { 'keywords': ['battery-powered'] } }
+    filters_by_section = { 'Search Suggestions': { 'keywords': ['battery-powered'] } }
     autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
-    response = autocomplete.get_autocomplete_results(QUERY, { 'filtersBySection': filtersBySection })
+    response = autocomplete.get_autocomplete_results(QUERY, { 'filters_by_section': filters_by_section })
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('sections'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('filters') == filtersBySection
+    assert response.get('request').get('filters') == filters_by_section
 
 def test_with_valid_query_and_multiple_filters():
     '''Should return a response with a valid query and multiple filters'''
@@ -158,17 +158,17 @@ def test_with_valid_query_and_multiple_filters():
 
 def test_with_valid_query_and_multiple_filters_by_section():
     '''Should return a response with a valid query and filters'''
-    filtersBySection = {
+    filters_by_section = {
         'Products': { 'group_id': ['All', 'shop'] },
         'Search Suggestions': { 'keywords': ['battery-powered'] },
     }
     autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
-    response = autocomplete.get_autocomplete_results(QUERY, { 'filtersBySection': filtersBySection })
+    response = autocomplete.get_autocomplete_results(QUERY, { 'filters_by_section': filters_by_section })
 
     assert isinstance(response.get('request'), dict)
     assert isinstance(response.get('sections'), dict)
     assert isinstance(response.get('result_id'), str)
-    assert response.get('request').get('filters') == filtersBySection
+    assert response.get('request').get('filters') == filters_by_section
     assert len(response.get('sections').get('Products')) >= 1
 
 def test_with_valid_query_and_user_ip():
