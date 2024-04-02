@@ -127,6 +127,18 @@ def test_with_valid_query_and_filters():
     assert isinstance(response.get('result_id'), str)
     assert response.get('request').get('filters') == expected_filters
 
+def test_with_valid_query_and_filters_by_section():
+    '''Should return a response with a valid query and filters'''
+
+    filtersBySection = { 'Search Suggestions': { 'keywords': ['battery-powered'] } }
+    autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
+    response = autocomplete.get_autocomplete_results(QUERY, { 'filtersBySection': filtersBySection })
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('sections'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert response.get('request').get('filters') == filtersBySection
+
 def test_with_valid_query_and_multiple_filters():
     '''Should return a response with a valid query and multiple filters'''
 
@@ -142,6 +154,21 @@ def test_with_valid_query_and_multiple_filters():
     assert isinstance(response.get('sections'), dict)
     assert isinstance(response.get('result_id'), str)
     assert response.get('request').get('filters') == expected_filters
+    assert len(response.get('sections').get('Products')) >= 1
+
+def test_with_valid_query_and_multiple_filters_by_section():
+    '''Should return a response with a valid query and filters'''
+    filtersBySection = {
+        'Products': { 'group_id': ['All', 'shop'] },
+        'Search Suggestions': { 'keywords': ['battery-powered'] },
+    }
+    autocomplete = ConstructorIO(VALID_OPTIONS).autocomplete
+    response = autocomplete.get_autocomplete_results(QUERY, { 'filtersBySection': filtersBySection })
+
+    assert isinstance(response.get('request'), dict)
+    assert isinstance(response.get('sections'), dict)
+    assert isinstance(response.get('result_id'), str)
+    assert response.get('request').get('filters') == filtersBySection
     assert len(response.get('sections').get('Products')) >= 1
 
 def test_with_valid_query_and_user_ip():
