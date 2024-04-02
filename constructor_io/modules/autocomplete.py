@@ -29,6 +29,20 @@ def _create_autocomplete_url(query, parameters, user_parameters, options):
             for key, value in parameters.get('results_per_section').items():
                 query_params[f'num_results_{key}'] = value
 
+        if parameters.get('filtersBySection'):
+            filters = parameters.get('filtersBySection')
+
+            if isinstance(filters, dict):
+                for key, value in filters.items():
+                    if isinstance(value, dict):
+                        for innerKey, innerValue in value.items():
+                            query_params[f'filters[{key}][{innerKey}]'] = innerValue
+                    else:
+                        raise ConstructorException('section\'s filters must be a dictionary')
+            else:
+                raise ConstructorException('filters must be a dictionary')
+
+
     query_params['_dt'] = int(time()*1000.0)
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
@@ -50,6 +64,7 @@ class Autocomplete:
         :param dict parameters: Additional parameters to refine result set
         :param int parameters.num_results: The total number of results to return
         :param dict parameters.filters: Filters used to refine search
+        :param dict parameters.filtersBySection: Filters used to refine search by section
         :param dict parameters.results_per_section: Number of results to return per section
         :param list parameters.hidden_fields: Hidden metadata fields to return
         :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.io/rest_api/variations_mapping for details
