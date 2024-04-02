@@ -31,23 +31,24 @@ def _create_autocomplete_url(query, parameters, user_parameters, options):
 
         if parameters.get('filters_by_section'):
             filters = parameters.get('filters_by_section')
-
-            if isinstance(filters, dict):
-                for key, value in filters.items():
-                    if isinstance(value, dict):
-                        for inner_key, inner_value in value.items():
-                            query_params[f'filters[{key}][{inner_key}]'] = inner_value
-                    else:
-                        raise ConstructorException('section\'s filters must be a dictionary')
-            else:
-                raise ConstructorException('filters must be a dictionary')
-
+            _create_autocomplete_url_filters_by_section(query_params, filters)
 
     query_params['_dt'] = int(time()*1000.0)
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
     return f'{options.get("service_url")}/autocomplete/{quote(query)}?{query_string}'
+
+def _create_autocomplete_url_filters_by_section(query_params, filters):
+    if isinstance(filters, dict):
+        for key, value in filters.items():
+            if isinstance(value, dict):
+                for inner_key, inner_value in value.items():
+                    query_params[f'filters[{key}][{inner_key}]'] = inner_value
+            else:
+                raise ConstructorException('section\'s filters must be a dictionary')
+    else:
+        raise ConstructorException('filters must be a dictionary')
 
 class Autocomplete:
     # pylint: disable=too-few-public-methods
