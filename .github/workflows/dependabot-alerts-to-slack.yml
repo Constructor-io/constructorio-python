@@ -5,15 +5,21 @@ on:
     - cron: '0 8 * * *' # every day at 8 am
   workflow_dispatch: # to have the option to run this ad-hoc
 
+
 jobs:
   main:
     runs-on: ubuntu-latest
-    permissions:
-      security-events: read
     steps:
+      - name: Get Token
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@v1
+        with:
+          application_id: ${{ secrets.DEPENDABOT_ACCESS_APP_ID   }}
+          application_private_key: ${{ secrets.DEPENDABOT_ACCESS_PRIVATE_KEY }}
+
       # X.X.X - Latest version available at: https://github.com/kunalnagarco/action-cve/releases
       - uses: kunalnagarco/action-cve@v1.13.2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.get_workflow_token.outputs.token }}
           slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
           count: 10
