@@ -14,7 +14,7 @@ jobs:
         id: get_workflow_token
         uses: peter-murray/workflow-application-token-action@v1
         with:
-          application_id: ${{ variables.DEPENDABOT_ACCESS_APP_ID   }}
+          application_id: $DEPENDABOT_ACCESS_APP_ID
           application_private_key: ${{ secrets.DEPENDABOT_ACCESS_PRIVATE_KEY }}
 
       # X.X.X - Latest version available at: https://github.com/kunalnagarco/action-cve/releases
