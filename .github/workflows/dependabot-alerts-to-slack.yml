@@ -11,15 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get Token
-        id: get_workflow_token
-        uses: peter-murray/workflow-application-token-action@v1
+
+      - uses: actions/create-github-app-token@v1
+        id: app-token
         with:
-          application_id: $DEPENDABOT_ACCESS_APP_ID
-          application_private_key: ${{ secrets.DEPENDABOT_ACCESS_PRIVATE_KEY }}
+          app-id: ${{ vars.DEPENDABOT_ACCESS_APP_ID }}
+          private-key: ${{ secrets.DEPENDABOT_ACCESS_PRIVATE_KEY }}
 
       # X.X.X - Latest version available at: https://github.com/kunalnagarco/action-cve/releases
       - uses: kunalnagarco/action-cve@v1.13.2
         with:
           token: ${{ steps.get_workflow_token.outputs.token }}
+          token: ${{ steps.app-token.outputs.token }}
           slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
           count: 10
