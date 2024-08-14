@@ -1,8 +1,8 @@
-name: 'Check for Dependabot alerts & send them to slack'
+name: 'Check for Dependabot alerts & send them to Slack'
 
 on:
   schedule:
-    - cron: '0 8 * * *' # every day at 8 am
+    - cron: '30 16 * * *' # every day at 9:30 am PST
   workflow_dispatch: # to have the option to run this ad-hoc
 
 jobs:
