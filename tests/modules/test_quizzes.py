@@ -11,7 +11,6 @@ from constructor_io.helpers.exception import (ConstructorException,
 TEST_API_KEY = environ['TEST_REQUEST_API_KEY']
 TEST_API_TOKEN = environ['TEST_API_TOKEN']
 QUIZ_ID = 'test-quiz'
-QUIZ_VERSION_ID = 'e03210db-0cc6-459c-8f17-bf014c4f554d'
 QUIZ_SESSION_ID = 'ca380401-3805-4ded-8f28-638e5a4baa92'
 VALID_QUIZ_ANS = [[1], [1, 2], ['seen']]
 VALID_OPTIONS = { 'api_key': TEST_API_KEY, 'api_token': TEST_API_TOKEN}
@@ -31,13 +30,18 @@ def test_get_quiz_next_question_should_respond_with_matching_parameters():
     '''Should return a response with a matching quiz_id, quiz_version_id, quiz_session_id'''
 
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
+    initial_response = quizzes.get_quiz_next_question(QUIZ_ID, {
+        'quiz_session_id': QUIZ_SESSION_ID
+        })
+    quiz_version_id = initial_response.get('quiz_version_id')
+
     response = quizzes.get_quiz_next_question(QUIZ_ID, {
-        'quiz_version_id': QUIZ_VERSION_ID,
+        'quiz_version_id': quiz_version_id,
         'quiz_session_id': QUIZ_SESSION_ID
         })
 
     assert response.get('quiz_id') == QUIZ_ID
-    assert response.get('quiz_version_id') == QUIZ_VERSION_ID
+    assert response.get('quiz_version_id') == quiz_version_id
     assert response.get('quiz_session_id') == QUIZ_SESSION_ID
 
 def test_get_quiz_next_question_with_answer_parameter():
@@ -109,13 +113,18 @@ def test_get_quiz_results_should_respond_with_matching_parameters():
     '''Should return a response with a matching quiz_id, quiz_version_id, quiz_session_id'''
 
     quizzes = ConstructorIO(VALID_OPTIONS).quizzes
+    initial_response = quizzes.get_quiz_next_question(QUIZ_ID, {
+        'quiz_session_id': QUIZ_SESSION_ID
+        })
+    quiz_version_id = initial_response.get('quiz_version_id')
+
     res = quizzes.get_quiz_results(QUIZ_ID, {
         'answers': VALID_QUIZ_ANS,
-        'quiz_version_id': QUIZ_VERSION_ID,
+        'quiz_version_id': quiz_version_id,
         'quiz_session_id': QUIZ_SESSION_ID})
 
     assert res.get('quiz_id') == QUIZ_ID
-    assert res.get('quiz_version_id') == QUIZ_VERSION_ID
+    assert res.get('quiz_version_id') == quiz_version_id
     assert res.get('quiz_session_id') == QUIZ_SESSION_ID
 
 def test_get_quiz_results_with_no_quiz_id():
