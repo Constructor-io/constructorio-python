@@ -19,5 +19,5 @@ jobs:
       - uses: kunalnagarco/action-cve@v1.13.2
         with:
           token: ${{ steps.app-token.outputs.token }}
-          slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+          slack_webhook: ${{ secrets.CUSTOMER_INTEGRATIONS_SLACK_WEBHOOK }}
           count: 10
