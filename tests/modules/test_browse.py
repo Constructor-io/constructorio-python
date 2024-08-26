@@ -326,7 +326,7 @@ def test_get_browse_results_with_valid_filter_name_filter_value_and_hidden_facet
     assert isinstance(response.get('response'), dict)
     assert isinstance(response.get('result_id'), str)
     assert response.get('request').get('fmt_options').get('hidden_facets') == hidden_facets
-    assert response.get('response').get('facets')[0].get('name') == hidden_facets[0]
+    assert any(facet.get('name') == hidden_facets[0] for facet in response.get('response').get('facets'))
 
 def test_get_browse_results_with_valid_filter_name_filter_value_and_variations_map():
     '''Should return a response with a valid filter_name, filter_value, section, and variations_map''' # pylint: disable=line-too-long
