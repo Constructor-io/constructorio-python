@@ -7,17 +7,4 @@ on:
 
 jobs:
   main:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/create-github-app-token@v1
-        id: app-token
-        with:
-          app-id: ${{ vars.DEPENDABOT_ACCESS_APP_ID }}
-          private-key: ${{ secrets.DEPENDABOT_ACCESS_PRIVATE_KEY }}
-
-      # X.X.X - Latest version available at: https://github.com/kunalnagarco/action-cve/releases
-      - uses: kunalnagarco/action-cve@v1.13.2
-        with:
-          token: ${{ steps.app-token.outputs.token }}
-          slack_webhook: ${{ secrets.CUSTOMER_INTEGRATIONS_SLACK_WEBHOOK }}
-          count: 10
+    uses: Constructor-io/customer-integrations-github-workflows/blob/main/workflows/dependabot-alerts-to-slack.yml@main
