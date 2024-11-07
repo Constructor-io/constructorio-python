@@ -12,8 +12,8 @@ setup(
     version=__version__,
     download_url='https://github.com/Constructor-io/constructor-io/tarball/' + __version__,
     license="MIT",
-    description="Constructor.IO Python Client",
-    author="Constructor.io",
+    description="Constructor.io Python Client",
+    author="Constructor.io Corporation",
     author_email="info@constructor.io",
     url="https://www.constructor.io",
     install_requires=[
