@@ -56,7 +56,7 @@ class Browse:
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param list parameters.hidden_fields: Hidden metadata fields to return
         :param list parameters.hidden_facets: Hidden facet fields to return
-        :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.io/rest_api/variations_mapping for details
+        :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.com/reference/shared-variations-mapping for details
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
@@ -129,7 +129,7 @@ class Browse:
         :param dict parameters.fmt_options: The format options used to refine result groups
         :param list parameters.hidden_fields: Hidden metadata fields to return
         :param list parameters.hidden_facets: Hidden facet fields to return
-        :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.io/rest_api/variations_mapping for details
+        :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.com/reference/shared-variations-mapping for details
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
