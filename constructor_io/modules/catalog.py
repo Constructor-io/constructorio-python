@@ -213,7 +213,7 @@ class Catalog:
         '''
         Add multiple items to index whilst replacing existing ones (limit of 1,000)
 
-        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema
+        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.com/reference/catalog-items
         :param str parameters.section: The section to update
         :param str parameters.notification_email: An email address to receive an email notification if the task fails
         :param bool parameters.force: Process the update even if it will invalidate a large number of existing items
@@ -241,7 +241,7 @@ class Catalog:
         '''
         Update multiple items in the index (limit of 1,000)
 
-        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema
+        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.com/reference/catalog-items
         :param str parameters.section: The section to update
         :param str parameters.notification_email: An email address to receive an email notification if the task fails
         :param bool parameters.force: Process the update even if it will invalidate a large number of existing items
@@ -269,7 +269,7 @@ class Catalog:
         '''
         Delete multiple items from the index (limit of 1,000)
 
-        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.io/rest_api/items/items/#item-schema (only IDs are required)
+        :param list parameters.items: A list of items with the same attributes as defined in https://docs.constructor.com/reference/catalog-items (only IDs are required)
         :param str parameters.section: The section to update
         :param str parameters.notification_email: An email address to receive an email notification if the task fails
         :param bool parameters.force: Process the update even if it will invalidate a large number of existing items
@@ -330,7 +330,7 @@ class Catalog:
         '''
         Add multiple variations to index whilst replacing existing ones (limit of 1,000)
 
-        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema
+        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.com/reference/catalog-variations
         :param str parameters.section: The section to update
         :param str parameters.notification_email: An email address to receive an email notification if the task fails
         :param bool parameters.force: Process the update even if it will invalidate a large number of existing variations
@@ -358,7 +358,7 @@ class Catalog:
         '''
         Update multiple variations in the index (limit of 1,000)
 
-        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema
+        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.com/reference/catalog-variations
         :param str parameters.section: The section to update
         :param str parameters.notification_email: An email address to receive an email notification if the task fails
         :param bool parameters.force: Process the update even if it will invalidate a large number of existing variations
@@ -386,7 +386,7 @@ class Catalog:
         '''
         Delete multiple variations from the index (limit of 1,000)
 
-        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.io/rest_api/variations/variations/#item-schema (only IDs are required)
+        :param list parameters.variations: A list of variations with the same attributes as defined in https://docs.constructor.com/reference/catalog-variations (only IDs are required)
         :param str parameters.section: The section to update
         :param str parameters.notification_email: An email address to receive an email notification if the task fails
         :param bool parameters.force: Process the update even if it will invalidate a large number of existing variations

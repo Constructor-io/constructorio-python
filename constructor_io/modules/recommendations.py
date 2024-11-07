@@ -55,7 +55,7 @@ class Recommendations:
         :param str parameters.term: The term to use to refine results (strategy specific)
         :param dict parameters.filters: Key / value mapping of filters used to refine results
         :param str parameters.section: The section to return results from
-        :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.io/rest_api/variations_mapping for details
+        :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.com/reference/shared-variations-mapping for details
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
