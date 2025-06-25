@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 requests = "*"
-urllib3 = "<2"
+urllib3 = "<3"
 certifi = ">=2024.07.04"
 
 [dev-packages]
