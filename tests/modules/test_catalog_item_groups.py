@@ -81,7 +81,7 @@ def test_create_or_replace_item_groups():
     '''Should create or replace item groups'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
-    
+
     initial_item_groups = [
         create_mock_item_group(),
         create_mock_item_group(),
@@ -187,7 +187,8 @@ def test_delete_item_groups():
 
     assert delete_response is not None
     assert 'message' in delete_response
-    assert delete_response['message'] == 'We\'ve started deleting all of your groups. This may take some time to complete.'
+    expected_message = 'We\'ve started deleting all of your groups. This may take some time to complete.'
+    assert delete_response['message'] == expected_message
 
 
 def test_create_or_update_item_groups():
