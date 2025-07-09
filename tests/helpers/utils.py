@@ -51,3 +51,22 @@ def create_mock_variation(item_id=None):
     }
 
     return variation
+
+def create_mock_item_group():
+    '''Creates a mock item group to be used in Item Groups API tests'''
+    item_group_id = str(uuid.uuid4())
+    name = 'Item Group ' + item_group_id
+    data = {
+        'complexMetadataField': {
+            'key1': 'val1',
+            'key2': 'val2',
+        }
+    }
+    item_group = {
+        'id': item_group_id,
+        'name': name,
+        'data': data,
+        'children': []
+    }
+
+    return item_group
