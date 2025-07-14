@@ -109,6 +109,22 @@ def _create_items_url(path, options, additional_query_params):
 
     return f'{options.get("service_url")}/v2/{quote(path)}?{query_string}'
 
+def _create_item_groups_url(path, options, additional_query_params):
+    '''Create item groups API url'''
+
+    api_key = options.get('api_key')
+    version = options.get('version')
+    query_params = {**additional_query_params}
+
+    if not path or not isinstance(path, str):
+        raise ConstructorException('path is a required parameter of type string')
+
+    query_params['key'] = api_key
+    query_params['c'] = version
+    query_params = clean_params(query_params)
+    query_string = urlencode(query_params, doseq=True)
+
+    return f'{options.get("service_url")}/v1/{quote(path)}?{query_string}'
 
 class Catalog:
     '''Catalog Class'''
@@ -439,6 +455,135 @@ class Catalog:
             request_url,
             auth=create_auth_header(self.__options),
             headers=create_request_headers(self.__options),
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def retrieve_item_groups(self, parameters=None):
+        '''
+        Retrieve all item groups.
+
+        :param str parameters.section: The section to retrieve from
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_item_groups_url('item_groups', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options)
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def create_item_groups(self, parameters=None):
+        '''
+        Create new item groups. If the item groups already exist, they will be skipped.
+
+        :param list parameters.item_groups: A list of item groups to create
+        :param str parameters.section: The section to update
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_item_groups_url('item_groups', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.post(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'item_groups': parameters.get('item_groups') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def create_or_replace_item_groups(self, parameters=None):
+        '''
+        Create or replace item groups. If the item groups already exist,
+        they will be updated. If not, they will be created.
+        Existing item groups not sent in the request will be deleted.
+
+        :param list parameters.item_groups: A list of item groups to create or replace
+        :param str parameters.section: The section to update
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_item_groups_url('item_groups', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.put(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'item_groups': parameters.get('item_groups') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def create_or_update_item_groups(self, parameters=None):
+        '''
+        Update item groups. If the item groups already exist,
+        they will be updated. If not, they will be created.
+
+        :param list parameters.item_groups: A list of item groups to create or update
+        :param str parameters.section: The section to update
+       '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_item_groups_url('item_groups', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.patch(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options),
+            json={ 'item_groups': parameters.get('item_groups') }
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
+    def delete_item_groups(self, parameters=None):
+        '''
+        Delete all item groups.
+
+        :param str parameters.section: The section to delete from
+        '''
+
+        query_params = _create_query_params_for_items(parameters)
+        request_url = _create_item_groups_url('item_groups', self.__options, query_params)
+        requests = self.__options.get('requests') or r
+
+        response = requests.delete(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options)
         )
 
         if not response.ok:
