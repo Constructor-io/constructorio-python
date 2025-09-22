@@ -66,7 +66,7 @@ def create_mock_item_group():
         'id': item_group_id,
         'name': name,
         'data': data,
-        'children': []
+        'parent_ids': []
     }
 
     return item_group
