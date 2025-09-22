@@ -22,10 +22,12 @@ def slow_down_tests():
     yield
     sleep(1)
 
-def test_create_item_groups():
+def test_create_or_replace_item_groups():
     '''Should create new item groups'''
 
-    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    constructorIO = ConstructorIO(VALID_OPTIONS)
+    catalog = constructorIO.catalog
+    tasks = constructorIO.tasks
 
     item_groups = [
         create_mock_item_group(),
@@ -35,88 +37,43 @@ def test_create_item_groups():
         'item_groups': item_groups
     }
 
-    response = catalog.create_item_groups(parameters)
+    response = catalog.create_or_replace_item_groups(parameters)
 
     assert response is not None
 
-    stats = response['item_groups']
-    expected_stats = {
-        'processed': 2,
-        'inserted': 2,
-        'deleted': 0,
-        'updated': 0
-    }
+    task_id = response.get('task_id')
+    task = tasks.get_task(task_id)
 
-    assert stats == expected_stats
+    assert task.get('status') in ['QUEUED', 'IN_PROGRESS', 'DONE']
 
-    catalog.delete_item_groups()
+def test_create_or_replace_item_groups_with_all_parameters():
+    '''Should create new item groups with all parameters'''
 
-def test_create_item_groups_validation():
-    '''Should validate item_groups parameter requirements'''
+    constructorIO = ConstructorIO(VALID_OPTIONS)
+    catalog = constructorIO.catalog
+    tasks = constructorIO.tasks
 
-    catalog = ConstructorIO(VALID_OPTIONS).catalog
-
-    # Test with missing item_groups parameter
-    with raises(
-        HttpException,
-        match=r'item_groups: none is not an allowed value'
-    ):
-        catalog.create_item_groups({})
-
-    # Test with empty item_groups array
-    with raises(
-        HttpException,
-        match=r'item_groups: ensure this value has at least 1 items'
-    ):
-        catalog.create_item_groups({'item_groups': []})
-
-    # Test with non-array item_groups
-    with raises(
-        HttpException,
-        match=r'item_groups: value is not a valid list'
-    ):
-        catalog.create_item_groups({'item_groups': 'not an array'})
-
-def test_create_or_replace_item_groups():
-    '''Should create or replace item groups'''
-
-    catalog = ConstructorIO(VALID_OPTIONS).catalog
-
-    initial_item_groups = [
+    item_groups = [
         create_mock_item_group(),
-        create_mock_item_group(),
+        create_mock_item_group()
     ]
     parameters = {
-        'item_groups': initial_item_groups
-    }
-
-    response = catalog.create_item_groups(parameters)
-
-    updated_item_groups = [
-        # Keep one existing item group but modify it
-        {**initial_item_groups[0], 'name': 'Updated Name'},
-        create_mock_item_group(),
-    ]
-    parameters = {
-        'item_groups': updated_item_groups
+        'item_groups': item_groups,
+        'notification_email': 'test@constructor.io',
+        'force': True,
     }
 
     response = catalog.create_or_replace_item_groups(parameters)
 
     assert response is not None
 
-    stats = response['item_groups']
-    expected_stats = {
-        'processed': 2,
-        'inserted': 1, 
-        'updated': 1,
-        'deleted': 1
-    }
+    task_id = response.get('task_id')
+    task = tasks.get_task(task_id)
 
-    assert stats == expected_stats
+    assert task.get('status') in ['QUEUED', 'IN_PROGRESS', 'DONE']
 
 def test_create_or_replace_item_groups_validation():
-    '''Should validate item_groups parameter requirements for create_or_replace'''
+    '''Should validate item_groups parameter requirements'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
@@ -141,99 +98,90 @@ def test_create_or_replace_item_groups_validation():
     ):
         catalog.create_or_replace_item_groups({'item_groups': 'not an array'})
 
-def test_retrieve_item_groups():
-    '''Should retrieve all item groups'''
+def test_update_item_groups():
+    '''Should update item groups'''
 
-    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    constructorIO = ConstructorIO(VALID_OPTIONS)
+    catalog = constructorIO.catalog
+    tasks = constructorIO.tasks
+
+    item_1 = create_mock_item_group()
+    item_2 = create_mock_item_group()
 
     item_groups = [
-        create_mock_item_group(),
-        create_mock_item_group()
+        item_1,
+        item_2
     ]
-    parameters = {
+    create_parameters = {
         'item_groups': item_groups
     }
 
-    response = catalog.create_item_groups(parameters)
+    create_response = catalog.create_or_replace_item_groups(create_parameters)
 
-    assert response is not None
+    sleep(2)
 
-    retrieve_response = catalog.retrieve_item_groups()
+    assert create_response is not None
 
-    assert retrieve_response is not None
-    assert 'item_groups' in retrieve_response
+    item_1['name'] = 'Updated Item 1'
+    item_2['name'] = 'Updated Item 2'
 
-    catalog.delete_item_groups()
-
-
-def test_delete_item_groups():
-    '''Should delete all item groups'''
-
-    catalog = ConstructorIO(VALID_OPTIONS).catalog
-
-    item_groups = [
-        create_mock_item_group(),
-        create_mock_item_group()
-    ]
-    parameters = {
+    update_parameters = {
         'item_groups': item_groups
     }
 
-    response = catalog.create_item_groups(parameters)
+    update_response = catalog.update_item_groups(update_parameters)
 
-    assert response is not None
+    assert update_response is not None
 
-    delete_response = catalog.delete_item_groups()
+    task_id = update_response.get('task_id')
+    task = tasks.get_task(task_id)
 
-    assert delete_response is not None
-    assert 'message' in delete_response
-    expected_message = 'We\'ve started deleting all of your groups. This may take some time to complete.'
-    assert delete_response['message'] == expected_message
+    assert task.get('status') in ['QUEUED', 'IN_PROGRESS', 'DONE']
 
+def test_update_item_groups_with_all_parameters():
+    '''Should update item groups with all parameters'''
 
-def test_create_or_update_item_groups():
-    '''Should create or update item groups'''
+    constructorIO = ConstructorIO(VALID_OPTIONS)
+    catalog = constructorIO.catalog
+    tasks = constructorIO.tasks
 
-    catalog = ConstructorIO(VALID_OPTIONS).catalog
+    item_1 = create_mock_item_group()
+    item_2 = create_mock_item_group()
 
-    initial_item_groups = [
-        create_mock_item_group(),
-        create_mock_item_group(),
+    item_groups = [
+        item_1,
+        item_2
     ]
-    parameters = {
-        'item_groups': initial_item_groups
+    create_parameters = {
+        'item_groups': item_groups
     }
 
-    response = catalog.create_item_groups(parameters)
+    create_response = catalog.create_or_replace_item_groups(create_parameters)
 
-    updated_item_groups = [
-        # Keep one existing item group but modify it
-        {**initial_item_groups[0], 'name': 'Updated Name'},
-        create_mock_item_group(),
-    ]
-    parameters = {
-        'item_groups': updated_item_groups
+    sleep(2)
+
+    assert create_response is not None
+
+    item_1['name'] = 'Updated Item 1'
+    item_2['name'] = 'Updated Item 2'
+
+    update_parameters = {
+        'item_groups': item_groups,
+        'notification_email': 'test@constructor.io',
+        'force': True,
     }
 
-    response = catalog.create_or_update_item_groups(parameters)
+    update_response = catalog.update_item_groups(update_parameters)
 
-    assert response is not None
+    assert update_response is not None
 
-    stats = response['item_groups']
-    expected_stats = {
-        'processed': 2,
-        'inserted': 1,
-        'updated': 1,
-        'deleted': 0
-    }
+    task_id = update_response.get('task_id')
+    task = tasks.get_task(task_id)
 
-    assert stats == expected_stats
+    assert task.get('status') in ['QUEUED', 'IN_PROGRESS', 'DONE']
 
-    catalog.delete_item_groups()
-
-
-def test_create_or_update_item_groups_validation():
-    '''Should validate item_groups parameter requirements for create_or_update'''
+def test_update_item_groups_validation():
+    '''Should validate item_groups parameter requirements'''
 
     catalog = ConstructorIO(VALID_OPTIONS).catalog
 
@@ -242,18 +190,71 @@ def test_create_or_update_item_groups_validation():
         HttpException,
         match=r'item_groups: none is not an allowed value'
     ):
-        catalog.create_or_update_item_groups({})
+        catalog.update_item_groups({})
 
     # Test with empty item_groups array
     with raises(
         HttpException,
         match=r'item_groups: ensure this value has at least 1 items'
     ):
-        catalog.create_or_update_item_groups({'item_groups': []})
+        catalog.update_item_groups({'item_groups': []})
 
     # Test with non-array item_groups
     with raises(
         HttpException,
         match=r'item_groups: value is not a valid list'
     ):
-        catalog.create_or_update_item_groups({'item_groups': 'not an array'})
+        catalog.update_item_groups({'item_groups': 'not an array'})
+
+def test_retrieve_item_group():
+    '''Should retrieve item group'''
+
+    constructorIO = ConstructorIO(VALID_OPTIONS)
+    catalog = constructorIO.catalog
+
+    item_group = create_mock_item_group()
+
+    item_groups = [item_group]
+    parameters = {
+        'item_groups': item_groups
+    }
+
+    response = catalog.create_or_replace_item_groups(parameters)
+
+    assert response is not None
+
+    sleep(2)
+
+    retrieve_response = catalog.retrieve_item_group({
+        'item_group_id': item_group['id']
+    })
+
+    assert retrieve_response is not None
+    assert retrieve_response['id'] == item_group['id']
+
+def test_retrieve_item_groups():
+    '''Should retrieve all item groups'''
+
+    constructorIO = ConstructorIO(VALID_OPTIONS)
+    catalog = constructorIO.catalog
+
+    item_groups = [
+        create_mock_item_group(),
+        create_mock_item_group()
+    ]
+    parameters = {
+        'item_groups': item_groups
+    }
+
+    response = catalog.create_or_replace_item_groups(parameters)
+
+    assert response is not None
+
+    sleep(2)
+
+    retrieve_response = catalog.retrieve_item_groups()
+
+    assert retrieve_response is not None
+    assert 'item_groups' in retrieve_response
+    assert len(retrieve_response['item_groups']) > 0
+
