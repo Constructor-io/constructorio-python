@@ -25,9 +25,9 @@ def slow_down_tests():
 def test_create_or_replace_item_groups():
     '''Should create new item groups'''
 
-    constructorIO = ConstructorIO(VALID_OPTIONS)
-    catalog = constructorIO.catalog
-    tasks = constructorIO.tasks
+    constructor_io = ConstructorIO(VALID_OPTIONS)
+    catalog = constructor_io.catalog
+    tasks = constructor_io.tasks
 
     item_groups = [
         create_mock_item_group(),
@@ -49,9 +49,9 @@ def test_create_or_replace_item_groups():
 def test_create_or_replace_item_groups_with_all_parameters():
     '''Should create new item groups with all parameters'''
 
-    constructorIO = ConstructorIO(VALID_OPTIONS)
-    catalog = constructorIO.catalog
-    tasks = constructorIO.tasks
+    constructor_io = ConstructorIO(VALID_OPTIONS)
+    catalog = constructor_io.catalog
+    tasks = constructor_io.tasks
 
     item_groups = [
         create_mock_item_group(),
@@ -101,9 +101,9 @@ def test_create_or_replace_item_groups_validation():
 def test_update_item_groups():
     '''Should update item groups'''
 
-    constructorIO = ConstructorIO(VALID_OPTIONS)
-    catalog = constructorIO.catalog
-    tasks = constructorIO.tasks
+    constructor_io = ConstructorIO(VALID_OPTIONS)
+    catalog = constructor_io.catalog
+    tasks = constructor_io.tasks
 
     item_1 = create_mock_item_group()
     item_2 = create_mock_item_group()
@@ -141,9 +141,9 @@ def test_update_item_groups():
 def test_update_item_groups_with_all_parameters():
     '''Should update item groups with all parameters'''
 
-    constructorIO = ConstructorIO(VALID_OPTIONS)
-    catalog = constructorIO.catalog
-    tasks = constructorIO.tasks
+    constructor_io = ConstructorIO(VALID_OPTIONS)
+    catalog = constructor_io.catalog
+    tasks = constructor_io.tasks
 
     item_1 = create_mock_item_group()
     item_2 = create_mock_item_group()
@@ -209,8 +209,8 @@ def test_update_item_groups_validation():
 def test_retrieve_item_group():
     '''Should retrieve item group'''
 
-    constructorIO = ConstructorIO(VALID_OPTIONS)
-    catalog = constructorIO.catalog
+    constructor_io = ConstructorIO(VALID_OPTIONS)
+    catalog = constructor_io.catalog
 
     item_group = create_mock_item_group()
 
@@ -223,7 +223,7 @@ def test_retrieve_item_group():
 
     assert response is not None
 
-    sleep(2)
+    sleep(3)
 
     retrieve_response = catalog.retrieve_item_group({
         'item_group_id': item_group['id']
@@ -235,8 +235,8 @@ def test_retrieve_item_group():
 def test_retrieve_item_groups():
     '''Should retrieve all item groups'''
 
-    constructorIO = ConstructorIO(VALID_OPTIONS)
-    catalog = constructorIO.catalog
+    constructor_io = ConstructorIO(VALID_OPTIONS)
+    catalog = constructor_io.catalog
 
     item_groups = [
         create_mock_item_group(),
@@ -250,11 +250,13 @@ def test_retrieve_item_groups():
 
     assert response is not None
 
-    sleep(2)
+    sleep(3)
 
     retrieve_response = catalog.retrieve_item_groups()
 
+    ids1 = {item_group['id'] for item_group in item_groups}
+    ids2 = {item_group['id'] for item_group in retrieve_response['item_groups']}
+
     assert retrieve_response is not None
     assert 'item_groups' in retrieve_response
-    assert len(retrieve_response['item_groups']) > 0
-
+    assert ids1.issubset(ids2)
