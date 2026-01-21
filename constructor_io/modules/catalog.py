@@ -77,6 +77,42 @@ def _create_query_params_for_items(parameters):
 
     return query_params
 
+def _create_query_params_for_item_groups(parameters):
+    '''Create query params for item groups API'''
+
+    query_params = {}
+
+    if parameters:
+        item_group_id = parameters.get('item_group_id')
+        notification_email = parameters.get('notification_email')
+        force = parameters.get('force')
+        num_results_per_page = parameters.get('num_results_per_page')
+        page = parameters.get('page')
+        ids = parameters.get('ids')
+        offset = parameters.get('offset')
+
+        if item_group_id:
+            query_params['item_group_id'] = item_group_id
+
+        if ids:
+            query_params['id'] = ids
+
+        if notification_email:
+            query_params['notification_email'] = notification_email
+
+        if force:
+            query_params['force'] = force
+
+        if num_results_per_page:
+            query_params['num_results_per_page'] = num_results_per_page
+
+        if page:
+            query_params['page'] = page
+        elif offset:
+            query_params['offset'] = offset
+
+    return query_params
+
 def _create_catalog_url(path, options, additional_query_params):
     '''Create catalog API url'''
 
@@ -124,7 +160,21 @@ def _create_item_groups_url(path, options, additional_query_params):
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/v1/{quote(path)}?{query_string}'
+    return f'{options.get("service_url")}/v2/{quote(path)}?{query_string}'
+
+def _create_item_group_url(path, options):
+    '''Create item group API url'''
+
+    api_key = options.get('api_key')
+
+    if not path or not isinstance(path, str):
+        raise ConstructorException('path is a required parameter of type string')
+
+    query_params = { 'key': api_key }
+    query_params = clean_params(query_params)
+    query_string = urlencode(query_params, doseq=True)
+
+    return f'{options.get("service_url")}/v2/{quote(path)}?{query_string}'
 
 class Catalog:
     '''Catalog Class'''
@@ -464,14 +514,49 @@ class Catalog:
 
         return json
 
+    def retrieve_item_group(self, parameters=None):
+        '''
+        Retrieve an item group.
+
+        :param str parameters.item_group_id: item group ID to retrieve.
+        '''
+
+        if not parameters:
+            parameters = {}
+
+        item_group_id = parameters.get('item_group_id')
+
+        if not item_group_id or not isinstance(item_group_id, str):
+            raise ConstructorException('item_group_id is a required parameter of type string')
+
+        request_url = _create_item_group_url(f'item_groups/{item_group_id}', self.__options)
+        # API does not permit c param for retrieve_item_group endpoint
+        requests = self.__options.get('requests') or r
+
+        response = requests.get(
+            request_url,
+            auth=create_auth_header(self.__options),
+            headers=create_request_headers(self.__options)
+        )
+
+        if not response.ok:
+            throw_http_exception_from_response(response)
+
+        json = response.json()
+
+        return json
+
     def retrieve_item_groups(self, parameters=None):
         '''
         Retrieve all item groups.
 
-        :param str parameters.section: The section to retrieve from
+        :param list parameters.ids: A list of item group ID(s) to filter by.
+        :param int parameters.num_results_per_page: The number of results per page to return. Defaults to 20. Maximum value is 100
+        :param int parameters.page: The page of results to return. Defaults to 1
+        :param int parameters.offset: The number of results to skip from the beginning. Cannot be used together with page.
         '''
 
-        query_params = _create_query_params_for_items(parameters)
+        query_params = _create_query_params_for_item_groups(parameters)
         request_url = _create_item_groups_url('item_groups', self.__options, query_params)
         requests = self.__options.get('requests') or r
 
@@ -488,43 +573,17 @@ class Catalog:
 
         return json
 
-    def create_item_groups(self, parameters=None):
-        '''
-        Create new item groups. If the item groups already exist, they will be skipped.
-
-        :param list parameters.item_groups: A list of item groups to create
-        :param str parameters.section: The section to update
-        '''
-
-        query_params = _create_query_params_for_items(parameters)
-        request_url = _create_item_groups_url('item_groups', self.__options, query_params)
-        requests = self.__options.get('requests') or r
-
-        response = requests.post(
-            request_url,
-            auth=create_auth_header(self.__options),
-            headers=create_request_headers(self.__options),
-            json={ 'item_groups': parameters.get('item_groups') }
-        )
-
-        if not response.ok:
-            throw_http_exception_from_response(response)
-
-        json = response.json()
-
-        return json
-
     def create_or_replace_item_groups(self, parameters=None):
         '''
-        Create or replace item groups. If the item groups already exist,
-        they will be updated. If not, they will be created.
-        Existing item groups not sent in the request will be deleted.
+        Create item groups or replace the data of existing item groups.
+        Returns an identifier for a background task.
 
-        :param list parameters.item_groups: A list of item groups to create or replace
-        :param str parameters.section: The section to update
+        :param list parameters.item_groups: A list of item groups to create. Maximum length is 10000
+        :param list parameters.force: A flag to process the catalog even if it will invalidate a large part of existing data. Defaults to False.
+        :param list parameters.notification_email: The email address to send a notification to if the task fails.
         '''
 
-        query_params = _create_query_params_for_items(parameters)
+        query_params = _create_query_params_for_item_groups(parameters)
         request_url = _create_item_groups_url('item_groups', self.__options, query_params)
         requests = self.__options.get('requests') or r
 
@@ -542,16 +601,18 @@ class Catalog:
 
         return json
 
-    def create_or_update_item_groups(self, parameters=None):
+    def update_item_groups(self, parameters=None):
         '''
-        Update item groups. If the item groups already exist,
-        they will be updated. If not, they will be created.
+        Update existing item groups data.
+        Data included in the request will be merged with data of the existing items groups.
+        Returns an identifier for a background task.
 
-        :param list parameters.item_groups: A list of item groups to create or update
-        :param str parameters.section: The section to update
-       '''
+        :param list parameters.item_groups: A list of item groups to create. Maximum length is 10000
+        :param list parameters.force: A flag to process the catalog even if it will invalidate a large part of existing data. Defaults to False.
+        :param list parameters.notification_email: The email address to send a notification to if the task fails.
+        '''
 
-        query_params = _create_query_params_for_items(parameters)
+        query_params = _create_query_params_for_item_groups(parameters)
         request_url = _create_item_groups_url('item_groups', self.__options, query_params)
         requests = self.__options.get('requests') or r
 
@@ -560,30 +621,6 @@ class Catalog:
             auth=create_auth_header(self.__options),
             headers=create_request_headers(self.__options),
             json={ 'item_groups': parameters.get('item_groups') }
-        )
-
-        if not response.ok:
-            throw_http_exception_from_response(response)
-
-        json = response.json()
-
-        return json
-
-    def delete_item_groups(self, parameters=None):
-        '''
-        Delete all item groups.
-
-        :param str parameters.section: The section to delete from
-        '''
-
-        query_params = _create_query_params_for_items(parameters)
-        request_url = _create_item_groups_url('item_groups', self.__options, query_params)
-        requests = self.__options.get('requests') or r
-
-        response = requests.delete(
-            request_url,
-            auth=create_auth_header(self.__options),
-            headers=create_request_headers(self.__options)
         )
 
         if not response.ok:
