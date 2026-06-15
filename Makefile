@@ -22,7 +22,7 @@ install: Makefile
 	pipenv run pre-commit install --hook-type pre-commit --hook-type pre-push
 
 build: Makefile
-	pipenv run python setup.py sdist
+	uv build --sdist --wheel --out-dir dist
 
 publish: Makefile
 	twine upload dist/*

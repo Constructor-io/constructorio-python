@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=77.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "constructor-io"
+dynamic = ["version"]
+description = "Constructor.io Python Client"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = "MIT"
+authors = [
+    {name = "Constructor.io Corporation", email = "info@constructor.io"},
+]
+dependencies = [
+    "requests~=2.26",
+]
+
+[project.urls]
+Homepage = "https://www.constructor.io"
+
+[tool.setuptools.packages.find]
+include = ["constructor_io", "constructor_io.*"]
+exclude = ["tests", "tests.*"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+version = {attr = "constructor_io._version.__version__"}
