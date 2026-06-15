@@ -1,2 +1,2 @@
 '''Version File'''
-__version__ = "1.9.1"
+from constructor_io._version import __version__
