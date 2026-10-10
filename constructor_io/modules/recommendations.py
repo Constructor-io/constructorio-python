@@ -214,6 +214,9 @@ class Recommendations:
         '''
         Retrieve recommendation results for every pod on a page from API
 
+        Beta: available to a small group of users and may change. Contact your Customer Success
+        Manager to request access.
+
         Each pod's own ``result_id`` is added to that pod's results. The top-level ``result_id``
         identifies the page request and is not a tracking id: send ``response.pods[].result_id``
         with each pod's recommendation view and click events.
