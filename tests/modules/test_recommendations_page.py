@@ -225,11 +225,12 @@ def test_raises_when_pod_override_is_not_a_dictionary():
 
     recommendations = ConstructorIO({'api_key': MOCK_API_KEY}).recommendations
 
-    with raises(ConstructorException, match='pod_overrides.similar_items must be a dictionary'):
-        recommendations.get_recommendation_page_results(
-            PAGE_ID,
-            {'pod_overrides': {'similar_items': ['num_results']}},
-        )
+    for override in (['num_results'], False):
+        with raises(ConstructorException, match='pod_overrides.similar_items must be a dictionary'):
+            recommendations.get_recommendation_page_results(
+                PAGE_ID,
+                {'pod_overrides': {'similar_items': override}},
+            )
 
 
 def test_raises_when_variation_id_is_provided_without_item_ids():

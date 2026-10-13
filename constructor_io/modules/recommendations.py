@@ -125,11 +125,12 @@ def _create_recommendation_page_url(page_id, parameters, user_parameters, option
     query_params.update(_create_page_overridable_params(parameters))
 
     pod_overrides = parameters.get('pod_overrides')
-    if pod_overrides:
+    if pod_overrides is not None:
         if not isinstance(pod_overrides, dict):
             raise ConstructorException('pod_overrides must be a dictionary keyed by pod id')
         for override_pod_id, override in pod_overrides.items():
-            override = override or {}
+            if override is None:
+                continue
             if not isinstance(override, dict):
                 raise ConstructorException(f'pod_overrides.{override_pod_id} must be a dictionary')
             unsupported = [name for name in override if name not in PAGE_OVERRIDABLE_PARAMETERS]
