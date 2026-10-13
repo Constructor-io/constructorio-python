@@ -236,7 +236,7 @@ class Recommendations:
         :param list parameters.hidden_fields: Hidden metadata fields to return
         :param str parameters.section: The section to return results from
         :param dict parameters.variations_map: The variations map dictionary to aggregate variations. Please refer to https://docs.constructor.com/reference/shared-variations-mapping for details
-        :param dict parameters.pod_overrides: Per-pod values keyed by pod id. Each may contain num_results, filters, filter_match_types, pre_filter_expression, fmt_options, hidden_fields and variations_map, and replaces (does not merge with) the page-wide value for that pod
+        :param dict parameters.pod_overrides: Per-pod values keyed by pod id. Each may contain num_results, filters, filter_match_types, pre_filter_expression, fmt_options, hidden_fields and variations_map, and replaces (does not merge with) the page-wide value for that pod. hidden_fields is sent inside fmt_options, so either one replaces the page-wide fmt_options and hidden_fields together
         :param dict user_parameters: Parameters relevant to the user request
         :param int user_parameters.session_id: Session ID, utilized to personalize results
         :param str user_parameters.client_id: Client ID, utilized to personalize results
