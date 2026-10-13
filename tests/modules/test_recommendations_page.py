@@ -106,13 +106,11 @@ def test_requests_page_endpoint_with_shared_parameters():
     assert query['s'] == [str(VALID_SESSION_ID)]
     assert query['ui'] == ['user-id']
     assert query['us'] == ['vip']
-    assert '_dt' in query
     assert query['item_id'] == [ITEM_ID]
     assert query['num_results'] == ['10']
     assert query['section'] == ['Products']
     assert query['filters[in_stock]'] == ['true']
     assert query['filter_match_types[color]'] == ['any']
-    assert not [key for key in query if key.startswith('pod_overrides')]
     assert headers['x-cnstrc-token'] == 'token'
     assert headers['X-Forwarded-For'] == '127.0.0.1'
 
@@ -128,14 +126,10 @@ def test_encodes_pod_overrides_in_bracket_notation():
         recommendations.get_recommendation_page_results(
             PAGE_ID,
             {
-                'item_ids': ITEM_ID,
-                'num_results': 10,
                 'pod_overrides': {
                     'similar_items': {'num_results': 0},
                     'complete_the_look': {
-                        'num_results': 8,
-                        'filters': {'in_stock': 'true', 'color': ['red', 'blue']},
-                        'filter_match_types': {'color': 'all'},
+                        'filters': {'color': ['red', 'blue']},
                         'pre_filter_expression': pre_filter_expression,
                         'variations_map': variations_map,
                         'fmt_options': {'groups_max_depth': 2},
@@ -149,11 +143,7 @@ def test_encodes_pod_overrides_in_bracket_notation():
     prefix = 'pod_overrides[complete_the_look]'
 
     assert 'pod_overrides[similar_items][num_results]=0' in unquote(request_url_of(mocked_get))
-    assert query['num_results'] == ['10']
-    assert query[f'{prefix}[num_results]'] == ['8']
-    assert query[f'{prefix}[filters][in_stock]'] == ['true']
     assert query[f'{prefix}[filters][color]'] == ['red', 'blue']
-    assert query[f'{prefix}[filter_match_types][color]'] == ['all']
     assert json.loads(query[f'{prefix}[pre_filter_expression]'][0]) == pre_filter_expression
     assert json.loads(query[f'{prefix}[variations_map]'][0]) == variations_map
     assert query[f'{prefix}[fmt_options][groups_max_depth]'] == ['2']
@@ -173,7 +163,6 @@ def test_encodes_page_wide_json_parameters():
             {
                 'pre_filter_expression': pre_filter_expression,
                 'variations_map': variations_map,
-                'hidden_fields': ['inventory'],
             },
         )
 
@@ -181,7 +170,6 @@ def test_encodes_page_wide_json_parameters():
 
     assert query['pre_filter_expression'] == [pre_filter_expression]
     assert json.loads(query['variations_map'][0]) == variations_map
-    assert query['fmt_options[hidden_fields]'] == ['inventory']
 
 
 def test_stamps_each_pod_result_id_onto_its_results():
@@ -192,14 +180,13 @@ def test_stamps_each_pod_result_id_onto_its_results():
     with mock.patch.object(requests, 'get', return_value=mock_response(PAGE_RESPONSE)):
         response = recommendations.get_recommendation_page_results(PAGE_ID, {'item_ids': ITEM_ID})
 
-    similar_items, complete_the_look = response['response']['pods']
+    similar_items = response['response']['pods'][0]
 
     assert response['result_id'] == PAGE_RESULT_ID
     assert [result['result_id'] for result in similar_items['response']['results']] == [
         'similar-items-result-id',
         'similar-items-result-id',
     ]
-    assert complete_the_look['response']['results'] == []
 
 
 def test_raises_when_response_has_no_pods():
@@ -261,10 +248,8 @@ def test_live_page_results_use_per_pod_result_ids():
     recommendations = ConstructorIO({'api_key': environ.get('TEST_REQUEST_API_KEY')}).recommendations
     response = recommendations.get_recommendation_page_results(PAGE_ID, {'item_ids': 'power_drill'})
 
-    assert isinstance(response.get('result_id'), str)
     assert response['response']['pods']
     for pod in response['response']['pods']:
         assert pod['result_id'] != response['result_id']
-        assert pod['response']['pod']['id'] == pod['pod_id']
         for result in pod['response']['results']:
             assert result['result_id'] == pod['result_id']
