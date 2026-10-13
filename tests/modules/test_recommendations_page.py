@@ -160,6 +160,30 @@ def test_encodes_pod_overrides_in_bracket_notation():
     assert query[f'{prefix}[fmt_options][hidden_fields]'] == ['inventory', 'margin']
 
 
+def test_encodes_page_wide_json_parameters():
+    '''Should send page-wide pre_filter_expression and variations_map as JSON strings'''
+
+    recommendations = ConstructorIO({'api_key': MOCK_API_KEY}).recommendations
+    pre_filter_expression = '{"or":[{"name":"brand","value":"acme"}]}'
+    variations_map = {'group_by': [{'name': 'color', 'field': 'data.color'}], 'values': {}, 'dtype': 'array'}
+
+    with mock.patch.object(requests, 'get', return_value=mock_response(PAGE_RESPONSE)) as mocked_get:
+        recommendations.get_recommendation_page_results(
+            PAGE_ID,
+            {
+                'pre_filter_expression': pre_filter_expression,
+                'variations_map': variations_map,
+                'hidden_fields': ['inventory'],
+            },
+        )
+
+    query = query_of(mocked_get)
+
+    assert query['pre_filter_expression'] == [pre_filter_expression]
+    assert json.loads(query['variations_map'][0]) == variations_map
+    assert query['fmt_options[hidden_fields]'] == ['inventory']
+
+
 def test_stamps_each_pod_result_id_onto_its_results():
     '''Should stamp each pod's own result_id onto its results, not the page result_id'''
 
@@ -209,6 +233,18 @@ def test_raises_when_pod_overrides_contain_page_wide_parameter():
         )
 
 
+def test_raises_when_pod_override_is_not_a_dictionary():
+    '''Should raise when a pod_overrides value is not a dictionary'''
+
+    recommendations = ConstructorIO({'api_key': MOCK_API_KEY}).recommendations
+
+    with raises(ConstructorException, match='pod_overrides.similar_items must be a dictionary'):
+        recommendations.get_recommendation_page_results(
+            PAGE_ID,
+            {'pod_overrides': {'similar_items': ['num_results']}},
+        )
+
+
 def test_raises_when_variation_id_is_provided_without_item_ids():
     '''Should raise when variation_id is provided without item_ids'''
 
@@ -218,9 +254,7 @@ def test_raises_when_variation_id_is_provided_without_item_ids():
         recommendations.get_recommendation_page_results(PAGE_ID, {'variation_id': 'v1'})
 
 
-# The page endpoint is not yet enabled on the test index, and the test index has no
-# page configured (`/recommendations/v1/pages/pdp_b2c` returns 404 there)
-@mark.skip(reason='the page endpoint is not enabled and no page is configured on the test index')
+@mark.skip(reason='no recommendation page is configured on the test index')
 def test_live_page_results_use_per_pod_result_ids():
     '''Should return each pod's own result_id on its results'''
 
