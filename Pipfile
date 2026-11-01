@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 requests = "*"
 urllib3 = "<3"
-certifi = ">=2024.07.04"
+certifi = ">=2026.10.18"
 
 [dev-packages]
 isort = "*"
