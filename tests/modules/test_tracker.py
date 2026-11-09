@@ -65,6 +65,8 @@ def test_with_result_id_and_items():
     assert body['result_page'] == 2
     assert body['section'] == 'Products'
     assert body['url'] == 'https://example.com/search?q=item'
+    for key in ['key', 'i', 's', 'c', '_dt', 'beacon']:
+        assert key not in body
 
 def test_without_result_id():
     '''Should leave result_id out of the body and default url and result_count'''
@@ -80,8 +82,19 @@ def test_with_more_than_100_items():
     '''Should send at most 100 items'''
 
     _, call = _track({ 'items': [str(i) for i in range(150)] })
+    body = call.kwargs.get('json')
 
-    assert len(call.kwargs.get('json')['items']) == 100
+    assert len(body['items']) == 100
+    assert body['result_count'] == 150
+
+def test_with_empty_items():
+    '''Should send result_count 0 and no items when no items are given'''
+
+    _, call = _track({ 'items': [] })
+    body = call.kwargs.get('json')
+
+    assert body['result_count'] == 0
+    assert 'items' not in body
 
 def test_with_user_id_segments_and_headers():
     '''Should send user_id, segments, security token, user ip and user agent'''
@@ -118,6 +131,19 @@ def test_without_session_id():
 
     with raises(ConstructorException, match=r'session_id is a required user parameter of type int'):
         _track({}, { 'client_id': VALID_CLIENT_ID })
+
+def test_with_session_id_zero():
+    '''Should accept session_id 0'''
+
+    response, _ = _track({}, { 'client_id': VALID_CLIENT_ID, 'session_id': 0 })
+
+    assert response is True
+
+def test_with_boolean_session_id():
+    '''Should raise exception when session_id is a bool'''
+
+    with raises(ConstructorException, match=r'session_id is a required user parameter of type int'):
+        _track({}, { 'client_id': VALID_CLIENT_ID, 'session_id': True })
 
 def test_with_error_response():
     '''Should raise HttpException when the API returns an error'''

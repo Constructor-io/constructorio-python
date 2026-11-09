@@ -51,7 +51,8 @@ class Tracker:
             raise ConstructorException('term is a required parameter of type string')
         if not user_parameters.get('client_id') or not isinstance(user_parameters.get('client_id'), str):
             raise ConstructorException('client_id is a required user parameter of type string')
-        if not user_parameters.get('session_id') or not isinstance(user_parameters.get('session_id'), int):
+        session_id = user_parameters.get('session_id')
+        if session_id is None or isinstance(session_id, bool) or not isinstance(session_id, int):
             raise ConstructorException('session_id is a required user parameter of type int')
 
         query_params = create_shared_query_params(self.__options, {}, user_parameters)
@@ -59,14 +60,12 @@ class Tracker:
         query_params['beacon'] = 'true'
         query_params = clean_params(query_params)
 
-        items = parameters.get('items') or []
-        items = [{'item_id': str(item)} if isinstance(item, (str, int)) else item for item in items[:100]]
+        all_items = parameters.get('items') or []
+        items = [{'item_id': str(item)} if isinstance(item, (str, int)) else item for item in all_items[:100]]
 
         body = {
-            **query_params,
-            'beacon': True,
             'search_term': term,
-            'result_count': parameters.get('result_count', len(items)),
+            'result_count': parameters.get('result_count', len(all_items)),
             'result_id': parameters.get('result_id'),
             'items': items or None,
             'result_page': parameters.get('result_page'),
