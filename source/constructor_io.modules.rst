@@ -60,3 +60,10 @@ constructor\_io.modules.tasks module
    :undoc-members:
    :show-inheritance:
 
+constructor\_io.modules.tracker module
+---------------------------------------
+
+.. automodule:: constructor_io.modules.tracker
+   :members:
+   :undoc-members:
+   :show-inheritance:

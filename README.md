@@ -38,6 +38,32 @@ constructorio = ConstructorIO({
 
 After instantiating an instance of the client, four modules will be exposed as properties to help retrieve data from Constructor.io: `search`, `browse`, `autocomplete`, and `recommendations`.
 
+## 5. Track Search Results Loaded
+
+After you render search results from your back-end, send a `search_result_load` event with the `tracker` module. Pass the `result_id` from the search response so the event is tied to that response. `client_id` and `session_id` are required.
+
+```python
+user_parameters = {
+    "client_id": "7a43138f-c87b-29c0-872d-65b00ed0e392",
+    "session_id": 1,
+    "user_ip": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 ...",
+}
+
+search_results = constructorio.search.get_search_results("T-Shirt", {"section": "Products"}, user_parameters)
+
+constructorio.tracker.track_search_results_loaded(
+    "T-Shirt",
+    {
+        "result_id": search_results["result_id"],
+        "result_count": search_results["response"]["total_num_results"],
+        "items": [{"item_id": result["data"]["id"]} for result in search_results["response"]["results"]],
+        "section": "Products",
+    },
+    user_parameters,
+)
+```
+
 ## Development
 
 ```bash

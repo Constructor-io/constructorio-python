@@ -9,6 +9,7 @@ from constructor_io.modules.quizzes import Quizzes
 from constructor_io.modules.recommendations import Recommendations
 from constructor_io.modules.search import Search
 from constructor_io.modules.tasks import Tasks
+from constructor_io.modules.tracker import Tracker
 
 
 class ConstructorIO:
@@ -53,6 +54,7 @@ class ConstructorIO:
         self.catalog = Catalog(self.__options)
         self.tasks = Tasks(self.__options)
         self.quizzes = Quizzes(self.__options)
+        self.tracker = Tracker(self.__options)
 
     def get_options(self):
         '''Get client options'''
