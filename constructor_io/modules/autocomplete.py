@@ -37,7 +37,7 @@ def _create_autocomplete_url(query, parameters, user_parameters, options):
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/autocomplete/{quote(query)}?{query_string}'
+    return f'{options.get("service_url")}/autocomplete/{quote(query, safe="")}?{query_string}'
 
 def _create_autocomplete_url_filters_by_section(query_params, filters):
     if isinstance(filters, dict):

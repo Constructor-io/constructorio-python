@@ -25,7 +25,7 @@ def _create_search_url(query, parameters, user_parameters, options):
     query_params = clean_params(query_params)
     query_string = urlencode(query_params, doseq=True)
 
-    return f'{options.get("service_url")}/search/{quote(query)}?{query_string}'
+    return f'{options.get("service_url")}/search/{quote(query, safe="")}?{query_string}'
 
 class Search:
     # pylint: disable=too-few-public-methods
